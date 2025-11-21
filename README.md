@@ -1,272 +1,379 @@
-# Model Evaluator - Conversation, Reasoning & Context Window Tests
+# Squirmify 🔥
 
-## 📦 New Files Created
+**A comprehensive LLM evaluation framework that separates fact from marketing fiction.**
 
-### 1. **ConversationTest.cs**
-Models for multi-turn conversation testing:
-- `ConversationTest` - Test definition with turns and judging criteria
-- `ConversationTestResult` - Results with full exchange history
-- `ConversationExchange` - Single turn (user + model response)
-- `ConversationRating` - Judge's detailed scoring
-- `ConversationTestSummary` - Per-model aggregated results
+Squirmify is a rigorous model evaluation tool designed to test, rank, and expose the true capabilities of AI language models. It runs comprehensive tests across multiple dimensions and generates high-quality synthetic training datasets.
 
-### 2. **ConversationTestService.cs**
-Service that runs and scores multi-turn conversations:
-- **8 conversation scenarios** across 4 categories:
-  - **Code** (2): Debugging null reference, refactoring nested loops
-  - **Support** (2): Password reset, product feature explanation
-  - **Chat** (2): Hobby discussion, weekend plans
-  - **Instruction** (2): Todo list modifications, email refinement
-
-**Key Features:**
-- Maintains conversation context across 3-4 turns
-- Builds context-aware prompts (since ModelService doesn't support message history)
-- Judge scores on 4 dimensions: topic coherence, conversational tone, context retention, helpfulness
-- Each conversation gets ONE overall score (1-10)
-- Detailed category performance breakdown
-
-### 3. **ReasoningTestService.cs** (Refactored)
-**MAJOR CHANGE:** Removed brittle validators, now uses judge-based scoring!
-
-**11 reasoning tests** across 5 categories:
-- **multi-step** (3): Sheep problem, widget rate, age puzzle
-- **context** (2): Multi-number calc, relationship ordering
-- **logic** (2): Syllogism flaw, prime number definition
-- **math** (2): Shopping calc, percentage
-- **pattern** (2): Number sequence, letter sequence
-
-**Scoring Approach:**
-- Judge evaluates: correct answer, logical steps, clarity
-- Flexible - doesn't require exact formatting
-- Each dimension scored 1-10
-- Overall score = holistic assessment
-
-### 4. **TestService.cs** (Enhanced)
-**14 instruction tests** (was 6):
-
-**Added:**
-- More JSON tests (object with name/age)
-- More tool calling scenarios (calculate function)
-- Format constraints (color list, SUCCESS output)
-- Simple calculations (multiplication, subtraction)
-- Boolean outputs (true/false)
-
-**Now shows:** Pass count (e.g., "12/14") in results table
-
-### 5. **Config.cs** (Updated)
-Added:
-```csharp
-// Conversation Test Settings
-public const double ConversationTestTemperature = 0.7;
-public const double ConversationTestTopP = 0.9;
-```
-
-### 6. **ContextWindowTestService.cs** (NEW!)
-**The marketing team's worst nightmare!** 🔥
-
-Tests the gap between **claimed** vs **actual usable** context window:
-
-**4 Stress Test Patterns:**
-- **Needle in Haystack** (8k tokens): Single anchor word + 3 checkpoints, mixed content
-- **Instruction Retention** (6k tokens): Can it remember instructions buried deep?
-- **Code Context Stress** (10k tokens): Heavy code content with checkpoints
-- **Degradation Mapping** (12k tokens): 7 checkpoints to map where failure happens
-
-**How it works:**
-1. Injects **ANCHOR_WORD** at start (e.g., "ZEPHYR_PRIME_7734")
-2. Floods with code/prose/technical content
-3. Plants **checkpoint words** at specific token positions
-4. Probes at 25%, 50%, 75%, 100% of target length
-5. Asks: "What was the anchor?" and "What was checkpoint X?"
-
-**Tracks:**
-- **Max Reliable Tokens**: Last probe where everything was correct
-- **First Hallucination At**: When it starts making up confident wrong answers
-- **First Anchor Failure**: When it forgets the very first thing
-- **Checkpoint Accuracy**: % of checkpoints recalled correctly
-- **Degradation Pattern**: "graceful", "sudden", "moderate", or "catastrophic"
-
-**Exposes models that:**
-- Claim 32k context but fail at 8k
-- Hallucinate confidently instead of admitting uncertainty
-- Only remember recent stuff (recency bias)
-- Can't maintain instructions through long context
-
-This will separate the wheat from the chaff! 😈
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
 
 ---
 
-## 🔌 Integration Points
+## Why Squirmify?
 
-### In Program.cs, add after reasoning tests:
+Most LLM benchmarks rely on self-reported metrics and marketing claims. Squirmify puts models through real-world stress tests:
 
-```csharp
-// ═══ Step 2.6: Context Window Stress Tests ═══
-AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.6: Context Window Stress Tests ═══[/]\n");
+- **Instruction Following Tests** - Filters out models that can't follow basic commands
+- **Reasoning Tests** - Evaluates multi-step logic, math, and pattern recognition
+- **Context Window Stress Tests** - Exposes the gap between claimed vs. actual usable context (e.g., claims 32k but fails at 8k)
+- **Conversation Tests** - Tests multi-turn conversational ability across different domains
+- **Synthetic Data Generation** - Creates high-quality training datasets with optional "Kiwi" linguistic flavor
+- **Auto-Judging System** - Uses top-performing models to score and rank responses
 
-var contextWindowService = new ContextWindowTestService(modelService);
-var contextResults = await contextWindowService.RunContextWindowTestsAsync(
-    models.Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8)).ToList()
-);
-
-// Generate and display summaries
-var contextSummaries = contextWindowService.GenerateContextSummaries(contextResults);
-contextWindowService.DisplayContextWindowResults(contextSummaries);
-
-// Save results
-var contextFile = Path.Combine(Config.OutputDir, "context_window_results.json");
-await contextWindowService.SaveContextWindowResultsAsync(contextResults, contextFile);
-```
-
-### For Conversation Tests:
-
-```csharp
-// ═══ Step 2.7: Conversation Tests ═══
-AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.7: Conversation Tests ═══[/]\n");
-
-var conversationService = new ConversationTestService(modelService);
-var conversationResults = await conversationService.RunConversationTestsAsync(
-    models.Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8)).ToList()
-);
-
-// Score conversations with base judge
-await conversationService.ScoreConversationsAsync(baseJudge, conversationResults);
-
-// Generate and display summaries
-var conversationSummaries = conversationService.GenerateConversationSummaries(conversationResults);
-conversationService.DisplayConversationResults(conversationSummaries);
-
-// Save results
-var conversationFile = Path.Combine(Config.OutputDir, "conversation_results.json");
-await conversationService.SaveConversationResultsAsync(conversationResults, conversationFile);
-```
-
-### For Reasoning Tests (replace existing):
-
-```csharp
-// ═══ Step 2.5: Reasoning Tests ═══
-AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.5: Reasoning Tests ═══[/]\n");
-
-var reasoningService = new ReasoningTestService(modelService);
-var reasoningResponses = await reasoningService.RunReasoningTestsAsync(
-    models.Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8)).ToList()
-);
-
-// Score with base judge
-await reasoningService.ScoreReasoningTestsAsync(baseJudge, reasoningResponses);
-
-// Generate and display summaries
-var reasoningSummaries = reasoningService.GenerateReasoningSummaries(reasoningResponses);
-reasoningService.DisplayReasoningResults(reasoningSummaries);
-
-// Save results
-var reasoningFile = Path.Combine(Config.OutputDir, "reasoning_results.json");
-await reasoningService.SaveReasoningResultsAsync(reasoningResponses, reasoningFile);
-```
+**The result:** Objective, reproducible data about which models actually deliver on their promises.
 
 ---
 
-## 🎯 What Changed & Why
+## Features
 
-### **Context Window Tests - NEW** 🚨
-**Problem:** Models claim huge context windows (32k+) but marketing != reality
-**Solution:**
-- 4 different stress patterns (needle in haystack, instruction retention, code-heavy, degradation mapping)
-- Plants anchor word at start + checkpoints throughout
-- Probes at 25%, 50%, 75%, 100% of target length
-- Tracks when hallucination starts vs when it admits confusion
-- Measures degradation pattern (graceful vs catastrophic failure)
-- **Exposes the gap between claimed and actual usable context**
+### 🎯 Comprehensive Testing Pipeline
 
-### **Conversation Tests - NEW**
-**Problem:** Needed to test multi-turn conversational ability
-**Solution:** 
-- 8 realistic scenarios with 3-4 turn exchanges
-- Context management via prompt engineering (since no message history support)
-- Judge evaluates entire conversation holistically
-- Separate scoring by category (code, support, chat, instruction)
+1. **Instruction Following Tests** (14 tests)
+   - JSON generation & validation
+   - Tool calling scenarios
+   - Format constraints
+   - Basic calculations
+   - Exact output matching
 
-### **Reasoning Tests - REFACTORED**
-**Problem:** Brittle validators failing on good answers with wrong format
-**Solution:**
-- Removed hardcoded validators entirely
-- Judge evaluates correctness, logic, and clarity
-- Flexible scoring (1-10 scale) instead of pass/fail
-- Still measures what matters: can they reason?
+2. **Reasoning Tests** (11 tests across 5 categories)
+   - Multi-step problems
+   - Context retention
+   - Logic & syllogisms
+   - Math problems
+   - Pattern recognition
+   - Judge-based scoring (no brittle validators)
 
-### **Instruction Tests - ENHANCED**
-**Problem:** Only 6 tests, limited coverage
-**Solution:**
-- 14 tests covering: JSON, tool calling, format constraints, calculations, booleans
-- More comprehensive coverage of instruction-following ability
-- Added pass count to results display
-
----
-
-## 📊 Output Files
-
-The pipeline will now generate:
-- `context_window_results.json` - Context window stress test results with degradation tracking
-- `conversation_results.json` - Full conversation exchanges with ratings
-- `reasoning_results.json` - Reasoning responses with judge scores
-- Enhanced instruction test results
-
----
-
-## 🚀 Key Benefits
-
-1. **Context Window Tests:**
-   - **Calls out bullshit marketing claims** 📢
-   - Shows where models actually fail vs claimed limits
-   - Identifies hallucination vs honest confusion
-   - Maps degradation curves (graceful vs catastrophic)
+3. **Context Window Stress Tests** (4 patterns)
+   - Needle in Haystack (8k tokens)
+   - Instruction Retention (6k tokens)
+   - Code Context Stress (10k tokens)
+   - Degradation Mapping (12k tokens)
+   - Tracks hallucination vs. honest confusion
    - Exposes recency bias
 
-2. **Conversation Tests:**
-   - Measures real conversational ability over multiple turns
-   - Identifies models that maintain context
-   - Separate scores per category (see who excels where)
+4. **Conversation Tests** (8 scenarios across 4 domains)
+   - Code assistance (debugging, refactoring)
+   - Customer support (password reset, feature explanation)
+   - Casual chat (hobbies, weekend plans)
+   - Instruction following (todo lists, email refinement)
+   - 3-4 turn exchanges per scenario
 
-3. **Reasoning Tests (Refactored):**
-   - No more false negatives from formatting
-   - Actual reasoning quality measured
-   - Judge explains WHY scores were given
+### 📊 Intelligent Judging System
 
-4. **Instruction Tests (Enhanced):**
-   - Better coverage of instruction-following
-   - More tool-calling scenarios
-   - Clearer pass/fail feedback
+- **Base Judge Selection**: Automatically selects the most capable model based on instruction and reasoning performance
+- **Auto-Judges**: Top 2-3 models provide independent scoring
+- **Multi-dimensional Scoring**: Accuracy, code quality, reasoning, coherence, helpfulness
+- **High-Quality Dataset Extraction**: Automatically saves responses scoring above 7.5/10
 
----
+### 🥝 Synthetic Data Generation
 
-## 🔧 Technical Notes
-
-### Context Management in Conversations
-Since `ModelService.CompletionAsync` doesn't support passing message history:
-- Built `BuildContextPrompt()` helper
-- Injects conversation history into prompt
-- Format: "Previous conversation:\nUser: ...\nAssistant: ...\n\nUser: [current]\n"
-
-### Judge-Based Scoring
-All three test types now use judge models for evaluation:
-- **Instruction**: Still uses exact/JSON validation (appropriate for rigid requirements)
-- **Conversation**: Judge evaluates holistic conversation quality
-- **Reasoning**: Judge evaluates correctness, logic, clarity
+- Loads base seed prompts
+- Generates augmented variations with:
+  - Paraphrasing
+  - Context suffixes
+  - Complexity modifiers
+  - Optional "Kiwi" casual language flavor (e.g., "sweet as", "choice", "she'll be right")
+- Category-specific system prompts (code, instruction, chat, support)
+- Performance tracking (tokens/sec, latency)
 
 ---
 
-## 🎨 Usage Example
+## Installation
 
+### Prerequisites
+
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download)
+- [LM Studio](https://lmstudio.ai/) or any OpenAI-compatible API server
+- One or more LLM models loaded in your model server
+
+### Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ChoonForge/Squirmify.git
+cd Squirmify
+```
+
+2. Build the project:
+```bash
+cd src
+dotnet build
+```
+
+3. Configure your model server in `src/Config.cs`:
 ```csharp
-// In your evaluator pipeline:
-var conversationService = new ConversationTestService(modelService);
-var results = await conversationService.RunConversationTestsAsync(models);
-await conversationService.ScoreConversationsAsync(judgeModel, results);
+public const string BaseUrl = "http://localhost:1234/v1"; // LM Studio default
+```
 
-var summaries = conversationService.GenerateConversationSummaries(results);
-conversationService.DisplayConversationResults(summaries);
+4. (Optional) Add base seed prompts to `src/base_seeds.jsonl`:
+```jsonl
+{"instruction":"Create a C# extension method to convert a string to title case.","tags":["code"]}
+{"instruction":"Explain how dependency injection works in ASP.NET Core.","tags":["instruction"]}
 ```
 
 ---
 
-**All files ready in `/mnt/user-data/outputs/`** 🎉
+## Usage
+
+### Quick Start
+
+```bash
+cd src
+dotnet run
+```
+
+Squirmify will automatically:
+1. Load all available models from your server
+2. Run instruction following tests
+3. Run reasoning tests on qualified models
+4. Select a base judge
+5. Run context window stress tests (if enabled)
+6. Run conversation tests (if enabled)
+7. Generate/load seed prompts
+8. Run all qualified models through prompts
+9. Score responses with base judge
+10. Select auto-judges and re-score
+11. Generate comprehensive reports
+12. Extract high-quality dataset
+
+### Configuration
+
+Edit `src/Config.cs` to customize behavior:
+
+```csharp
+// Toggle test suites
+public const bool RunPromptTests = true;
+public const bool RunContextWindowTests = true;
+public const bool RunConversationTests = true;
+
+// Seed generation
+public const int TargetSeedCount = 10;
+
+// High-quality threshold
+public const double HighQualityThreshold = 7.5;
+
+// Performance
+public const int MaxParallelRequests = 1;
+```
+
+### Output Files
+
+All results are saved to `output/`:
+
+- `all_results.json` - All model responses with base judge scores
+- `final_results.json` - Results with auto-judge scores
+- `reasoning_results.json` - Reasoning test responses and scores
+- `conversation_results.json` - Multi-turn conversation exchanges
+- `context_window_results.json` - Context window stress test results
+- `high_quality_dataset.jsonl` - High-scoring responses for training
+- `seeds.json` - Generated augmented seed prompts
+
+---
+
+## Example Output
+
+### Model Performance Summary
+```
+┌──────────────────────────┬───────────┬─────────┬────┬──────────┐
+│ Model                    │ Avg Score │ Avg t/s │ HQ │ Best Cat │
+├──────────────────────────┼───────────┼─────────┼────┼──────────┤
+│ qwen2.5-14b-instruct     │ 8.2       │ 41.1    │ 67 │ Code     │
+│ hermes-2-pro-llama-3-8b  │ 8.0       │ 78.6    │ 50 │ Code     │
+│ llama-3-groq-8b-tool-use │ 8.0       │ 73.3    │ 50 │ Code     │
+└──────────────────────────┴───────────┴─────────┴────┴──────────┘
+```
+
+### Context Window Reality Check
+```
+┌─────────────────────────┬──────────────┬─────────────────────┬──────────────┐
+│ Model                   │ Max Reliable │ First Hallucination │ Degradation  │
+├─────────────────────────┼──────────────┼─────────────────────┼──────────────┤
+│ qwen2.5-7b-instruct     │ 8,000        │ 10,000              │ graceful     │
+│ llama-3.2-3b-instruct   │ 6,000        │ 7,500               │ moderate     │
+│ phi-3.5-mini-instruct   │ 4,000        │ 5,000               │ sudden       │
+│ gemma-2-2b-instruct     │ 3,000        │ 3,500               │ catastrophic │
+└─────────────────────────┴──────────────┴─────────────────────┴──────────────┘
+```
+
+See [`docs/CONTEXT_WINDOW_EXPLAINED.md`](docs/CONTEXT_WINDOW_EXPLAINED.md) for detailed explanations of context window metrics.
+
+---
+
+## Project Structure
+
+```
+Squirmify/
+├── src/
+│   ├── Program.cs              # Main evaluation pipeline
+│   ├── Config.cs               # Configuration settings
+│   ├── Extensions.cs           # Utility extensions
+│   ├── Models/
+│   │   ├── DTOs.cs            # Data transfer objects
+│   │   └── ConversationTest.cs # Conversation test models
+│   ├── Services/
+│   │   ├── ModelService.cs              # LLM API client
+│   │   ├── TestService.cs               # Instruction tests
+│   │   ├── ReasoningTestService.cs      # Reasoning tests
+│   │   ├── ContextWindowTestService.cs  # Context stress tests
+│   │   ├── ConversationTestService.cs   # Multi-turn conversation tests
+│   │   ├── SeedService.cs               # Seed generation & augmentation
+│   │   └── JudgingService.cs            # Scoring & judging logic
+│   ├── base_seeds.jsonl        # Base prompts for augmentation
+│   └── Squirmify.csproj        # .NET project file
+├── docs/
+│   ├── CONTEXT_WINDOW_EXPLAINED.md      # Context window test details
+│   ├── context-window-stress-test-summary.md
+│   └── v2 Evaluator.md                  # Design notes
+├── output/                     # Generated results (created at runtime)
+├── LICENSE
+└── README.md
+```
+
+---
+
+## How It Works
+
+### 1. Instruction Tests (Quality Gate)
+Models must pass basic instruction following tests (80%+ pass rate) to proceed. This filters out models that can't handle simple tasks.
+
+### 2. Reasoning Tests (Judge-Based)
+Remaining models face 11 reasoning challenges. A judge model scores each response on correctness, logic, and clarity.
+
+### 3. Base Judge Selection
+The system intelligently selects the best-performing model as the primary judge, considering both instruction following and reasoning scores.
+
+### 4. Context Window Stress Tests
+Tests inject anchor words and checkpoints throughout long contexts, then probe at 25%, 50%, 75%, and 100% of target lengths. Tracks:
+- Max reliable context length
+- When hallucination starts
+- Checkpoint recall accuracy
+- Degradation pattern (graceful, moderate, sudden, catastrophic)
+
+### 5. Conversation Tests
+8 multi-turn scenarios (3-4 exchanges each) across code, support, chat, and instruction domains. Judge evaluates coherence, tone, context retention, and helpfulness.
+
+### 6. Seed Generation & Prompt Pipeline
+- Loads base seeds
+- Generates augmented variations (paraphrasing, complexity, Kiwi flavor)
+- Runs all qualified models through prompts
+- Records responses with performance metrics
+
+### 7. Auto-Judging
+Top 2-3 models (based on instruction + reasoning performance) independently score all responses. This provides multiple perspectives and reduces bias.
+
+### 8. Report Generation
+Final summaries show:
+- Model rankings by average score
+- Performance metrics (tokens/sec, latency)
+- High-quality response counts
+- Best category for each model
+- Category-level performance
+
+---
+
+## Advanced Usage
+
+### Custom System Prompts
+
+Edit category-specific system prompts in `Config.cs`:
+
+```csharp
+public static readonly Dictionary<string, CategoryDefaults> CategorySettings = new()
+{
+    ["code"] = new(0.3, 2500, "You are a senior .NET engineer..."),
+    ["instruction"] = new(0.6, 800, "You are a patient teacher..."),
+    ["chat"] = new(0.95, 800, "You are a friendly conversational partner..."),
+    ["support"] = new(0.95, 1200, "You are a compassionate support specialist...")
+};
+```
+
+### Adding Custom Instruction Tests
+
+Extend `TestService.cs` with new test cases:
+
+```csharp
+new InstructionTest
+{
+    Prompt = "Your test prompt here",
+    ExpectedResult = "Expected output",
+    ValidationType = ValidationType.Exact
+}
+```
+
+### Excluding Models
+
+Add models to the exclude list in `Program.cs`:
+
+```csharp
+var exclude = new[] { "qwen2.5-0.5b-instruct", "lfm2-1.2b", "zephyr-7b-beta" };
+```
+
+---
+
+## Dependencies
+
+- [Spectre.Console](https://spectreconsole.net/) - Beautiful CLI rendering
+- [SharpToken](https://github.com/dmitry-brazhenko/SharpToken) - Token counting
+- .NET 9.0
+
+---
+
+## Documentation
+
+- [Context Window Test Explained](docs/CONTEXT_WINDOW_EXPLAINED.md) - Deep dive into context window stress testing
+- [Context Window Stress Test Summary](docs/context-window-stress-test-summary.md) - Summary and analysis
+- [V2 Evaluator Design](docs/v2%20Evaluator.md) - Design notes and implementation details
+
+---
+
+## Contributing
+
+Contributions welcome! Areas of interest:
+
+- Additional test scenarios (reasoning, instruction, conversation)
+- Support for other model APIs (OpenRouter, Anthropic, etc.)
+- Performance optimizations
+- New evaluation metrics
+- Documentation improvements
+
+Please open an issue or submit a pull request.
+
+---
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details
+
+---
+
+## Acknowledgments
+
+- Built with [LM Studio](https://lmstudio.ai/) for local model testing
+- Inspired by the need for honest, reproducible LLM benchmarks
+- Kiwi flavor inspired by New Zealand English 🥝
+
+---
+
+## FAQ
+
+**Q: Why "Squirmify"?**
+A: Because models should squirm when their marketing claims are put to the test. Also, it makes them work hard enough to squirm.
+
+**Q: Do I need a powerful GPU?**
+A: Squirmify is just the test harness. Your model server (LM Studio, etc.) needs the GPU. Squirmify itself is lightweight.
+
+**Q: Can I use this with OpenAI/Anthropic/etc.?**
+A: Currently optimized for LM Studio's OpenAI-compatible API. Support for other providers can be added by extending `ModelService.cs`.
+
+**Q: How long does a full evaluation take?**
+A: Depends on model count, seed count, and model speed. Typical run: 10 models × 50 seeds × 4 test suites = ~30-60 minutes.
+
+**Q: What's with the Kiwi language?**
+A: Optional New Zealand English flavor for synthetic data generation. Toggle with the `kiwi` parameter in seed generation. Sweet as!
+
+**Q: Can I disable certain test suites?**
+A: Yes! Set flags in `Config.cs`: `RunPromptTests`, `RunContextWindowTests`, `RunConversationTests`.
+
+---
+
+**Made with ☕ by [ChoonForge](https://github.com/ChoonForge)**
