@@ -143,8 +143,6 @@ public class SeedService
                 ("complexity", null)
                 };
 
-                if (Config.EnableKiwiAugmentation)
-                    configs.Add(("kiwi_casual", null));
 
                 foreach (var suffix in ContextSuffixes.Where(s => !string.IsNullOrEmpty(s)))
                     configs.Add(("context_suffix", suffix));
@@ -371,9 +369,6 @@ public class SeedService
                     ("paraphrase", null),
                     ("complexity", null)
                 };
-
-                if (Config.EnableKiwiAugmentation)
-                    configs.Add(("kiwi_casual", null));
 
                 foreach (var suffix in ContextSuffixes.Where(s => !string.IsNullOrEmpty(s)))
                     configs.Add(("context_suffix", suffix));
