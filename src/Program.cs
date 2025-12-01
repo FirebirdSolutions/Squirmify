@@ -52,8 +52,8 @@ class Program
                 return;
             }
 
-                // ═══ Step 2.5: Run Reasoning Tests ═══
-                AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.5: Reasoning Tests ═══[/]\n");
+            // ═══ Step 2.5: Run Reasoning Tests ═══
+            AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.5: Reasoning Tests ═══[/]\n");
 
             var reasoningService = new ReasoningTestService(modelService);
 
@@ -106,26 +106,27 @@ class Program
                 await contextWindowService.SaveContextWindowResultsAsync(contextResults, contextFile);
             }
 
-            if (Config.RunConversationTests) { 
+            if (Config.RunConversationTests)
+            {
 
-            // ═══ Step 2.7: Conversation Tests ═══
-            AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.7: Conversation Tests ═══[/]\n");
+                // ═══ Step 2.7: Conversation Tests ═══
+                AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.7: Conversation Tests ═══[/]\n");
 
-            var conversationService = new ConversationTestService(modelService);
-            var conversationResults = await conversationService.RunConversationTestsAsync(
-                models.Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8)).ToList()
-            );
+                var conversationService = new ConversationTestService(modelService);
+                var conversationResults = await conversationService.RunConversationTestsAsync(
+                    models.Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8)).ToList()
+                );
 
-            // Score conversations with base judge
-            await conversationService.ScoreConversationsAsync(baseJudge, conversationResults);
+                // Score conversations with base judge
+                await conversationService.ScoreConversationsAsync(baseJudge, conversationResults);
 
-            // Generate and display summaries
-            var conversationSummaries = conversationService.GenerateConversationSummaries(conversationResults);
-            conversationService.DisplayConversationResults(conversationSummaries);
+                // Generate and display summaries
+                var conversationSummaries = conversationService.GenerateConversationSummaries(conversationResults);
+                conversationService.DisplayConversationResults(conversationSummaries);
 
-            // Save results
-            var conversationFile = Path.Combine(Config.OutputDir, "conversation_results.json");
-            await conversationService.SaveConversationResultsAsync(conversationResults, conversationFile);
+                // Save results
+                var conversationFile = Path.Combine(Config.OutputDir, "conversation_results.json");
+                await conversationService.SaveConversationResultsAsync(conversationResults, conversationFile);
 
             }
 
@@ -152,8 +153,8 @@ class Program
 
                     var weights = new Dictionary<string, double>
                     {
-                        ["code"] = 0.30,
-                        ["instruction"] = 0.20,
+                        ["code"] = 0.25,
+                        ["instruction"] = 0.25,
                         ["chat"] = 0.25,
                         ["support"] = 0.25
                     };
@@ -181,30 +182,34 @@ class Program
 
                 var allResults = await RunGenerationPipelineAsync(modelService, seedsConfig, activeModels);
 
-            // ═══ Step 6: Score with Base Judge ═══
-            var resultsFile = Path.Combine(Config.OutputDir, "all_results.json");
-            await judgingService.ScoreResultsAsync(baseJudge, allResults, resultsFile);
+                // ═══ Step 6: Score with Base Judge ═══
+                var resultsFile = Path.Combine(Config.OutputDir, "all_results.json");
+                await judgingService.ScoreResultsAsync(baseJudge, allResults, resultsFile);
 
-            // ═══ Step 7: Select AutoJudges ═══
-            var autoJudges = judgingService.SelectAutoJudges(allResults, activeModels);
+                // ═══ Step 7: Select AutoJudges ═══
+                var autoJudges = judgingService.SelectAutoJudges(allResults, activeModels);
 
-            // ═══ Step 8: Re-score with AutoJudges ═══
-            if (autoJudges.Any())
-            {
-                var finalResultsFile = Path.Combine(Config.OutputDir, "final_results.json");
-                await judgingService.AutoJudgeResultsAsync(autoJudges, allResults, finalResultsFile);
-            }
+                // ═══ Step 8: Re-score with AutoJudges ═══
+                if (autoJudges.Any())
+                {
+                    var finalResultsFile = Path.Combine(Config.OutputDir, "final_results.json");
+                    await judgingService.AutoJudgeResultsAsync(autoJudges, allResults, finalResultsFile);
 
-            // ═══ Step 9: Generate Reports ═══
-            AnsiConsole.MarkupLine("\n[bold cyan]═══ Step 5: Generating Reports ═══[/]\n");
+                    // Validate judge selection with peer scores
+                    judgingService.ValidateJudgeSelection(autoJudges, allResults);
 
-            GenerateFinalReport(allResults, activeModels);
+                }
 
-            var highQualityFile = Path.Combine(Config.OutputDir, "high_quality_dataset.jsonl");
-            await judgingService.ExtractHighQualityDatasetAsync(allResults, highQualityFile);
+                // ═══ Step 9: Generate Reports ═══
+                AnsiConsole.MarkupLine("\n[bold cyan]═══ Step 5: Generating Reports ═══[/]\n");
 
-            sw.Stop();
-            AnsiConsole.MarkupLine($"\n[bold green]✓ Pipeline finished in {sw.Elapsed.TotalSeconds:F1}s[/]");
+                GenerateFinalReport(allResults, activeModels);
+
+                var highQualityFile = Path.Combine(Config.OutputDir, "high_quality_dataset.jsonl");
+                await judgingService.ExtractHighQualityDatasetAsync(allResults, highQualityFile);
+
+                sw.Stop();
+                AnsiConsole.MarkupLine($"\n[bold green]✓ Pipeline finished in {sw.Elapsed.TotalSeconds:F1}s[/]");
             }
         }
         catch (Exception ex)

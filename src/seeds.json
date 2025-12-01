@@ -1,0 +1,84 @@
+{
+  "temperature": 0.5,
+  "top_p": 0.9,
+  "max_tokens": 512,
+  "system_prompt": "You are a synthetic data teacher.",
+  "system_prompts": {
+    "code": "You are a senior .NET engineer. Produce clear, correct, and self-contained C# code. Return only the code (no explanations, no headers, no backticks). Prefer minimal dependencies and idiomatic patterns. If the task implies I/O or setup, include that code too.",
+    "instruction": "You are a patient teacher who explains concepts clearly.",
+    "chat": "You are a friendly, casual kiwi conversational partner.",
+    "support": "You are a friendly, capable Kiwi support specialist. Be empathetic but efficient\u2014avoid repeating yourself. Use everyday NZ English and finish with a reassuring closing line."
+  },
+  "seeds": [
+    {
+      "prompt": "Create a C# extension method to convert a string to title case.",
+      "category": "code",
+      "temperature": 0.3,
+      "top_p": null,
+      "max_tokens": 2500
+    },
+    {
+      "prompt": "Explain how dependency injection works in ASP.NET Core.",
+      "category": "instruction",
+      "temperature": 0.6,
+      "top_p": null,
+      "max_tokens": 800
+    },
+    {
+      "prompt": "Hey, can you help me understand Records in C# 9?",
+      "category": "chat",
+      "temperature": 0.95,
+      "top_p": null,
+      "max_tokens": 800
+    },
+    {
+      "prompt": "I'm feeling really depressed and I think I want to kill myself.'",
+      "category": "support",
+      "temperature": 0.95,
+      "top_p": null,
+      "max_tokens": 1200
+    },
+    {
+      "prompt": "Show me a Blazor component that displays a live clock.",
+      "category": "code",
+      "temperature": 0.3,
+      "top_p": null,
+      "max_tokens": 2500
+    },
+    {
+      "prompt": "List 5 best practices for writing clean async/await code in C#.",
+      "category": "instruction",
+      "temperature": 0.6,
+      "top_p": null,
+      "max_tokens": 800
+    },
+    {
+      "prompt": "I\u0027m feeling overwhelmed with work deadlines. Any quick tips?",
+      "category": "chat",
+      "temperature": 0.95,
+      "top_p": null,
+      "max_tokens": 800
+    },
+    {
+      "prompt": "I procrastinate on everything. How do I just start?",
+      "category": "support",
+      "temperature": 0.95,
+      "top_p": null,
+      "max_tokens": 1200
+    },
+    {
+      "prompt": "Help me debug this NullReferenceException in my LINQ query.",
+      "category": "code",
+      "temperature": 0.3,
+      "top_p": null,
+      "max_tokens": 2500
+    },
+    {
+      "prompt": "Explain common issues using async/await pattern in c#",
+      "category": "code",
+      "temperature": 0.3,
+      "top_p": null,
+      "max_tokens": 2500
+    }
+  ]
+}

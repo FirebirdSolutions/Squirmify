@@ -273,4 +273,75 @@ Respond in this exact JSON format:
         
         AnsiConsole.MarkupLine($"[green]✓ Saved {highQuality.Count} high-quality entries → {outputFile}[/]");
     }
+
+
+    /// <summary>
+    /// Validate judge selection by showing how judges performed when scored by peers
+    /// </summary>
+    public void ValidateJudgeSelection(List<string> selectedJudges, List<GenerationResult> results)
+    {
+        AnsiConsole.MarkupLine("\n[bold cyan]╔══ Validating Judge Selection (Peer Review) ══╗[/]\n");
+
+        var judgeValidation = selectedJudges.Select(judge =>
+        {
+            var judgeResults = results.Where(r => r.generator == judge).ToList();
+            if (!judgeResults.Any()) return null;
+
+            // Recalculate avg_score using ALL ratings (base + peer judges)
+            var peerAvgScore = judgeResults.Average(r =>
+                r.ratings.Any() ? r.ratings.Average(rating => rating.score) : 0);
+
+            // Get base judge score for comparison
+            var baseScore = judgeResults.Average(r =>
+            {
+                var baseRating = r.ratings.FirstOrDefault(rating =>
+                    rating.rater != judge && r.ratings.Count == 1);
+                return baseRating?.score ?? 0;
+            });
+
+            return new
+            {
+                Judge = judge,
+                BaseScore = baseScore,
+                PeerScore = peerAvgScore,
+                Delta = peerAvgScore - baseScore,
+                TotalRatings = judgeResults.Sum(r => r.ratings.Count),
+                ResponseCount = judgeResults.Count
+            };
+        })
+        .Where(v => v != null)
+        .OrderByDescending(v => v.PeerScore)
+        .ToList();
+
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn(new TableColumn("[bold]Judge[/]").LeftAligned())
+            .AddColumn(new TableColumn("[bold]Base Score[/]").RightAligned())
+            .AddColumn(new TableColumn("[bold]Peer Score[/]").RightAligned())
+            .AddColumn(new TableColumn("[bold]Δ[/]").RightAligned())
+            .AddColumn(new TableColumn("[bold]Ratings[/]").RightAligned())
+            .AddColumn(new TableColumn("[bold]Verdict[/]").Centered());
+
+        foreach (var judge in judgeValidation)
+        {
+            var verdict = judge.Delta >= 0
+                ? "[green]✓ Validated[/]"
+                : "[yellow]⚠ Overrated[/]";
+
+            var deltaColor = judge.Delta >= 0 ? "green" : "yellow";
+
+            table.AddRow(
+                judge.Judge,
+                judge.BaseScore.ToString("F2"),
+                judge.PeerScore.ToString("F2"),
+                $"[{deltaColor}]{judge.Delta:+0.00;-0.00}[/]",
+                judge.TotalRatings.ToString(),
+                verdict
+            );
+        }
+
+        AnsiConsole.Write(table);
+        AnsiConsole.WriteLine();
+    }
+
 }

@@ -6,16 +6,16 @@ namespace ModelEvaluator;
 public static class Config
 {
     // Server Settings
-    public const string BaseUrl = "http://localhost:1234/v1";
-    public const string BaseAuthToken = "";
+    public const string BaseUrl = "http://10.0.0.50:1234/v1";
+    public const string BaseAuthToken = "sk-aimate-T0byGrace!";
     public const bool UseAuth = false;
     public static readonly TimeSpan RequestTimeout = TimeSpan.FromMinutes(10);
 
     // Seed Generation
-    public const int TargetSeedCount = 10;
+    public const int TargetSeedCount = 5;
     
     public const bool RunPromptTests = true;
-    public const bool RunContextWindowTests = true;
+    public const bool RunContextWindowTests = false;
     public const bool RunConversationTests = true;
 
     // File Paths
@@ -26,8 +26,8 @@ public static class Config
     
     // Instruction Test Settings
     public const int MaxModelErrors = 3;
-    public const double InstructionTestTemperature = 0.2;
-    public const double InstructionTestTopP = 0.85;
+    public const double InstructionTestTemperature = 0.0;
+    public const double InstructionTestTopP = 0.8;
     public const double InstructionTestPassThreshold = 0.8; // 80% pass rate required
 
     // Reasoning Test Settings

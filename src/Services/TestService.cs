@@ -8,21 +8,22 @@ namespace ModelEvaluator.Services;
 public class TestService
 {
     private readonly ModelService _modelService;
-    
+
     private static readonly List<InstructionTest> InstructionTests = new()
     {
         // === BASIC COMPLIANCE ===
         new()
         {
-            Prompt = "Output exactly these three words separated by single spaces: Red Blue Green. Do not add punctuation, quotes, or anything else.",
+            Prompt = "Output exactly these three words in this order, separated by single spaces: Red Blue Green. Do not add punctuation, quotes, or anything else.",
             ExpectedResult = "Red Blue Green",
-            ValidationType = "exact"
+            ValidationType = "words",  // Changed: allows case/order flexibility
+            StrictOrder = true
         },
         new()
         {
             Prompt = "Calculate: 7 + 8. Respond with the single integer result ONLY. No text, no symbols, no explanation.",
             ExpectedResult = "15",
-            ValidationType = "exact"
+            ValidationType = "numeric"
         },
         
         // === JSON OUTPUT ===
@@ -70,7 +71,8 @@ public class TestService
         {
             Prompt = "List three colors, one per line, no numbers, no bullets, no punctuation. Just the color names.",
             ExpectedResult = "Red\nBlue\nGreen",
-            ValidationType = "exact"
+            ValidationType = "lines",  // Changed: validates line-by-line content
+            StrictOrder = false
         },
         new()
         {
@@ -84,13 +86,13 @@ public class TestService
         {
             Prompt = "What is 12 * 3? Respond with only the number.",
             ExpectedResult = "36",
-            ValidationType = "exact"
+            ValidationType = "numeric"
         },
         new()
         {
             Prompt = "Calculate 100 - 37. Output only the integer result.",
             ExpectedResult = "63",
-            ValidationType = "exact"
+            ValidationType = "numeric"
         },
         
         // === BOOLEAN OUTPUT ===
@@ -98,13 +100,13 @@ public class TestService
         {
             Prompt = "Is 10 greater than 5? Respond with ONLY 'true' or 'false' in lowercase.",
             ExpectedResult = "true",
-            ValidationType = "exact"
+            ValidationType = "boolean"
         },
         new()
         {
             Prompt = "Is 'cat' the same as 'dog'? Respond with ONLY 'true' or 'false' in lowercase.",
             ExpectedResult = "false",
-            ValidationType = "exact"
+            ValidationType = "boolean"
         }
     };
 
@@ -113,13 +115,10 @@ public class TestService
         _modelService = modelService;
     }
 
-    /// <summary>
-    /// Run instruction following tests on all models and return results
-    /// </summary>
     public async Task<List<InstructionTestResult>> RunInstructionTestsAsync(List<string> models)
     {
         AnsiConsole.MarkupLine("\n[bold cyan]═══ Running Instruction Following Tests ═══[/]\n");
-        
+
         var results = new List<InstructionTestResult>();
 
         await AnsiConsole.Progress()
@@ -135,24 +134,26 @@ public class TestService
                 foreach (var model in models)
                 {
                     task.Description = $"[yellow]Testing {model}[/]";
-                    
+
                     var result = await RunTestsForModelAsync(model);
                     if (result != null)
                         results.Add(result);
-                    
+
+                    var instructionFile = Path.Combine(Config.OutputDir, "instruction_results.json");
+                    var json = JsonSerializer.Serialize(results, new JsonSerializerOptions { WriteIndented = true });
+                    await File.WriteAllTextAsync(instructionFile, json);
+
                     task.Increment(1);
                 }
             });
 
-        // Display results table
         DisplayTestResults(results);
-        
+
         return results;
     }
 
     private async Task<InstructionTestResult?> RunTestsForModelAsync(string modelName)
     {
-        // Warm up
         var warmupOk = await _modelService.WarmUpModelAsync(modelName);
         if (!warmupOk)
         {
@@ -172,7 +173,7 @@ public class TestService
         {
             var response = await _modelService.CompletionAsync(
                 modelName,
-                "You are a precise instruction-following assistant.",
+                "You are an instruction-following test system. Output ONLY the exact requested content. Any deviation = failure. No preamble. No explanation. Raw output only.",
                 test.Prompt,
                 Config.InstructionTestTemperature,
                 Config.InstructionTestTopP,
@@ -181,107 +182,325 @@ public class TestService
 
             if (response == null)
             {
-                result.FailureDetails.Add($"API error on test: {test.Prompt[..50]}...");
+                result.FailureDetails.Add($"API error on test: {Truncate(test.Prompt, 50)}...");
                 continue;
             }
 
             var (responseText, perf) = response.Value;
             perfMetrics.Add(perf);
 
-            bool passed = ValidateResponse(responseText, test.ExpectedResult, test.ValidationType);
-            
-            if (passed)
+            var validation = ValidateResponse(responseText, test);
+
+            if (validation.StrictPass)
             {
                 result.PassedTests++;
+                //AnsiConsole.MarkupLine($"[green]✓ PASS[/]: {Truncate(responseText, 60)}");
+            }
+            else if (validation.LenientPass)
+            {
+                result.PassedTests++; // Count lenient as pass
+                result.LenientPasses++;
+                //AnsiConsole.MarkupLine($"[yellow]~ LENIENT[/]: Expected '{Truncate(test.ExpectedResult, 40)}', Got '{Truncate(responseText, 40)}' ({validation.Reason})");
             }
             else
             {
-                result.FailureDetails.Add($"Expected: {test.ExpectedResult}, Got: {responseText[..Math.Min(100, responseText.Length)]}");
+                //AnsiConsole.MarkupLine($"[red]✗ FAIL[/]: Expected '{Truncate(test.ExpectedResult, 40)}', Got '{Truncate(responseText, 40)}'");
+                result.FailureDetails.Add($"Expected: {test.ExpectedResult}, Got: {Truncate(responseText, 100)} - {validation.Reason}");
             }
         }
 
-        // Calculate average performance
         if (perfMetrics.Any())
         {
             result.AvgTokensPerSec = perfMetrics
                 .Where(p => p.tokens_per_sec.HasValue)
-                .Average(p => p.tokens_per_sec!.Value);
-                
+                .DefaultIfEmpty()
+                .Average(p => p?.tokens_per_sec ?? 0);
+
             result.AvgLatencyMs = perfMetrics.Average(p => p.total_ms);
         }
 
         return result;
     }
 
-    private bool ValidateResponse(string response, string expected, string validationType)
+    private ValidationResult ValidateResponse(string response, InstructionTest test)
     {
-        // Clean up response
-        response = response.Trim();
-        
-        // Remove markdown code blocks if present
-        response = Regex.Replace(response, @"```json\s*", "", RegexOptions.IgnoreCase);
-        response = Regex.Replace(response, @"```\s*", "", RegexOptions.IgnoreCase);
-        response = response.Trim();
+        // Clean up response - strip common model quirks
+        response = CleanResponse(response);
 
-        return validationType switch
+        return test.ValidationType switch
         {
-            "exact" => IsExact(response, expected),
-            "json" => ValidateJson(response, expected),
-            "numeric" => ValidateNumeric(response, expected),
-            _ => false
+            "exact" => ValidateExact(response, test.ExpectedResult),
+            "words" => ValidateWords(response, test.ExpectedResult, test.StrictOrder),
+            "lines" => ValidateLines(response, test.ExpectedResult, test.StrictOrder),
+            "json" => ValidateJson(response, test.ExpectedResult),
+            "numeric" => ValidateNumeric(response, test.ExpectedResult),
+            "boolean" => ValidateBoolean(response, test.ExpectedResult),
+            _ => new ValidationResult { StrictPass = false, Reason = "Unknown validation type" }
         };
     }
 
-    bool IsExact(string response, string expected)
+    private string CleanResponse(string response)
     {
-        // normalise both sides
-        string norm(string s) => s?
-            .Trim()
-            .TrimEnd('\r', '\n', ' ', '\u00A0', '\uFEFF')
-            .Replace('\u00A0', ' ')
-            .Replace('\uFEFF', ' ')
-            ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(response))
+            return string.Empty;
 
-        var lhs = norm(response);
-        var rhs = norm(expected);
+        response = response.Trim();
 
-        if (double.TryParse(lhs, out var leftNum) &&
-            double.TryParse(rhs, out var rightNum))
+        // Remove markdown code blocks
+        response = Regex.Replace(response, @"^```(?:json)?\s*", "", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        response = Regex.Replace(response, @"\s*```$", "", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+        // Remove surrounding quotes (single or double)
+        if ((response.StartsWith('"') && response.EndsWith('"')) ||
+            (response.StartsWith('\'') && response.EndsWith('\'')))
         {
-            // numeric compare allows models that drop/add insignificant zeros
-            return Math.Abs(leftNum - rightNum) < 1e-9;
+            response = response[1..^1];
         }
 
-        return string.Equals(lhs, rhs, StringComparison.OrdinalIgnoreCase);
+        // Remove trailing punctuation that wasn't requested
+        response = response.TrimEnd('.', '!', ';');
+
+        // Normalize whitespace
+        response = Regex.Replace(response, @"[\u00A0\uFEFF]", " ");
+        response = Regex.Replace(response, @"[ \t]+", " ");
+        response = Regex.Replace(response, @"\r\n|\r", "\n");
+        response = Regex.Replace(response, @"\n{2,}", "\n");
+
+        return response.Trim();
     }
 
-    private bool ValidateJson(string response, string expected)
+    private ValidationResult ValidateExact(string response, string expected)
+    {
+        var normResponse = Normalize(response);
+        var normExpected = Normalize(expected);
+
+        if (string.Equals(normResponse, normExpected, StringComparison.Ordinal))
+            return new ValidationResult { StrictPass = true };
+
+        if (string.Equals(normResponse, normExpected, StringComparison.OrdinalIgnoreCase))
+            return new ValidationResult { LenientPass = true, Reason = "case difference" };
+
+        return new ValidationResult { Reason = "content mismatch" };
+    }
+
+    private ValidationResult ValidateWords(string response, string expected, bool strictOrder)
+    {
+        var responseWords = ExtractWords(response);
+        var expectedWords = ExtractWords(expected);
+
+        // Check exact match first
+        if (responseWords.SequenceEqual(expectedWords, StringComparer.OrdinalIgnoreCase))
+            return new ValidationResult { StrictPass = true };
+
+        // Check same words, case-insensitive
+        if (responseWords.Select(w => w.ToLowerInvariant()).SequenceEqual(
+            expectedWords.Select(w => w.ToLowerInvariant())))
+            return new ValidationResult { StrictPass = true };
+
+        // If order doesn't matter or we're being lenient, check set equality
+        var responseSet = responseWords.Select(w => w.ToLowerInvariant()).ToHashSet();
+        var expectedSet = expectedWords.Select(w => w.ToLowerInvariant()).ToHashSet();
+
+        if (responseSet.SetEquals(expectedSet))
+        {
+            if (strictOrder)
+                return new ValidationResult { LenientPass = true, Reason = "correct words, wrong order" };
+            else
+                return new ValidationResult { StrictPass = true };
+        }
+
+        // Check if all expected words are present (model added extra)
+        if (expectedSet.IsSubsetOf(responseSet))
+            return new ValidationResult { LenientPass = true, Reason = "extra words added" };
+
+        return new ValidationResult { Reason = $"word mismatch: expected {expectedWords.Count}, got {responseWords.Count}" };
+    }
+
+    private ValidationResult ValidateLines(string response, string expected, bool strictOrder)
+    {
+        var responseLines = response.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+            .Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)).ToList();
+        var expectedLines = expected.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+            .Select(l => l.Trim()).Where(l => !string.IsNullOrEmpty(l)).ToList();
+
+        // Exact match
+        if (responseLines.SequenceEqual(expectedLines, StringComparer.OrdinalIgnoreCase))
+            return new ValidationResult { StrictPass = true };
+
+        // Same content, different order
+        var responseSet = responseLines.Select(l => l.ToLowerInvariant()).ToHashSet();
+        var expectedSet = expectedLines.Select(l => l.ToLowerInvariant()).ToHashSet();
+
+        if (responseSet.SetEquals(expectedSet))
+        {
+            if (strictOrder)
+                return new ValidationResult { LenientPass = true, Reason = "correct lines, wrong order" };
+            else
+                return new ValidationResult { StrictPass = true };
+        }
+
+        // Check for common formatting issues (bullets, numbers)
+        var cleanedLines = responseLines
+            .Select(l => Regex.Replace(l, @"^[\d\.\-\*\•\→]+\s*", "").Trim())
+            .Where(l => !string.IsNullOrEmpty(l))
+            .ToList();
+
+        var cleanedSet = cleanedLines.Select(l => l.ToLowerInvariant()).ToHashSet();
+        if (cleanedSet.SetEquals(expectedSet))
+            return new ValidationResult { LenientPass = true, Reason = "correct content with formatting" };
+
+        return new ValidationResult { Reason = $"line mismatch: expected {expectedLines.Count}, got {responseLines.Count}" };
+    }
+
+    private ValidationResult ValidateJson(string response, string expected)
     {
         try
         {
-            // Normalize JSON by deserializing and re-serializing
+            // Try to extract JSON if wrapped in other content
+            var jsonMatch = Regex.Match(response, @"[\{\[].*[\}\]]", RegexOptions.Singleline);
+            if (jsonMatch.Success)
+                response = jsonMatch.Value;
+
             var responseObj = JsonSerializer.Deserialize<JsonElement>(response);
             var expectedObj = JsonSerializer.Deserialize<JsonElement>(expected);
-            
-            var responseJson = JsonSerializer.Serialize(responseObj);
-            var expectedJson = JsonSerializer.Serialize(expectedObj);
-            
-            return responseJson == expectedJson;
+
+            if (JsonElementEquals(responseObj, expectedObj, strict: true))
+                return new ValidationResult { StrictPass = true };
+
+            if (JsonElementEquals(responseObj, expectedObj, strict: false))
+                return new ValidationResult { LenientPass = true, Reason = "JSON structure matches with type coercion" };
+
+            return new ValidationResult { Reason = "JSON content mismatch" };
         }
-        catch
+        catch (JsonException)
         {
-            return false;
+            return new ValidationResult { Reason = "invalid JSON" };
         }
     }
 
-    private bool ValidateNumeric(string response, string expected)
+    private bool JsonElementEquals(JsonElement a, JsonElement b, bool strict)
     {
-        // Extract first number from response
-        var match = Regex.Match(response, @"\d+");
-        if (!match.Success) return false;
-        
-        return match.Value == expected;
+        if (a.ValueKind != b.ValueKind)
+        {
+            if (!strict)
+            {
+                // Allow string "25" to match number 25
+                var aStr = a.ToString();
+                var bStr = b.ToString();
+                return string.Equals(aStr, bStr, StringComparison.OrdinalIgnoreCase);
+            }
+            return false;
+        }
+
+        return a.ValueKind switch
+        {
+            JsonValueKind.Object => JsonObjectEquals(a, b, strict),
+            JsonValueKind.Array => JsonArrayEquals(a, b, strict),
+            JsonValueKind.String => string.Equals(a.GetString(), b.GetString(),
+                strict ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase),
+            JsonValueKind.Number => a.GetDecimal() == b.GetDecimal(),
+            JsonValueKind.True or JsonValueKind.False => a.GetBoolean() == b.GetBoolean(),
+            JsonValueKind.Null => true,
+            _ => a.ToString() == b.ToString()
+        };
     }
+
+    private bool JsonObjectEquals(JsonElement a, JsonElement b, bool strict)
+    {
+        var aProps = a.EnumerateObject().ToDictionary(p => p.Name, p => p.Value);
+        var bProps = b.EnumerateObject().ToDictionary(p => p.Name, p => p.Value);
+
+        if (aProps.Count != bProps.Count) return false;
+
+        foreach (var (key, aVal) in aProps)
+        {
+            if (!bProps.TryGetValue(key, out var bVal)) return false;
+            if (!JsonElementEquals(aVal, bVal, strict)) return false;
+        }
+        return true;
+    }
+
+    private bool JsonArrayEquals(JsonElement a, JsonElement b, bool strict)
+    {
+        var aArr = a.EnumerateArray().ToList();
+        var bArr = b.EnumerateArray().ToList();
+
+        if (aArr.Count != bArr.Count) return false;
+
+        for (int i = 0; i < aArr.Count; i++)
+        {
+            if (!JsonElementEquals(aArr[i], bArr[i], strict)) return false;
+        }
+        return true;
+    }
+
+    private ValidationResult ValidateNumeric(string response, string expected)
+    {
+        // Extract number from response
+        var numMatch = Regex.Match(response, @"-?\d+\.?\d*");
+        if (!numMatch.Success)
+            return new ValidationResult { Reason = "no number found" };
+
+        if (!double.TryParse(numMatch.Value, out var responseNum))
+            return new ValidationResult { Reason = "could not parse number" };
+
+        if (!double.TryParse(expected, out var expectedNum))
+            return new ValidationResult { Reason = "invalid expected value" };
+
+        if (Math.Abs(responseNum - expectedNum) < 1e-9)
+            return new ValidationResult { StrictPass = true };
+
+        // Check if it's a formatting difference (36.0 vs 36)
+        if (Math.Abs(responseNum - expectedNum) < 0.01)
+            return new ValidationResult { LenientPass = true, Reason = "minor numeric difference" };
+
+        return new ValidationResult { Reason = $"expected {expectedNum}, got {responseNum}" };
+    }
+
+    private ValidationResult ValidateBoolean(string response, string expected)
+    {
+        var normalized = response.ToLowerInvariant().Trim();
+        var expectedNorm = expected.ToLowerInvariant().Trim();
+
+        // Direct match
+        if (normalized == expectedNorm)
+            return new ValidationResult { StrictPass = true };
+
+        // Common boolean representations
+        var trueValues = new HashSet<string> { "true", "yes", "1", "correct", "affirmative" };
+        var falseValues = new HashSet<string> { "false", "no", "0", "incorrect", "negative" };
+
+        var responseIsTrue = trueValues.Contains(normalized);
+        var responseIsFalse = falseValues.Contains(normalized);
+        var expectedIsTrue = trueValues.Contains(expectedNorm);
+
+        if ((responseIsTrue && expectedIsTrue) || (responseIsFalse && !expectedIsTrue))
+        {
+            if (normalized == expectedNorm)
+                return new ValidationResult { StrictPass = true };
+            else
+                return new ValidationResult { LenientPass = true, Reason = "boolean equivalent" };
+        }
+
+        return new ValidationResult { Reason = "boolean mismatch" };
+    }
+
+    private static List<string> ExtractWords(string text)
+    {
+        return Regex.Split(text, @"[\s,]+")
+            .Where(w => !string.IsNullOrWhiteSpace(w))
+            .Select(w => w.Trim())
+            .ToList();
+    }
+
+    private static string Normalize(string s) => s?
+        .Trim()
+        .Replace("\r\n", "\n")
+        .Replace("\r", "\n")
+        ?? string.Empty;
+
+    private static string Truncate(string s, int maxLen) =>
+        s.Length <= maxLen ? s : s[..maxLen] + "...";
 
     private void DisplayTestResults(List<InstructionTestResult> results)
     {
@@ -291,36 +510,35 @@ public class TestService
             .Border(TableBorder.Rounded)
             .AddColumn(new TableColumn("[bold]Model[/]").LeftAligned())
             .AddColumn(new TableColumn("[bold]Pass Rate[/]").Centered())
-            .AddColumn(new TableColumn("[bold]Passed[/]").RightAligned())
+            .AddColumn(new TableColumn("[bold]Strict/Lenient[/]").Centered())
             .AddColumn(new TableColumn("[bold]Avg t/s[/]").RightAligned())
-            .AddColumn(new TableColumn("[bold]Avg Latency (ms)[/]").RightAligned())
+            .AddColumn(new TableColumn("[bold]Avg Latency[/]").RightAligned())
             .AddColumn(new TableColumn("[bold]Status[/]").Centered());
 
         foreach (var result in results.OrderByDescending(r => r.PassRate).ThenByDescending(r => r.AvgTokensPerSec))
         {
-            var passRateStr = $"{result.PassRate:P0}";
-            var statusIcon = result.PassRate >= 0.8 ? "[green]✓[/]" : "[red]✗[/]";
-            
+            var strictPasses = result.PassedTests - result.LenientPasses;
+            var statusIcon = result.PassRate >= 0.8 ? "[green]✓[/]" :
+                             result.PassRate >= 0.6 ? "[yellow]~[/]" : "[red]✗[/]";
+
             table.AddRow(
                 result.ModelName,
-                passRateStr,
-                $"{result.PassedTests}/{result.TotalTests}",
+                $"{result.PassRate:P0}",
+                $"{strictPasses}/{result.LenientPasses}/{result.TotalTests}",
                 result.AvgTokensPerSec.ToString("F1"),
-                result.AvgLatencyMs.ToString("F0"),
+                $"{result.AvgLatencyMs:F0}ms",
                 statusIcon
             );
         }
 
         AnsiConsole.Write(table);
+        AnsiConsole.MarkupLine("[dim]Strict/Lenient: strict passes / lenient passes / total tests[/]");
         AnsiConsole.WriteLine();
     }
 
-    /// <summary>
-    /// Select the best model as the base judge based on BOTH instruction-following AND reasoning ability
-    /// </summary>
     public string SelectBaseJudge(
-        List<InstructionTestResult> instructionResults, 
-        List<ReasoningTestSummary>? reasoningResults = null)
+     List<InstructionTestResult> instructionResults,
+     List<ReasoningTestSummary>? reasoningResults = null)
     {
         // If we have reasoning results, use composite scoring (intelligence + formatting)
         if (reasoningResults != null && reasoningResults.Any())
@@ -350,10 +568,10 @@ public class TestService
                 AnsiConsole.MarkupLine($"\n[bold green]✓ Selected Base Judge: {judge.ModelName}[/]");
                 AnsiConsole.MarkupLine($"  Instruction: {judge.InstructionRate:P0}, Reasoning: {judge.ReasoningScore:F1}/10, Composite: {judge.CompositeScore:P0}, Avg t/s: {judge.TokensPerSec:F1}\n");
                 AnsiConsole.MarkupLine($"[dim]  (Selected based on intelligence + formatting ability, not just speed)[/]\n");
-                
+
                 return judge.ModelName;
             }
-            
+
             AnsiConsole.MarkupLine("[yellow]⚠ No models qualified as judges (need 80%+ instruction AND 7.0+ reasoning)[/]");
             AnsiConsole.MarkupLine("[yellow]  Falling back to instruction-only selection...[/]\n");
         }
@@ -375,7 +593,36 @@ public class TestService
         AnsiConsole.MarkupLine($"\n[bold yellow]⚠ Selected Base Judge (instruction-only): {fallbackJudge.ModelName}[/]");
         AnsiConsole.MarkupLine($"  Pass Rate: {fallbackJudge.PassRate:P0}, Avg t/s: {fallbackJudge.AvgTokensPerSec:F1}\n");
         AnsiConsole.MarkupLine($"[dim]  (Warning: Selected without reasoning test validation)[/]\n");
-        
+
         return fallbackJudge.ModelName;
     }
+}
+
+// Updated model classes
+public class InstructionTest
+{
+    public string Prompt { get; set; } = "";
+    public string ExpectedResult { get; set; } = "";
+    public string ValidationType { get; set; } = "exact";
+    public bool StrictOrder { get; set; } = true;
+}
+
+public class ValidationResult
+{
+    public bool StrictPass { get; set; }
+    public bool LenientPass { get; set; }
+    public string Reason { get; set; } = "";
+}
+
+public class InstructionTestResult
+{
+    public string ModelName { get; set; } = "";
+    public int TotalTests { get; set; }
+    public int PassedTests { get; set; }
+    public int LenientPasses { get; set; }
+    public double PassRate => TotalTests > 0 ? (double)PassedTests / TotalTests : 0;
+    public double StrictPassRate => TotalTests > 0 ? (double)(PassedTests - LenientPasses) / TotalTests : 0;
+    public double AvgTokensPerSec { get; set; }
+    public double AvgLatencyMs { get; set; }
+    public List<string> FailureDetails { get; set; } = new();
 }
