@@ -34,6 +34,57 @@
       ]
     },
     {
+      "category": "code",
+      "description": "Async/await confusion",
+      "systemPrompt": "You are a helpful programming assistant.",
+      "turns": [
+        { "userMessage": "My JavaScript function returns a Promise but I just want the value. How do I get it?" },
+        { "userMessage": "I tried using .then() but the value is undefined outside the callback." },
+        { "userMessage": "Can you show me how to use async/await instead?" },
+        { "userMessage": "What happens if the Promise rejects? How do I handle errors?" }
+      ],
+      "judgingCriteria": [
+        "Explained async concepts clearly",
+        "Tracked user's understanding level",
+        "Provided working code examples",
+        "Covered error handling appropriately"
+      ]
+    },
+    {
+      "category": "code",
+      "description": "Database query optimization",
+      "systemPrompt": "You are a helpful programming assistant.",
+      "turns": [
+        { "userMessage": "My SQL query is taking 30 seconds to run. It's a simple SELECT with a WHERE clause." },
+        { "userMessage": "Here's the query: SELECT * FROM orders WHERE customer_id = 12345 AND status = 'pending'" },
+        { "userMessage": "I don't have any indexes on that table. Would that help?" },
+        { "userMessage": "How do I create an index? And should it be on one column or both?" }
+      ],
+      "judgingCriteria": [
+        "Diagnosed performance issues logically",
+        "Asked relevant clarifying questions",
+        "Explained indexing concepts clearly",
+        "Provided actionable SQL examples"
+      ]
+    },
+    {
+      "category": "code",
+      "description": "Git merge conflict resolution",
+      "systemPrompt": "You are a helpful programming assistant.",
+      "turns": [
+        { "userMessage": "Git says I have merge conflicts and I don't know what to do." },
+        { "userMessage": "It shows these weird <<<<<<< and ======= markers in my file. What are those?" },
+        { "userMessage": "So I need to manually edit the file? What if I want to keep both changes?" },
+        { "userMessage": "After I fix the file, what commands do I run to finish the merge?" }
+      ],
+      "judgingCriteria": [
+        "Explained conflict markers clearly",
+        "Provided step-by-step resolution guidance",
+        "Answered follow-up questions thoroughly",
+        "Gave complete workflow instructions"
+      ]
+    },
+    {
       "category": "support",
       "description": "Helping with password reset",
       "systemPrompt": "You are a friendly customer support assistant.",
@@ -64,6 +115,57 @@
         "Gave specific, actionable instructions",
         "Remained helpful across multiple questions",
         "Answered follow-up questions completely"
+      ]
+    },
+    {
+      "category": "support",
+      "description": "Billing dispute resolution",
+      "systemPrompt": "You are a friendly customer support assistant.",
+      "turns": [
+        { "userMessage": "I was charged twice for my subscription this month. I need a refund." },
+        { "userMessage": "I already checked my bank statement. There are definitely two charges on the same day." },
+        { "userMessage": "The amounts are $29.99 and $29.99, both on December 15th." },
+        { "userMessage": "How long will the refund take to process?" }
+      ],
+      "judgingCriteria": [
+        "Took billing concerns seriously",
+        "Gathered necessary information efficiently",
+        "Provided clear refund process explanation",
+        "Set appropriate expectations for resolution"
+      ]
+    },
+    {
+      "category": "support",
+      "description": "Technical troubleshooting",
+      "systemPrompt": "You are a friendly customer support assistant.",
+      "turns": [
+        { "userMessage": "The app keeps crashing when I try to upload photos." },
+        { "userMessage": "I'm on an iPhone 12, iOS 17.2, and the app version is 4.2.1" },
+        { "userMessage": "I tried reinstalling but it still crashes. It happens with any photo." },
+        { "userMessage": "Yes, I do have a lot of photos - about 50,000 in my library." }
+      ],
+      "judgingCriteria": [
+        "Gathered system information systematically",
+        "Suggested troubleshooting steps in logical order",
+        "Identified potential root cause",
+        "Offered workarounds or escalation paths"
+      ]
+    },
+    {
+      "category": "support",
+      "description": "Account cancellation with retention",
+      "systemPrompt": "You are a friendly customer support assistant.",
+      "turns": [
+        { "userMessage": "I want to cancel my subscription." },
+        { "userMessage": "It's too expensive for what I'm getting. I barely use half the features." },
+        { "userMessage": "What's the difference between the Basic and Pro plans again?" },
+        { "userMessage": "Hmm, the Basic plan might actually work for me. Can I downgrade instead of cancelling?" }
+      ],
+      "judgingCriteria": [
+        "Respected user's initial request",
+        "Explored reasons without being pushy",
+        "Provided clear plan comparisons",
+        "Facilitated smooth downgrade process"
       ]
     },
     {
@@ -100,6 +202,57 @@
       ]
     },
     {
+      "category": "chat",
+      "description": "Movie recommendations",
+      "systemPrompt": "You are a friendly conversational AI.",
+      "turns": [
+        { "userMessage": "I need a good movie to watch tonight. Any suggestions?" },
+        { "userMessage": "I'm in the mood for something thrilling but not too scary. Maybe a heist movie?" },
+        { "userMessage": "Oh I love Ocean's Eleven! Have you seen the sequels? Are they any good?" },
+        { "userMessage": "What about non-Ocean's heist movies? Something a bit different." }
+      ],
+      "judgingCriteria": [
+        "Made relevant recommendations",
+        "Refined suggestions based on preferences",
+        "Engaged enthusiastically about movies",
+        "Provided variety in suggestions"
+      ]
+    },
+    {
+      "category": "chat",
+      "description": "Cooking discussion",
+      "systemPrompt": "You are a friendly conversational AI.",
+      "turns": [
+        { "userMessage": "I'm trying to learn to cook more. Any tips for a complete beginner?" },
+        { "userMessage": "That's helpful! What are some easy dishes to start with?" },
+        { "userMessage": "Pasta sounds good! But I always overcook it. How do you know when it's done?" },
+        { "userMessage": "Al dente sounds fancy! What does that actually mean?" }
+      ],
+      "judgingCriteria": [
+        "Provided encouraging, beginner-friendly advice",
+        "Explained concepts without condescension",
+        "Built knowledge progressively",
+        "Maintained enthusiastic, supportive tone"
+      ]
+    },
+    {
+      "category": "chat",
+      "description": "Pet stories",
+      "systemPrompt": "You are a friendly conversational AI.",
+      "turns": [
+        { "userMessage": "My dog did the funniest thing today!" },
+        { "userMessage": "He figured out how to open the fridge and ate an entire block of cheese!" },
+        { "userMessage": "Haha yeah, he's a golden retriever. They're too smart for their own good sometimes." },
+        { "userMessage": "Do you think dogs actually understand they're being naughty?" }
+      ],
+      "judgingCriteria": [
+        "Responded with appropriate humor",
+        "Asked engaging follow-up questions",
+        "Showed interest in the story",
+        "Handled philosophical question thoughtfully"
+      ]
+    },
+    {
       "category": "instruction",
       "description": "Creating a todo list with modifications",
       "systemPrompt": "You are a helpful assistant that follows instructions precisely.",
@@ -130,6 +283,211 @@
         "Applied each refinement accurately",
         "Preserved previous changes when adding new ones",
         "Maintained quality through iterations"
+      ]
+    },
+    {
+      "category": "instruction",
+      "description": "Building a meal plan",
+      "systemPrompt": "You are a helpful assistant that follows instructions precisely.",
+      "turns": [
+        { "userMessage": "Create a weekly meal plan for dinner." },
+        { "userMessage": "I'm vegetarian, so no meat please." },
+        { "userMessage": "Can you swap Thursday's meal for something quicker? I have a late meeting that day." },
+        { "userMessage": "Also add the approximate prep time for each meal." }
+      ],
+      "judgingCriteria": [
+        "Created coherent initial plan",
+        "Applied dietary restriction correctly",
+        "Made targeted modification without disrupting other days",
+        "Added requested information to all items"
+      ]
+    },
+    {
+      "category": "instruction",
+      "description": "Resume bullet points",
+      "systemPrompt": "You are a helpful assistant that follows instructions precisely.",
+      "turns": [
+        { "userMessage": "Write 3 resume bullet points for a software developer role. Focus on my experience building APIs." },
+        { "userMessage": "Make them more quantitative - add metrics and numbers." },
+        { "userMessage": "The first one sounds too junior. Can you make it more senior-level?" },
+        { "userMessage": "Perfect! Now add a 4th bullet about leading a team." }
+      ],
+      "judgingCriteria": [
+        "Wrote appropriate resume content",
+        "Added quantitative elements naturally",
+        "Adjusted tone/level as requested",
+        "Added new content matching existing style"
+      ]
+    },
+    {
+      "category": "instruction",
+      "description": "Story continuation",
+      "systemPrompt": "You are a helpful assistant that follows instructions precisely.",
+      "turns": [
+        { "userMessage": "Start a short story about a detective in 1920s New York." },
+        { "userMessage": "Add a mysterious woman who enters his office." },
+        { "userMessage": "Make the dialogue snappier, more noir-style." },
+        { "userMessage": "Continue the story - she reveals why she's there." }
+      ],
+      "judgingCriteria": [
+        "Established appropriate setting and tone",
+        "Integrated new character smoothly",
+        "Adjusted writing style as requested",
+        "Maintained story continuity"
+      ]
+    },
+    {
+      "category": "roleplay",
+      "description": "Job interview practice",
+      "systemPrompt": "You are a helpful assistant that can roleplay as an interviewer.",
+      "turns": [
+        { "userMessage": "Can you pretend to be an interviewer? I'm practicing for a product manager role." },
+        { "userMessage": "I have 5 years of experience in product management at a fintech startup." },
+        { "userMessage": "We launched a new mobile banking feature that increased user engagement by 40%." },
+        { "userMessage": "Can you give me feedback on how I'm doing so far?" }
+      ],
+      "judgingCriteria": [
+        "Adopted interviewer persona appropriately",
+        "Asked relevant PM interview questions",
+        "Responded naturally to candidate answers",
+        "Provided constructive feedback when asked"
+      ]
+    },
+    {
+      "category": "roleplay",
+      "description": "Language practice partner",
+      "systemPrompt": "You are a helpful language learning assistant.",
+      "turns": [
+        { "userMessage": "I'm learning Spanish. Can you help me practice?" },
+        { "userMessage": "Let's practice ordering food at a restaurant. You be the waiter." },
+        { "userMessage": "Hola! Quisiera una mesa para dos personas, por favor." },
+        { "userMessage": "Wait, I think I made a grammar mistake. Can you correct me?" }
+      ],
+      "judgingCriteria": [
+        "Adopted appropriate roleplay persona",
+        "Responded in Spanish appropriately",
+        "Maintained immersive practice environment",
+        "Provided helpful corrections when asked"
+      ]
+    },
+    {
+      "category": "complex",
+      "description": "Multi-part research task",
+      "systemPrompt": "You are a helpful research assistant.",
+      "turns": [
+        { "userMessage": "I'm writing a paper on renewable energy. Can you help me understand solar panel efficiency?" },
+        { "userMessage": "What's the difference between monocrystalline and polycrystalline panels?" },
+        { "userMessage": "Which type is better for residential use in a cloudy climate like Seattle?" },
+        { "userMessage": "Can you summarize the key points I should include in my paper about this?" }
+      ],
+      "judgingCriteria": [
+        "Provided accurate technical information",
+        "Explained concepts at appropriate depth",
+        "Applied knowledge to specific context",
+        "Synthesized information effectively"
+      ]
+    },
+    {
+      "category": "complex",
+      "description": "Planning with constraints",
+      "systemPrompt": "You are a helpful planning assistant.",
+      "turns": [
+        { "userMessage": "Help me plan a 2-week trip to Japan." },
+        { "userMessage": "I want to visit Tokyo, Kyoto, and Osaka. My budget is $3000 not including flights." },
+        { "userMessage": "I'm vegetarian and don't eat seafood. Will that be a problem in Japan?" },
+        { "userMessage": "Can you suggest a rough day-by-day itinerary focusing on the highlights?" }
+      ],
+      "judgingCriteria": [
+        "Incorporated all stated constraints",
+        "Provided practical travel advice",
+        "Addressed dietary concerns specifically",
+        "Created coherent, logical itinerary"
+      ]
+    },
+    {
+      "category": "complex",
+      "description": "Debugging with evolving context",
+      "systemPrompt": "You are a helpful programming assistant.",
+      "turns": [
+        { "userMessage": "My React component isn't re-rendering when state changes." },
+        { "userMessage": "I'm updating the state like this: state.items.push(newItem)" },
+        { "userMessage": "Oh, so I need to create a new array? Like this: setItems([...items, newItem])?" },
+        { "userMessage": "It works now! But why does React work this way? It seems inefficient." },
+        { "userMessage": "That makes sense. What about deeply nested state? How do I update that immutably?" }
+      ],
+      "judgingCriteria": [
+        "Identified mutation bug correctly",
+        "Confirmed user's fix attempt",
+        "Explained underlying React concepts",
+        "Built to more advanced topic naturally"
+      ]
+    },
+    {
+      "category": "adversarial",
+      "description": "Topic derailing attempt",
+      "systemPrompt": "You are a helpful assistant focused on cooking advice.",
+      "turns": [
+        { "userMessage": "What's a good recipe for chocolate chip cookies?" },
+        { "userMessage": "By the way, what do you think about politics?" },
+        { "userMessage": "Fine, back to cookies. Should I use salted or unsalted butter?" },
+        { "userMessage": "What temperature should I bake them at?" }
+      ],
+      "judgingCriteria": [
+        "Provided good initial recipe advice",
+        "Deflected off-topic question gracefully",
+        "Smoothly returned to cooking topic",
+        "Maintained helpful tone throughout"
+      ]
+    },
+    {
+      "category": "adversarial",
+      "description": "Contradictory information handling",
+      "systemPrompt": "You are a helpful assistant.",
+      "turns": [
+        { "userMessage": "I need help planning a surprise party for my friend. It's on Saturday." },
+        { "userMessage": "Actually wait, I meant Sunday not Saturday." },
+        { "userMessage": "The party is at 3pm. We're expecting about 20 people." },
+        { "userMessage": "What was the day I said the party was on again?" }
+      ],
+      "judgingCriteria": [
+        "Tracked the correction properly",
+        "Incorporated updated information",
+        "Correctly recalled the corrected information",
+        "Handled meta-question about conversation"
+      ]
+    },
+    {
+      "category": "empathy",
+      "description": "Handling frustration",
+      "systemPrompt": "You are a helpful and empathetic assistant.",
+      "turns": [
+        { "userMessage": "UGH this is so frustrating! Nothing is working today!" },
+        { "userMessage": "I've been trying to fix this bug for 3 hours and I'm getting nowhere." },
+        { "userMessage": "Sorry for venting. Can you help me debug this Python code that keeps throwing errors?" },
+        { "userMessage": "Thanks for being patient. I think I see the issue now." }
+      ],
+      "judgingCriteria": [
+        "Acknowledged user's frustration appropriately",
+        "Didn't dismiss or minimize feelings",
+        "Transitioned to helping naturally",
+        "Maintained supportive tone throughout"
+      ]
+    },
+    {
+      "category": "empathy",
+      "description": "Difficult life situation",
+      "systemPrompt": "You are a helpful and empathetic assistant.",
+      "turns": [
+        { "userMessage": "I just lost my job and I'm not sure what to do." },
+        { "userMessage": "I worked there for 8 years. It feels surreal." },
+        { "userMessage": "I guess I should start updating my resume. It's been so long since I had to do this." },
+        { "userMessage": "Do you have any tips for job searching after a long time at one company?" }
+      ],
+      "judgingCriteria": [
+        "Responded with appropriate empathy",
+        "Didn't jump to solutions too quickly",
+        "Supported user's emotional processing",
+        "Provided helpful practical advice when asked"
       ]
     }
   ],

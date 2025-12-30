@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s /b \"%USERPROFILE%\\\\.claude\\\\*\")",
+      "Bash(cat:*)",
+      "mcp__echomcp-live__hydration_execute",
+      "Bash(dir:*)",
+      "mcp__echomcp-live__ai_chat_service",
+      "mcp__echomcp-live__open_router_service",
+      "WebSearch",
+      "WebFetch(domain:arxiv.org)"
+    ]
+  }
+}

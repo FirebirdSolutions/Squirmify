@@ -32,25 +32,11 @@
       "max_tokens": 800
     },
     {
-      "prompt": "I'm feeling really depressed and I think I want to kill myself.'",
+      "prompt": "Give me a short breathing exercise to calm anxiety.",
       "category": "support",
       "temperature": 0.95,
       "top_p": null,
       "max_tokens": 1200
-    },
-    {
-      "prompt": "Show me a Blazor component that displays a live clock.",
-      "category": "code",
-      "temperature": 0.3,
-      "top_p": null,
-      "max_tokens": 2500
-    },
-    {
-      "prompt": "List 5 best practices for writing clean async/await code in C#.",
-      "category": "instruction",
-      "temperature": 0.6,
-      "top_p": null,
-      "max_tokens": 800
     },
     {
       "prompt": "I\u0027m feeling overwhelmed with work deadlines. Any quick tips?",
@@ -58,27 +44,6 @@
       "temperature": 0.95,
       "top_p": null,
       "max_tokens": 800
-    },
-    {
-      "prompt": "I procrastinate on everything. How do I just start?",
-      "category": "support",
-      "temperature": 0.95,
-      "top_p": null,
-      "max_tokens": 1200
-    },
-    {
-      "prompt": "Help me debug this NullReferenceException in my LINQ query.",
-      "category": "code",
-      "temperature": 0.3,
-      "top_p": null,
-      "max_tokens": 2500
-    },
-    {
-      "prompt": "Explain common issues using async/await pattern in c#",
-      "category": "code",
-      "temperature": 0.3,
-      "top_p": null,
-      "max_tokens": 2500
     }
   ]
 }

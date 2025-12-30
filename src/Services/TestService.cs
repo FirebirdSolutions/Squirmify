@@ -17,7 +17,7 @@ public class TestService
     }
 
     /// <summary>
-    /// Load instruction tests from external config file
+    /// Load instruction tests from external config file with category filtering
     /// </summary>
     private async Task<List<InstructionTest>> GetInstructionTestsAsync()
     {
@@ -26,13 +26,24 @@ public class TestService
         var config = await ConfigLoader.LoadInstructionTestsAsync();
         _systemPrompt = config.SystemPrompt;
 
-        _instructionTests = config.Tests.Select(t => new InstructionTest
+        // Load all tests with category info
+        var allTests = config.Tests.Select(t => new InstructionTest
         {
             Prompt = t.Prompt,
             ExpectedResult = t.ExpectedResult,
             ValidationType = t.ValidationType,
-            StrictOrder = t.StrictOrder
+            StrictOrder = t.StrictOrder,
+            Category = t.Category
         }).ToList();
+
+        // Filter by category limits
+        _instructionTests = TestFilterHelper.FilterByCategory(
+            allTests,
+            t => t.Category,
+            Config.InstructionTestMaxPerCategory,
+            Config.InstructionTestCategoryLimits);
+
+        AnsiConsole.MarkupLine($"[dim]Selected {_instructionTests.Count} of {allTests.Count} instruction tests based on category limits[/]");
 
         return _instructionTests;
     }
@@ -93,10 +104,8 @@ public class TestService
 
         var perfMetrics = new List<PerfMetrics>();
 
-        // Use system prompt from config, fallback to default if empty
-        var systemPrompt = !string.IsNullOrEmpty(_systemPrompt)
-            ? _systemPrompt
-            : "You are an instruction-following test system. Output ONLY the exact requested content. Any deviation = failure. No preamble. No explanation. Raw output only.";
+        // Use system prompt from config file
+        var systemPrompt = _systemPrompt;
 
         foreach (var test in tests)
         {
@@ -534,6 +543,7 @@ public class InstructionTest
     public string ExpectedResult { get; set; } = "";
     public string ValidationType { get; set; } = "exact";
     public bool StrictOrder { get; set; } = true;
+    public string Category { get; set; } = "";
 }
 
 public class ValidationResult

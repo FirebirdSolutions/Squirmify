@@ -5,12 +5,21 @@
     "chat": "You are a friendly, casual kiwi conversational partner.",
     "support": "You are a friendly, capable Kiwi support specialist. Be empathetic but efficient - avoid repeating yourself. Use everyday NZ English and finish with a reassuring closing line."
   },
+  "testPrompts": {
+    "instructionTest": "You are an instruction-following test system. Output ONLY the exact requested content. Any deviation = failure. No preamble. No explanation. Raw output only.",
+    "reasoningTest": "You are a helpful assistant that thinks through problems step by step.",
+    "contextWindowTest": "You are a helpful assistant.",
+    "contextWindowRecall": "You have perfect recall.",
+    "seedGeneration": "You are a synthetic data teacher."
+  },
   "judgePrompts": {
     "baseJudge": "You are an expert evaluator of AI responses. You score responses objectively based on quality, accuracy, and usefulness.",
     "reasoningJudge": "You are an expert evaluator of reasoning and problem-solving. You score responses objectively based on correctness, logic, and clarity.",
     "conversationJudge": "You are an expert evaluator of AI conversations. You assess multi-turn conversations for quality, coherence, and natural flow."
   },
   "judgePromptTemplates": {
-    "baseScoring": "Evaluate this AI response:\n\nCategory: {category}\nPrompt: {prompt}\n\nResponse:\n{response}\n\nPerformance:\n- Tokens/sec: {tokensPerSec}\n- Latency: {latencyMs}ms\n\nRate this response from 1-10 considering:\n- Accuracy and correctness\n- Code quality (if applicable)\n- Clarity of reasoning\n- Response speed and efficiency\n\nRespond in this exact JSON format:\n{\n  \"score\": <1-10>,\n  \"reasoning\": \"<brief explanation>\"\n}"
+    "baseScoring": "Evaluate this AI response:\n\nCategory: {category}\nPrompt: {prompt}\n\nResponse:\n{response}\n\nPerformance:\n- Tokens/sec: {tokensPerSec}\n- Latency: {latencyMs}ms\n\nRate this response from 1-10 considering:\n- Accuracy and correctness\n- Code quality (if applicable)\n- Clarity of reasoning\n- Response speed and efficiency\n\nRespond in this exact JSON format:\n{\n  \"score\": <1-10>,\n  \"reasoning\": \"<brief explanation>\"\n}",
+    "reasoningScoring": "Evaluate this reasoning response:\n\nQuestion: {prompt}\n\nCorrect Answer (for reference): {correctAnswer}\n\nModel's Response:\n{response}\n\nRate this response from 1-10 on these dimensions:\n1. Correct Answer (did they get the right answer?)\n2. Logical Steps (did they show their reasoning/work?)\n3. Clarity (was the explanation clear and easy to follow?)\n\nRespond in this exact JSON format:\n{\n  \"overall_score\": <1-10>,\n  \"correct_answer\": <1-10>,\n  \"logical_steps\": <1-10>,\n  \"clarity\": <1-10>,\n  \"reasoning\": \"<brief explanation of overall score>\"\n}",
+    "conversationScoring": "Evaluate this multi-turn AI conversation:\n\nCategory: {category}\nScenario: {description}\n\nConversation:\n{conversationLog}\n\nPerformance:\n- Avg Tokens/sec: {tokensPerSec}\n- Total Time: {totalMs}ms\n- Total Turns: {turnCount}\n\nRate this conversation from 1-10 on these dimensions:\n1. Topic Coherence (stayed on topic, didn't drift)\n2. Conversational Tone (natural, appropriate, friendly)\n3. Context Retention (remembered earlier turns)\n4. Helpfulness (moved conversation forward productively)\n\nRespond in this exact JSON format:\n{\n  \"overall_score\": <1-10>,\n  \"topic_coherence\": <1-10>,\n  \"conversational_tone\": <1-10>,\n  \"context_retention\": <1-10>,\n  \"helpfulness\": <1-10>,\n  \"reasoning\": \"<brief explanation of overall score>\"\n}"
   }
 }

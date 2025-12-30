@@ -116,6 +116,12 @@ public class ConversationTurnDefinition
 /// </summary>
 public class ContextWindowTestsConfig
 {
+    [JsonPropertyName("level")]
+    public string Level { get; set; } = "shallow";
+
+    [JsonPropertyName("levels")]
+    public Dictionary<string, ContextWindowLevelConfig> Levels { get; set; } = new();
+
     [JsonPropertyName("tests")]
     public List<ContextWindowTestDefinition> Tests { get; set; } = new();
 
@@ -124,6 +130,26 @@ public class ContextWindowTestsConfig
 
     [JsonPropertyName("fillerContent")]
     public FillerContentConfig FillerContent { get; set; } = new();
+
+    /// <summary>
+    /// Get the token multiplier for the configured level
+    /// </summary>
+    public double GetTokenMultiplier()
+    {
+        var level = Config.ContextWindowTestLevel; // Use settings.json level if set
+        if (Levels.TryGetValue(level, out var config))
+            return config.TokenMultiplier;
+        return 1.0;
+    }
+}
+
+public class ContextWindowLevelConfig
+{
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = "";
+
+    [JsonPropertyName("tokenMultiplier")]
+    public double TokenMultiplier { get; set; } = 1.0;
 }
 
 public class ContextWindowTestDefinition
@@ -140,6 +166,12 @@ public class ContextWindowTestDefinition
     [JsonPropertyName("targetTokens")]
     public int TargetTokens { get; set; }
 
+    [JsonPropertyName("baseTargetTokens")]
+    public int BaseTargetTokens { get; set; }
+
+    [JsonPropertyName("baseCheckpointCount")]
+    public int? BaseCheckpointCount { get; set; }
+
     [JsonPropertyName("checkpointCount")]
     public int? CheckpointCount { get; set; }
 
@@ -148,12 +180,25 @@ public class ContextWindowTestDefinition
 
     [JsonPropertyName("buriedInstruction")]
     public string? BuriedInstruction { get; set; }
+
+    /// <summary>
+    /// Get effective target tokens (uses base if targetTokens not set)
+    /// </summary>
+    public int GetEffectiveTargetTokens() => TargetTokens > 0 ? TargetTokens : BaseTargetTokens;
+
+    /// <summary>
+    /// Get effective checkpoint count
+    /// </summary>
+    public int? GetEffectiveCheckpointCount() => CheckpointCount ?? BaseCheckpointCount;
 }
 
 public class CheckpointDefinition
 {
     [JsonPropertyName("targetTokenPosition")]
     public int TargetTokenPosition { get; set; }
+
+    [JsonPropertyName("relativePosition")]
+    public double? RelativePosition { get; set; }
 
     [JsonPropertyName("secretWord")]
     public string SecretWord { get; set; } = "";
@@ -182,11 +227,62 @@ public class SystemPromptsConfig
     [JsonPropertyName("categoryPrompts")]
     public Dictionary<string, string> CategoryPrompts { get; set; } = new();
 
+    [JsonPropertyName("testPrompts")]
+    public Dictionary<string, string> TestPrompts { get; set; } = new();
+
     [JsonPropertyName("judgePrompts")]
     public Dictionary<string, string> JudgePrompts { get; set; } = new();
 
     [JsonPropertyName("judgePromptTemplates")]
     public Dictionary<string, string> JudgePromptTemplates { get; set; } = new();
+
+    // Convenience getters with fallbacks
+    public string GetTestPrompt(string key, string fallback = "") =>
+        TestPrompts.TryGetValue(key, out var prompt) ? prompt : fallback;
+
+    public string GetJudgePrompt(string key, string fallback = "") =>
+        JudgePrompts.TryGetValue(key, out var prompt) ? prompt : fallback;
+
+    public string GetJudgeTemplate(string key, string fallback = "") =>
+        JudgePromptTemplates.TryGetValue(key, out var template) ? template : fallback;
+}
+
+/// <summary>
+/// Helper class for filtering tests by category limits
+/// </summary>
+public static class TestFilterHelper
+{
+    /// <summary>
+    /// Filter tests by category limits from config
+    /// </summary>
+    public static List<T> FilterByCategory<T>(
+        List<T> tests,
+        Func<T, string> categorySelector,
+        int defaultMax,
+        Dictionary<string, int> categoryLimits)
+    {
+        var result = new List<T>();
+        var categoryCounts = new Dictionary<string, int>();
+
+        foreach (var test in tests)
+        {
+            var category = categorySelector(test);
+            var limit = categoryLimits.TryGetValue(category, out var specificLimit)
+                ? specificLimit
+                : defaultMax;
+
+            if (!categoryCounts.TryGetValue(category, out var count))
+                count = 0;
+
+            if (count < limit)
+            {
+                result.Add(test);
+                categoryCounts[category] = count + 1;
+            }
+        }
+
+        return result;
+    }
 }
 
 /// <summary>

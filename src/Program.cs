@@ -31,6 +31,13 @@ class Program
             // Ensure output directory exists
             Directory.CreateDirectory(Config.OutputDir);
 
+            // ═══ Score-Only Mode ═══
+            if (Config.ScoreOnly)
+            {
+                await RunScoreOnlyModeAsync(modelService, judgingService);
+                return;
+            }
+
             // ═══ Step 1: Load Models ═══
             AnsiConsole.MarkupLine("[bold cyan]═══ Step 1: Loading Models ═══[/]\n");
 
@@ -42,50 +49,82 @@ class Program
                 return;
             }
 
-            // ═══ Step 2: Run Instruction Tests ═══
-            AnsiConsole.MarkupLine("[bold cyan]═══ Step 2: Instruction Following Tests ═══[/]\n");
-            var testResults = await testService.RunInstructionTestsAsync(models);
+            // Track qualified models and base judge (set by qualification tests or defaults)
+            var qualifiedModels = models;
+            string baseJudge = "";
+            List<InstructionTestResult> testResults = new();
+            List<ReasoningTestSummary> reasoningSummaries = new();
 
-            if (!testResults.Any())
+            if (Config.RunQualificationTests)
             {
-                AnsiConsole.MarkupLine("[red]✗ All models failed instruction tests. Exiting.[/]");
-                return;
+                // ═══ Step 2: Run Instruction Tests ═══
+                AnsiConsole.MarkupLine("[bold cyan]═══ Step 2: Instruction Following Tests ═══[/]\n");
+                testResults = await testService.RunInstructionTestsAsync(models);
+
+                if (!testResults.Any())
+                {
+                    AnsiConsole.MarkupLine("[red]✗ All models failed instruction tests. Exiting.[/]");
+                    return;
+                }
+
+                // ═══ Step 2.5: Run Reasoning Tests ═══
+                AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.5: Reasoning Tests ═══[/]\n");
+
+                var reasoningService = new ReasoningTestService(modelService);
+
+                // Run reasoning tests on models that passed instruction tests
+                qualifiedModels = models
+                    .Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8))
+                    .ToList();
+
+                var reasoningResponses = await reasoningService.RunReasoningTestsAsync(qualifiedModels);
+
+                // Score reasoning with a temp judge (use best instruction follower for now)
+                var tempJudge = testResults
+                    .Where(r => r.PassRate >= 0.8)
+                    .OrderByDescending(r => r.PassRate)
+                    .First()
+                    .ModelName;
+
+                await reasoningService.ScoreReasoningTestsAsync(tempJudge, reasoningResponses);
+
+                // Generate summaries
+                reasoningSummaries = reasoningService.GenerateReasoningSummaries(reasoningResponses);
+                reasoningService.DisplayReasoningResults(reasoningSummaries);
+
+                // Save results
+                var reasoningFile = Path.Combine(Config.OutputDir, "reasoning_results.json");
+                await reasoningService.SaveReasoningResultsAsync(reasoningResponses, reasoningFile);
+
+                // ═══ Step 3: Select SMART Base Judge ═══
+                if (!string.IsNullOrEmpty(Config.OverrideBaseJudge))
+                {
+                    baseJudge = Config.OverrideBaseJudge;
+                    AnsiConsole.MarkupLine($"\n[bold yellow]⚠ Using override base judge: {baseJudge}[/]\n");
+                }
+                else
+                {
+                    baseJudge = testService.SelectBaseJudge(
+                        testResults,
+                        reasoningSummaries
+                    );
+                }
             }
+            else
+            {
+                AnsiConsole.MarkupLine("[bold yellow]⚠ Skipping qualification tests (instruction/reasoning)[/]\n");
 
-            // ═══ Step 2.5: Run Reasoning Tests ═══
-            AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.5: Reasoning Tests ═══[/]\n");
-
-            var reasoningService = new ReasoningTestService(modelService);
-
-            // Run reasoning tests on models that passed instruction tests
-            var qualifiedModels = models
-                .Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8))
-                .ToList();
-
-            var reasoningResponses = await reasoningService.RunReasoningTestsAsync(qualifiedModels);
-
-            // Score reasoning with a temp judge (use best instruction follower for now)
-            var tempJudge = testResults
-                .Where(r => r.PassRate >= 0.8)
-                .OrderByDescending(r => r.PassRate)
-                .First()
-                .ModelName;
-
-            await reasoningService.ScoreReasoningTestsAsync(tempJudge, reasoningResponses);
-
-            // Generate summaries
-            var reasoningSummaries = reasoningService.GenerateReasoningSummaries(reasoningResponses);
-            reasoningService.DisplayReasoningResults(reasoningSummaries);
-
-            // Save results
-            var reasoningFile = Path.Combine(Config.OutputDir, "reasoning_results.json");
-            await reasoningService.SaveReasoningResultsAsync(reasoningResponses, reasoningFile);
-
-            // ═══ Step 3: Select SMART Base Judge ═══
-            var baseJudge = testService.SelectBaseJudge(
-                testResults,
-                reasoningSummaries  // <-- NOW PASSES REASONING DATA!
-            );
+                // Use override judge if specified, otherwise first model
+                if (!string.IsNullOrEmpty(Config.OverrideBaseJudge))
+                {
+                    baseJudge = Config.OverrideBaseJudge;
+                }
+                else
+                {
+                    baseJudge = models.First();
+                }
+                AnsiConsole.MarkupLine($"[cyan]Using judge: {baseJudge}[/]\n");
+            }
 
             if (Config.RunContextWindowTests)
             {
@@ -93,9 +132,7 @@ class Program
                 AnsiConsole.MarkupLine("[bold cyan]═══ Step 2.6: Context Window Stress Tests ═══[/]\n");
 
                 var contextWindowService = new ContextWindowTestService(modelService);
-                var contextResults = await contextWindowService.RunContextWindowTestsAsync(
-                    models.Where(m => testResults.Any(t => t.ModelName == m && t.PassRate >= 0.8)).ToList()
-                );
+                var contextResults = await contextWindowService.RunContextWindowTestsAsync(qualifiedModels);
 
                 // Generate and display summaries
                 var contextSummaries = contextWindowService.GenerateContextSummaries(contextResults);
@@ -135,7 +172,9 @@ class Program
                 // ═══ Step 4: Load/Generate Seeds ═══
                 AnsiConsole.MarkupLine("[bold cyan]═══ Step 3: Loading & Generating Seeds ═══[/]\n");
 
-                SeedsConfig? seedsConfig = await seedService.LoadSeedsAsync(Config.GeneratedSeedsFile);
+                SeedsConfig? seedsConfig = Config.OverwriteSeeds
+                    ? null
+                    : await seedService.LoadSeedsAsync(Config.GeneratedSeedsFile);
 
                 if (seedsConfig == null)
                 {
@@ -149,17 +188,7 @@ class Program
                         return;
                     }
 
-                    //seedsConfig = await seedService.GenerateAugmentedSeedsAsync(baseSeeds, Config.TargetSeedCount);
-
-                    var weights = new Dictionary<string, double>
-                    {
-                        ["code"] = 0.25,
-                        ["instruction"] = 0.25,
-                        ["chat"] = 0.25,
-                        ["support"] = 0.25
-                    };
-
-                    seedsConfig = await seedService.GenerateAugmentedSeedsAsync(baseSeeds, Config.TargetSeedCount, weights);
+                    seedsConfig = await seedService.GenerateAugmentedSeedsAsync(baseSeeds, Config.TargetSeedCount, Config.CategoryWeights);
 
                     await seedService.SaveSeedsAsync(seedsConfig, Config.GeneratedSeedsFile);
                 }
@@ -187,7 +216,21 @@ class Program
                 await judgingService.ScoreResultsAsync(baseJudge, allResults, resultsFile);
 
                 // ═══ Step 7: Select AutoJudges ═══
-                var autoJudges = judgingService.SelectAutoJudges(allResults, activeModels);
+                List<string> autoJudges;
+                if (Config.OverrideAutoJudges.Any())
+                {
+                    autoJudges = Config.OverrideAutoJudges;
+                    AnsiConsole.MarkupLine($"\n[bold yellow]⚠ Using {autoJudges.Count} override auto judges[/]");
+                    foreach (var judge in autoJudges)
+                    {
+                        AnsiConsole.MarkupLine($"  → {judge}");
+                    }
+                    AnsiConsole.WriteLine();
+                }
+                else
+                {
+                    autoJudges = judgingService.SelectAutoJudges(allResults, activeModels);
+                }
 
                 // ═══ Step 8: Re-score with AutoJudges ═══
                 if (autoJudges.Any())
@@ -219,6 +262,102 @@ class Program
 
         AnsiConsole.WriteLine("\nPress any key to exit...");
         Console.ReadKey();
+    }
+
+    /// <summary>
+    /// Score-only mode: Load existing results and run judging without generation
+    /// </summary>
+    private static async Task RunScoreOnlyModeAsync(ModelService modelService, JudgingService judgingService)
+    {
+        AnsiConsole.MarkupLine("[bold magenta]═══ SCORE-ONLY MODE ═══[/]\n");
+
+        // Validate configuration
+        if (string.IsNullOrEmpty(Config.ScoreOnlyInputFile))
+        {
+            AnsiConsole.MarkupLine("[red]✗ scoreOnlyInputFile is required in score-only mode[/]");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(Config.OverrideBaseJudge))
+        {
+            AnsiConsole.MarkupLine("[red]✗ overrideBaseJudge is required in score-only mode[/]");
+            return;
+        }
+
+        var inputPath = Path.IsPathRooted(Config.ScoreOnlyInputFile)
+            ? Config.ScoreOnlyInputFile
+            : Path.Combine(Config.OutputDir, Config.ScoreOnlyInputFile);
+
+        if (!File.Exists(inputPath))
+        {
+            AnsiConsole.MarkupLine($"[red]✗ Results file not found: {inputPath}[/]");
+            return;
+        }
+
+        AnsiConsole.MarkupLine($"[cyan]Loading results from:[/] {inputPath}");
+        AnsiConsole.MarkupLine($"[cyan]Base judge:[/] {Config.OverrideBaseJudge}");
+
+        // Load existing results
+        var json = await File.ReadAllTextAsync(inputPath);
+        var allResults = JsonSerializer.Deserialize<List<GenerationResult>>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        if (allResults == null || !allResults.Any())
+        {
+            AnsiConsole.MarkupLine("[red]✗ No results found in file[/]");
+            return;
+        }
+
+        AnsiConsole.MarkupLine($"[green]✓ Loaded {allResults.Count} results[/]\n");
+
+        // Clear existing ratings if re-scoring
+        foreach (var result in allResults)
+        {
+            result.ratings.Clear();
+        }
+
+        // Get unique models from results
+        var modelsInResults = allResults.Select(r => r.generator).Distinct().ToList();
+
+        // Score with base judge
+        var resultsFile = Path.Combine(Config.OutputDir, "all_results_rescored.json");
+        await judgingService.ScoreResultsAsync(Config.OverrideBaseJudge, allResults, resultsFile);
+
+        // Select or use override AutoJudges
+        List<string> autoJudges;
+        if (Config.OverrideAutoJudges.Any())
+        {
+            autoJudges = Config.OverrideAutoJudges;
+            AnsiConsole.MarkupLine($"\n[bold yellow]⚠ Using {autoJudges.Count} override auto judges[/]");
+            foreach (var judge in autoJudges)
+            {
+                AnsiConsole.MarkupLine($"  → {judge}");
+            }
+            AnsiConsole.WriteLine();
+        }
+        else
+        {
+            autoJudges = judgingService.SelectAutoJudges(allResults, modelsInResults);
+        }
+
+        // Re-score with AutoJudges
+        if (autoJudges.Any())
+        {
+            var finalResultsFile = Path.Combine(Config.OutputDir, "final_results_rescored.json");
+            await judgingService.AutoJudgeResultsAsync(autoJudges, allResults, finalResultsFile);
+            judgingService.ValidateJudgeSelection(autoJudges, allResults);
+        }
+
+        // Generate Reports
+        AnsiConsole.MarkupLine("\n[bold cyan]═══ Generating Reports ═══[/]\n");
+        GenerateFinalReport(allResults, modelsInResults);
+
+        var highQualityFile = Path.Combine(Config.OutputDir, "high_quality_dataset_rescored.jsonl");
+        await judgingService.ExtractHighQualityDatasetAsync(allResults, highQualityFile);
+
+        AnsiConsole.MarkupLine("\n[bold green]✓ Score-only mode completed[/]");
     }
 
     private static async Task<List<GenerationResult>> RunGenerationPipelineAsync(

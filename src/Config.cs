@@ -34,6 +34,9 @@ public class SettingsConfig
     [JsonPropertyName("scoring")]
     public ScoringSettings Scoring { get; set; } = new();
 
+    [JsonPropertyName("judging")]
+    public JudgingSettings Judging { get; set; } = new();
+
     [JsonPropertyName("contextWindowTests")]
     public ContextWindowTestSettings ContextWindowTests { get; set; } = new();
 
@@ -69,6 +72,9 @@ public class TestSuiteSettings
 
     [JsonPropertyName("runConversationTests")]
     public bool RunConversationTests { get; set; } = true;
+
+    [JsonPropertyName("runQualificationTests")]
+    public bool RunQualificationTests { get; set; } = true;
 }
 
 public class SeedGenerationSettings
@@ -81,6 +87,18 @@ public class SeedGenerationSettings
 
     [JsonPropertyName("generatedSeedsFile")]
     public string GeneratedSeedsFile { get; set; } = "seeds.json";
+
+    [JsonPropertyName("overwriteSeeds")]
+    public bool OverwriteSeeds { get; set; } = true;
+
+    [JsonPropertyName("categoryWeights")]
+    public Dictionary<string, double> CategoryWeights { get; set; } = new()
+    {
+        ["code"] = 0.25,
+        ["instruction"] = 0.25,
+        ["chat"] = 0.25,
+        ["support"] = 0.25
+    };
 }
 
 public class InstructionTestSettings
@@ -96,6 +114,12 @@ public class InstructionTestSettings
 
     [JsonPropertyName("passThreshold")]
     public double PassThreshold { get; set; } = 0.8;
+
+    [JsonPropertyName("maxTestsPerCategory")]
+    public int MaxTestsPerCategory { get; set; } = 5;
+
+    [JsonPropertyName("categoryLimits")]
+    public Dictionary<string, int> CategoryLimits { get; set; } = new();
 }
 
 public class ReasoningTestSettings
@@ -111,6 +135,12 @@ public class ReasoningTestSettings
 
     [JsonPropertyName("maxTokens")]
     public int MaxTokens { get; set; } = 600;
+
+    [JsonPropertyName("maxTestsPerCategory")]
+    public int MaxTestsPerCategory { get; set; } = 3;
+
+    [JsonPropertyName("categoryLimits")]
+    public Dictionary<string, int> CategoryLimits { get; set; } = new();
 }
 
 public class ConversationTestSettings
@@ -123,6 +153,12 @@ public class ConversationTestSettings
 
     [JsonPropertyName("maxTokens")]
     public int MaxTokens { get; set; } = 600;
+
+    [JsonPropertyName("maxTestsPerCategory")]
+    public int MaxTestsPerCategory { get; set; } = 3;
+
+    [JsonPropertyName("categoryLimits")]
+    public Dictionary<string, int> CategoryLimits { get; set; } = new();
 }
 
 public class GenerationSettings
@@ -158,8 +194,29 @@ public class ScoringSettings
     public int TopJudgeCount { get; set; } = 2;
 }
 
+public class JudgingSettings
+{
+    [JsonPropertyName("scoreOnly")]
+    public bool ScoreOnly { get; set; } = false;
+
+    [JsonPropertyName("scoreOnlyInputFile")]
+    public string ScoreOnlyInputFile { get; set; } = "";
+
+    [JsonPropertyName("overrideBaseJudge")]
+    public string OverrideBaseJudge { get; set; } = "";
+
+    [JsonPropertyName("overrideAutoJudges")]
+    public List<string> OverrideAutoJudges { get; set; } = new();
+}
+
 public class ContextWindowTestSettings
 {
+    [JsonPropertyName("level")]
+    public string Level { get; set; } = "shallow";
+
+    [JsonPropertyName("maxTests")]
+    public int MaxTests { get; set; } = 5;
+
     [JsonPropertyName("degradationThresholds")]
     public DegradationThresholds DegradationThresholds { get; set; } = new();
 }
@@ -282,9 +339,12 @@ public static class Config
     public static bool RunPromptTests => Settings.TestSuites.RunPromptTests;
     public static bool RunContextWindowTests => Settings.TestSuites.RunContextWindowTests;
     public static bool RunConversationTests => Settings.TestSuites.RunConversationTests;
+    public static bool RunQualificationTests => Settings.TestSuites.RunQualificationTests;
 
     // Seed Generation
     public static int TargetSeedCount => Settings.SeedGeneration.TargetSeedCount;
+    public static bool OverwriteSeeds => Settings.SeedGeneration.OverwriteSeeds;
+    public static Dictionary<string, double> CategoryWeights => Settings.SeedGeneration.CategoryWeights;
 
     // File Paths
     public static readonly string ProjectPath = GetProjectPath();
@@ -297,13 +357,19 @@ public static class Config
     public static double InstructionTestTemperature => Settings.InstructionTests.Temperature;
     public static double InstructionTestTopP => Settings.InstructionTests.TopP;
     public static double InstructionTestPassThreshold => Settings.InstructionTests.PassThreshold;
+    public static int InstructionTestMaxPerCategory => Settings.InstructionTests.MaxTestsPerCategory;
+    public static Dictionary<string, int> InstructionTestCategoryLimits => Settings.InstructionTests.CategoryLimits;
 
     // Reasoning Test Settings
     public static double ReasoningTestMinScore => Settings.ReasoningTests.MinScore;
+    public static int ReasoningTestMaxPerCategory => Settings.ReasoningTests.MaxTestsPerCategory;
+    public static Dictionary<string, int> ReasoningTestCategoryLimits => Settings.ReasoningTests.CategoryLimits;
 
     // Conversation Test Settings
     public static double ConversationTestTemperature => Settings.ConversationTests.Temperature;
     public static double ConversationTestTopP => Settings.ConversationTests.TopP;
+    public static int ConversationTestMaxPerCategory => Settings.ConversationTests.MaxTestsPerCategory;
+    public static Dictionary<string, int> ConversationTestCategoryLimits => Settings.ConversationTests.CategoryLimits;
 
     // Generation Settings
     public static double GlobalTemperature => Settings.Generation.GlobalTemperature;
@@ -325,7 +391,15 @@ public static class Config
     public static double HighQualityThreshold => Settings.Scoring.HighQualityThreshold;
     public static int TopJudgeCount => Settings.Scoring.TopJudgeCount;
 
+    // Judging Settings
+    public static bool ScoreOnly => Settings.Judging.ScoreOnly;
+    public static string ScoreOnlyInputFile => Settings.Judging.ScoreOnlyInputFile;
+    public static string OverrideBaseJudge => Settings.Judging.OverrideBaseJudge;
+    public static List<string> OverrideAutoJudges => Settings.Judging.OverrideAutoJudges;
+
     // Context Window Test Settings
+    public static string ContextWindowTestLevel => Settings.ContextWindowTests.Level;
+    public static int ContextWindowTestMaxTests => Settings.ContextWindowTests.MaxTests;
     public static int ContextWindowDegradationThreshold_Graceful => Settings.ContextWindowTests.DegradationThresholds.Graceful;
     public static int ContextWindowDegradationThreshold_Moderate => Settings.ContextWindowTests.DegradationThresholds.Moderate;
     public static int ContextWindowDegradationThreshold_Sudden => Settings.ContextWindowTests.DegradationThresholds.Sudden;

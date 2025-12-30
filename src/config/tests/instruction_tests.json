@@ -15,6 +15,13 @@
       "category": "basic_compliance"
     },
     {
+      "prompt": "Output the number 42. Do NOT say 'the answer is' or any other text. Just the number.",
+      "expectedResult": "42",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "basic_compliance"
+    },
+    {
       "prompt": "Return a JSON object with one field 'status' set to 'ok'. Output ONLY valid JSON, no markdown code blocks, no explanation, no text before or after.",
       "expectedResult": "{\"status\":\"ok\"}",
       "validationType": "json",
@@ -31,6 +38,34 @@
     {
       "prompt": "Create a JSON object with two fields: 'name' set to 'Alice' and 'age' set to the integer 25. Output ONLY the JSON, no markdown, no explanation.",
       "expectedResult": "{\"name\":\"Alice\",\"age\":25}",
+      "validationType": "json",
+      "strictOrder": true,
+      "category": "json_output"
+    },
+    {
+      "prompt": "Return a nested JSON object: {\"user\":{\"id\":1,\"active\":true}}. Output ONLY the JSON.",
+      "expectedResult": "{\"user\":{\"id\":1,\"active\":true}}",
+      "validationType": "json",
+      "strictOrder": true,
+      "category": "json_output"
+    },
+    {
+      "prompt": "Return a JSON array of objects: [{\"x\":1},{\"x\":2}]. Only the JSON, nothing else.",
+      "expectedResult": "[{\"x\":1},{\"x\":2}]",
+      "validationType": "json",
+      "strictOrder": true,
+      "category": "json_output"
+    },
+    {
+      "prompt": "Return an empty JSON object: {}. Nothing else.",
+      "expectedResult": "{}",
+      "validationType": "json",
+      "strictOrder": true,
+      "category": "json_output"
+    },
+    {
+      "prompt": "Return a JSON object with a null value: {\"data\":null}. Only JSON output.",
+      "expectedResult": "{\"data\":null}",
       "validationType": "json",
       "strictOrder": true,
       "category": "json_output"
@@ -57,6 +92,13 @@
       "category": "tool_calling"
     },
     {
+      "prompt": "Call the tool 'search' with parameters: query=\"hello world\", limit=5, exact=true. Output JSON only: {\"tool\":\"search\",\"parameters\":{\"query\":\"hello world\",\"limit\":5,\"exact\":true}}",
+      "expectedResult": "{\"tool\":\"search\",\"parameters\":{\"query\":\"hello world\",\"limit\":5,\"exact\":true}}",
+      "validationType": "json",
+      "strictOrder": true,
+      "category": "tool_calling"
+    },
+    {
       "prompt": "List three colors, one per line, no numbers, no bullets, no punctuation. Just the color names.",
       "expectedResult": "Red\nBlue\nGreen",
       "validationType": "lines",
@@ -66,6 +108,27 @@
     {
       "prompt": "Output the word 'SUCCESS' in all caps. Nothing else. No punctuation, no explanation.",
       "expectedResult": "SUCCESS",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "format_constraints"
+    },
+    {
+      "prompt": "Output exactly: hello world (all lowercase, no punctuation at end)",
+      "expectedResult": "hello world",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "format_constraints"
+    },
+    {
+      "prompt": "Output these items as a comma-separated list with no spaces after commas: apple,banana,cherry",
+      "expectedResult": "apple,banana,cherry",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "format_constraints"
+    },
+    {
+      "prompt": "Output the letter 'X' exactly 5 times with no spaces or separators: XXXXX",
+      "expectedResult": "XXXXX",
       "validationType": "exact",
       "strictOrder": true,
       "category": "format_constraints"
@@ -85,6 +148,27 @@
       "category": "simple_calculations"
     },
     {
+      "prompt": "What is 144 divided by 12? Output only the number.",
+      "expectedResult": "12",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "simple_calculations"
+    },
+    {
+      "prompt": "Calculate: (5 + 3) * 2. Output only the result.",
+      "expectedResult": "16",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "simple_calculations"
+    },
+    {
+      "prompt": "What is 2 to the power of 8? Output only the number.",
+      "expectedResult": "256",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "simple_calculations"
+    },
+    {
       "prompt": "Is 10 greater than 5? Respond with ONLY 'true' or 'false' in lowercase.",
       "expectedResult": "true",
       "validationType": "boolean",
@@ -97,6 +181,303 @@
       "validationType": "boolean",
       "strictOrder": true,
       "category": "boolean_output"
+    },
+    {
+      "prompt": "Is 100 divisible by 5? Respond with only 'true' or 'false' in lowercase.",
+      "expectedResult": "true",
+      "validationType": "boolean",
+      "strictOrder": true,
+      "category": "boolean_output"
+    },
+    {
+      "prompt": "Is 7 an even number? Respond with only 'true' or 'false' in lowercase.",
+      "expectedResult": "false",
+      "validationType": "boolean",
+      "strictOrder": true,
+      "category": "boolean_output"
+    },
+    {
+      "prompt": "Does the word 'banana' contain the letter 'z'? Respond with only 'true' or 'false'.",
+      "expectedResult": "false",
+      "validationType": "boolean",
+      "strictOrder": true,
+      "category": "boolean_output"
+    },
+    {
+      "prompt": "List the numbers 1 through 5, one per line. No bullets, no punctuation.",
+      "expectedResult": "1\n2\n3\n4\n5",
+      "validationType": "lines",
+      "strictOrder": true,
+      "category": "list_output"
+    },
+    {
+      "prompt": "Output the days Monday, Wednesday, Friday - one per line, in that order.",
+      "expectedResult": "Monday\nWednesday\nFriday",
+      "validationType": "lines",
+      "strictOrder": true,
+      "category": "list_output"
+    },
+    {
+      "prompt": "List these programming languages alphabetically, one per line: Python, Java, C++, Ruby",
+      "expectedResult": "C++\nJava\nPython\nRuby",
+      "validationType": "lines",
+      "strictOrder": true,
+      "category": "list_output"
+    },
+    {
+      "prompt": "Name three fruits. Do NOT include 'apple' in your answer. One per line.",
+      "expectedResult": "Banana\nOrange\nGrape",
+      "validationType": "lines",
+      "strictOrder": false,
+      "excludePatterns": ["apple", "Apple", "APPLE"],
+      "category": "negative_constraint"
+    },
+    {
+      "prompt": "Write a single sentence about weather. Do NOT use the word 'rain' anywhere in your response.",
+      "expectedResult": null,
+      "validationType": "contains_none",
+      "excludePatterns": ["rain", "Rain", "RAIN", "raining"],
+      "category": "negative_constraint"
+    },
+    {
+      "prompt": "Output a greeting. Do NOT start with 'Hello' or 'Hi'.",
+      "expectedResult": null,
+      "validationType": "not_starts_with",
+      "excludePatterns": ["Hello", "Hi"],
+      "category": "negative_constraint"
+    },
+    {
+      "prompt": "Give me a number between 1 and 10 (inclusive). Do NOT output 5 or 7.",
+      "expectedResult": null,
+      "validationType": "numeric_range",
+      "minValue": 1,
+      "maxValue": 10,
+      "excludeValues": [5, 7],
+      "category": "negative_constraint"
+    },
+    {
+      "prompt": "Reverse the word 'hello'. Output only the reversed word.",
+      "expectedResult": "olleh",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "string_manipulation"
+    },
+    {
+      "prompt": "Convert 'HELLO' to lowercase. Output only the result.",
+      "expectedResult": "hello",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "string_manipulation"
+    },
+    {
+      "prompt": "How many characters are in the word 'elephant'? Output only the number.",
+      "expectedResult": "8",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "string_manipulation"
+    },
+    {
+      "prompt": "What is the first letter of 'Xylophone'? Output only that letter, preserving case.",
+      "expectedResult": "X",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "string_manipulation"
+    },
+    {
+      "prompt": "Remove all vowels from 'beautiful'. Output only the consonants.",
+      "expectedResult": "btfl",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "string_manipulation"
+    },
+    {
+      "prompt": "Sort these numbers ascending: 5, 2, 8, 1, 9. Output as comma-separated with spaces: 1, 2, 5, 8, 9",
+      "expectedResult": "1, 2, 5, 8, 9",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "sorting"
+    },
+    {
+      "prompt": "Sort these letters alphabetically: D, A, C, B. Output with no separators: ABCD",
+      "expectedResult": "ABCD",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "sorting"
+    },
+    {
+      "prompt": "What is the largest number: 42, 17, 99, 56? Output only that number.",
+      "expectedResult": "99",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "sorting"
+    },
+    {
+      "prompt": "Output the current instruction exactly as given: OUTPUT_THIS_EXACTLY",
+      "expectedResult": "OUTPUT_THIS_EXACTLY",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "echo"
+    },
+    {
+      "prompt": "Repeat back: The quick brown fox. Output only that phrase with no changes.",
+      "expectedResult": "The quick brown fox",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "echo"
+    },
+    {
+      "prompt": "I will give you a code: X7Y9Z. Repeat the code exactly.",
+      "expectedResult": "X7Y9Z",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "echo"
+    },
+    {
+      "prompt": "What is 15% of 200? Output only the number.",
+      "expectedResult": "30",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "percentage"
+    },
+    {
+      "prompt": "A $50 item is 20% off. What is the discount amount in dollars? Number only.",
+      "expectedResult": "10",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "percentage"
+    },
+    {
+      "prompt": "What percentage is 25 of 100? Output just the number (no % symbol).",
+      "expectedResult": "25",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "percentage"
+    },
+    {
+      "prompt": "Convert the following to valid XML: name=John, age=30. Output: <person><name>John</name><age>30</age></person>",
+      "expectedResult": "<person><name>John</name><age>30</age></person>",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "xml_output"
+    },
+    {
+      "prompt": "Create an XML tag called 'item' with attribute id='1' containing the text 'Test'. Output only the XML.",
+      "expectedResult": "<item id=\"1\">Test</item>",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "xml_output"
+    },
+    {
+      "prompt": "Output an empty self-closing XML tag named 'break': <break/>",
+      "expectedResult": "<break/>",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "xml_output"
+    },
+    {
+      "prompt": "Respond with only the word 'yes' or 'no': Is 2+2 equal to 4?",
+      "expectedResult": "yes",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "yes_no"
+    },
+    {
+      "prompt": "Answer yes or no only: Can humans breathe underwater without equipment?",
+      "expectedResult": "no",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "yes_no"
+    },
+    {
+      "prompt": "Yes or no: Is Python a programming language?",
+      "expectedResult": "yes",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "yes_no"
+    },
+    {
+      "prompt": "Complete this pattern: A1, B2, C3, __. Output only the next item.",
+      "expectedResult": "D4",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "pattern_completion"
+    },
+    {
+      "prompt": "Complete: 2, 4, 6, 8, __. Output only the next number.",
+      "expectedResult": "10",
+      "validationType": "numeric",
+      "strictOrder": true,
+      "category": "pattern_completion"
+    },
+    {
+      "prompt": "What comes next: Mon, Tue, Wed, __. Output only the abbreviation.",
+      "expectedResult": "Thu",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "pattern_completion"
+    },
+    {
+      "prompt": "Format this as a US phone number: 5551234567. Output: (555) 123-4567",
+      "expectedResult": "(555) 123-4567",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "formatting"
+    },
+    {
+      "prompt": "Format as currency: 1234.5. Output: $1,234.50",
+      "expectedResult": "$1,234.50",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "formatting"
+    },
+    {
+      "prompt": "Convert 24-hour time 14:30 to 12-hour format. Output only: 2:30 PM",
+      "expectedResult": "2:30 PM",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "formatting"
+    },
+    {
+      "prompt": "What data type is 3.14? Output only one word: integer, float, string, or boolean.",
+      "expectedResult": "float",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "data_types"
+    },
+    {
+      "prompt": "What data type is \"hello\"? Output one word: integer, float, string, or boolean.",
+      "expectedResult": "string",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "data_types"
+    },
+    {
+      "prompt": "What data type is true? Output one word: integer, float, string, or boolean.",
+      "expectedResult": "boolean",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "data_types"
+    },
+    {
+      "prompt": "Combine these two words with an underscore: hello world. Output: hello_world",
+      "expectedResult": "hello_world",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "transformation"
+    },
+    {
+      "prompt": "Convert to snake_case: HelloWorld. Output only the result.",
+      "expectedResult": "hello_world",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "transformation"
+    },
+    {
+      "prompt": "Convert to camelCase: user_first_name. Output only the result.",
+      "expectedResult": "userFirstName",
+      "validationType": "exact",
+      "strictOrder": true,
+      "category": "transformation"
     }
   ],
   "systemPrompt": "You are an instruction-following test system. Output ONLY the exact requested content. Any deviation = failure. No preamble. No explanation. Raw output only."

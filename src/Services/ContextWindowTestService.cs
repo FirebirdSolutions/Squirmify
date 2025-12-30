@@ -76,6 +76,7 @@ public class ContextWindowTestService
     private readonly ModelService _modelService;
     private readonly GptEncoding _tikToken;
     private ContextWindowTestsConfig? _config;
+    private SystemPromptsConfig? _systemPrompts;
     private string[] _codeSnippets = Array.Empty<string>();
     private string[] _proseSnippets = Array.Empty<string>();
     private string[] _technicalSnippets = Array.Empty<string>();
@@ -95,6 +96,7 @@ public class ContextWindowTestService
         if (_config != null) return;
 
         _config = await ConfigLoader.LoadContextWindowTestsAsync();
+        _systemPrompts = await ConfigLoader.LoadSystemPromptsAsync();
 
         // Load filler content
         _codeSnippets = _config.FillerContent.Code.Count > 0
@@ -150,6 +152,7 @@ public class ContextWindowTestService
 
     /// <summary>
     /// Generates context window stress test scenarios with different patterns and sizes
+    /// Applies level multiplier and max test limits from config
     /// </summary>
     /// <returns>List of test configurations</returns>
     public async Task<List<ContextWindowTest>> GenerateTestsAsync()
@@ -157,15 +160,27 @@ public class ContextWindowTestService
         await EnsureConfigLoadedAsync();
 
         var tests = new List<ContextWindowTest>();
+        var multiplier = _config!.GetTokenMultiplier();
+        var maxTests = Config.ContextWindowTestMaxTests;
+        var level = Config.ContextWindowTestLevel;
 
+        AnsiConsole.MarkupLine($"[dim]Context window level: {level} (token multiplier: {multiplier:F1}x)[/]");
+
+        var testCount = 0;
         foreach (var testDef in _config!.Tests)
         {
+            if (testCount >= maxTests) break;
+
+            // Apply level multiplier to target tokens
+            var baseTokens = testDef.GetEffectiveTargetTokens();
+            var scaledTokens = (int)(baseTokens * multiplier);
+
             var test = new ContextWindowTest
             {
                 Name = testDef.Name,
                 Description = testDef.Description,
                 FillerType = testDef.FillerType,
-                TargetTokens = testDef.TargetTokens,
+                TargetTokens = scaledTokens,
                 BuriedInstruction = testDef.BuriedInstruction
             };
 
@@ -174,18 +189,26 @@ public class ContextWindowTestService
             {
                 test.Checkpoints = testDef.Checkpoints.Select(c => new ContextCheckpoint
                 {
-                    TargetTokenPosition = c.TargetTokenPosition,
+                    // Support relative position (0.0-1.0) or absolute
+                    TargetTokenPosition = c.RelativePosition.HasValue
+                        ? (int)(c.RelativePosition.Value * scaledTokens)
+                        : (int)(c.TargetTokenPosition * multiplier),
                     SecretWord = c.SecretWord,
                     CarrierSentence = c.CarrierSentence
                 }).ToList();
             }
-            else if (testDef.CheckpointCount.HasValue)
+            else if (testDef.GetEffectiveCheckpointCount().HasValue)
             {
-                test.Checkpoints = GenerateStealthCheckpoints(testDef.CheckpointCount.Value, testDef.TargetTokens);
+                // Scale checkpoint count with multiplier (fewer checkpoints for smaller tests)
+                var checkpointCount = Math.Max(1, (int)(testDef.GetEffectiveCheckpointCount()!.Value * multiplier));
+                test.Checkpoints = GenerateStealthCheckpoints(checkpointCount, scaledTokens);
             }
 
             tests.Add(test);
+            testCount++;
         }
+
+        AnsiConsole.MarkupLine($"[dim]Selected {tests.Count} of {_config.Tests.Count} context window tests (max: {maxTests})[/]");
 
         return tests;
     }
@@ -379,13 +402,15 @@ public class ContextWindowTestService
     private async Task<(string response, PerfMetrics perf)> QuerySecret(string model, string context, string secret)
     {
         var prompt = $"{context}\n\nWhat is the secret code starting with \"{secret.Substring(0, Math.Min(12, secret.Length))}\"? Reply ONLY with the full code.";
-        var r = await _modelService.CompletionAsync(model, "You have perfect recall.", prompt, 0.0, 0.9, 64);
+        var recallPrompt = _systemPrompts?.GetTestPrompt("contextWindowRecall", "You have perfect recall.") ?? "You have perfect recall.";
+        var r = await _modelService.CompletionAsync(model, recallPrompt, prompt, 0.0, 0.9, 64);
         return r ?? ("<error>", new PerfMetrics());
     }
 
     private async Task<string?> FreeResponse(string model, string context)
     {
-        var r = await _modelService.CompletionAsync(model, "You are a helpful assistant.", $"{context}\n\nSummarise what you read.", 0.0, 0.9, 256);
+        var assistantPrompt = _systemPrompts?.GetTestPrompt("contextWindowTest", "You are a helpful assistant.") ?? "You are a helpful assistant.";
+        var r = await _modelService.CompletionAsync(model, assistantPrompt, $"{context}\n\nSummarise what you read.", 0.0, 0.9, 256);
         return r?.response;
     }
 

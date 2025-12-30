@@ -87,17 +87,6 @@ public class InstructionTest
     public string ValidationType { get; set; } = "exact";
 }
 
-public class InstructionTestResult
-{
-    public string ModelName { get; set; } = "";
-    public int PassedTests { get; set; }
-    public int TotalTests { get; set; }
-    public double PassRate => TotalTests > 0 ? (double)PassedTests / TotalTests : 0;
-    public double AvgTokensPerSec { get; set; }
-    public double AvgLatencyMs { get; set; }
-    public List<string> FailureDetails { get; set; } = new();
-}
-
 // ========== Results & Scoring ==========
 
 public class PerfMetrics

@@ -8,10 +8,19 @@ namespace ModelEvaluator.Services;
 public class JudgingService
 {
     private readonly ModelService _modelService;
+    private static SystemPromptsConfig? _systemPrompts;
 
     public JudgingService(ModelService modelService)
     {
         _modelService = modelService;
+    }
+
+    private static async Task<string> GetJudgeSystemPromptAsync()
+    {
+        _systemPrompts ??= await ConfigLoader.LoadSystemPromptsAsync();
+        return _systemPrompts.JudgePrompts.TryGetValue("baseJudge", out var prompt)
+            ? prompt
+            : "You are an expert evaluator of AI responses. You score responses objectively based on quality, accuracy, and usefulness.";
     }
 
     /// <summary>
@@ -60,10 +69,11 @@ public class JudgingService
     private async Task<Rating?> ScoreResponseAsync(string judgeModel, GenerationResult result)
     {
         var judgePrompt = BuildJudgePrompt(result);
-        
+        var systemPrompt = await GetJudgeSystemPromptAsync();
+
         var response = await _modelService.CompletionAsync(
             judgeModel,
-            "You are an expert evaluator of AI responses. You score responses objectively based on quality, accuracy, and usefulness.",
+            systemPrompt,
             judgePrompt,
             0.3, // Low temperature for consistent judging
             0.9,

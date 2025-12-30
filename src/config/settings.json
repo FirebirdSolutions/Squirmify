@@ -1,41 +1,117 @@
 {
   "server": {
-    "baseUrl": "http://10.0.0.50:1234/v1",
+    "baseUrl": "http://aimate-02:1234/v1",
     "authToken": "sk-aimate-T0byGrace!",
+    //"baseUrl": "https://api.inceptionlabs.ai/v1",
+    //"authToken": "sk_34ced97bb6ed0c267ee59637ac021f95",
+
     "useAuth": false,
     "requestTimeoutMinutes": 10
   },
 
   "testSuites": {
     "runPromptTests": true,
-    "runContextWindowTests": false,
-    "runConversationTests": true
+    "runContextWindowTests": false, // Configure below in contextWindowTests
+    "runConversationTests": true,
+    "runQualificationTests": true // False=Skip instruction/reasoning tests for ContextWindow only
+  },
+
+  "scoring": {
+    "highQualityThreshold": 7.5,
+    "topJudgeCount": 2
+  },
+
+  "judging": {
+    "scoreOnly": false,
+    "scoreOnlyInputFile": "all_results.json",
+    "overrideBaseJudge": "",
+    "overrideAutoJudges": []
+  },
+
+  "contextWindowTests": {
+    "level": "shallow",
+    "maxTests": 5,
+    "degradationThresholds": {
+      "graceful": 100000,
+      "moderate": 60000,
+      "sudden": 30000
+    }
   },
 
   "seedGeneration": {
     "targetSeedCount": 5,
     "baseSeedsFile": "base_seeds.jsonl",
-    "generatedSeedsFile": "seeds.json"
+    "generatedSeedsFile": "seeds.json",
+    "overwriteSeeds": true,
+    "categoryWeights": {
+      "code": 0.25,
+      "instruction": 0.25,
+      "chat": 0.25,
+      "support": 0.25
+    }
   },
 
   "instructionTests": {
     "maxModelErrors": 3,
     "temperature": 0.0,
     "topP": 0.8,
-    "passThreshold": 0.8
+    "passThreshold": 0.8,
+    "maxTestsPerCategory": 5,
+    "categoryLimits": {
+      "basic_compliance": 3,
+      "json_output": 5,
+      "tool_calling": 3,
+      "format_constraints": 3,
+      "simple_calculations": 3,
+      "boolean_output": 3,
+      "list_output": 2,
+      "negative_constraint": 2,
+      "string_manipulation": 3,
+      "sorting": 2,
+      "echo": 2,
+      "percentage": 2,
+      "xml_output": 2,
+      "yes_no": 2,
+      "pattern_completion": 2,
+      "formatting": 2,
+      "data_types": 2,
+      "transformation": 2
+    }
   },
 
   "reasoningTests": {
     "minScore": 7.0,
     "temperature": 0.3,
     "topP": 0.9,
-    "maxTokens": 600
+    "maxTokens": 1000,
+    "maxTestsPerCategory": 3,
+    "categoryLimits": {
+      "multi-step": 3,
+      "context": 3,
+      "logic": 3,
+      "math": 3,
+      "pattern": 3,
+      "spatial": 2,
+      "critical_thinking": 2,
+      "coding_logic": 2
+    }
   },
 
   "conversationTests": {
-    "temperature": 0.7,
+    "temperature": 0.8,
     "topP": 0.9,
-    "maxTokens": 600
+    "maxTokens": 1000,
+    "maxTestsPerCategory": 3,
+    "categoryLimits": {
+      "code": 3,
+      "support": 3,
+      "chat": 3,
+      "instruction": 3,
+      "roleplay": 2,
+      "complex": 2,
+      "adversarial": 2,
+      "empathy": 2
+    }
   },
 
   "generation": {
@@ -67,21 +143,8 @@
     }
   },
 
-  "scoring": {
-    "highQualityThreshold": 7.5,
-    "topJudgeCount": 2
-  },
-
-  "contextWindowTests": {
-    "degradationThresholds": {
-      "graceful": 100000,
-      "moderate": 60000,
-      "sudden": 30000
-    }
-  },
-
   "performance": {
-    "maxParallelRequests": 1
+    "maxParallelRequests": 4
   },
 
   "output": {

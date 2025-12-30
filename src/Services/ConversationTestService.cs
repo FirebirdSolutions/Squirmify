@@ -17,7 +17,7 @@ public class ConversationTestService
     }
 
     /// <summary>
-    /// Load conversation tests from external config file
+    /// Load conversation tests from external config file with category filtering
     /// </summary>
     private async Task<List<ConversationTest>> GetConversationTestsAsync()
     {
@@ -25,7 +25,7 @@ public class ConversationTestService
 
         _config = await ConfigLoader.LoadConversationTestsAsync();
 
-        _conversationTests = _config.Tests.Select(t => new ConversationTest
+        var allTests = _config.Tests.Select(t => new ConversationTest
         {
             Category = t.Category,
             Description = t.Description,
@@ -37,6 +37,15 @@ public class ConversationTestService
             }).ToList(),
             JudgingCriteria = t.JudgingCriteria
         }).ToList();
+
+        // Filter by category limits
+        _conversationTests = TestFilterHelper.FilterByCategory(
+            allTests,
+            t => t.Category,
+            Config.ConversationTestMaxPerCategory,
+            Config.ConversationTestCategoryLimits);
+
+        AnsiConsole.MarkupLine($"[dim]Selected {_conversationTests.Count} of {allTests.Count} conversation tests based on category limits[/]");
 
         return _conversationTests;
     }

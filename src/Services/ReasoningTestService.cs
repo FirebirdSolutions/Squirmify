@@ -64,7 +64,7 @@ public static class ReasoningTests
     private static ReasoningTestsConfig? _cachedConfig;
 
     /// <summary>
-    /// Get tests from external config file
+    /// Get tests from external config file with category filtering
     /// </summary>
     public static async Task<List<ReasoningTest>> GetTestsAsync()
     {
@@ -72,13 +72,22 @@ public static class ReasoningTests
 
         _cachedConfig = await ConfigLoader.LoadReasoningTestsAsync();
 
-        _cachedTests = _cachedConfig.Tests.Select(t => new ReasoningTest
+        var allTests = _cachedConfig.Tests.Select(t => new ReasoningTest
         {
             Category = t.Category,
             Description = t.Description,
             Prompt = t.Prompt,
             CorrectAnswer = t.CorrectAnswer
         }).ToList();
+
+        // Filter by category limits
+        _cachedTests = TestFilterHelper.FilterByCategory(
+            allTests,
+            t => t.Category,
+            Config.ReasoningTestMaxPerCategory,
+            Config.ReasoningTestCategoryLimits);
+
+        AnsiConsole.MarkupLine($"[dim]Selected {_cachedTests.Count} of {allTests.Count} reasoning tests based on category limits[/]");
 
         return _cachedTests;
     }
