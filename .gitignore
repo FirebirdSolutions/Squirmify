@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Squirmify - Local configuration (may contain API keys)
+src/config/settings.local.json
+
+# Squirmify - Output files (generated at runtime)
+src/output/*.json
+src/output/*.jsonl
+!src/output/.gitkeep

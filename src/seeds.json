@@ -6,8 +6,8 @@
   "system_prompts": {
     "code": "You are a senior .NET engineer. Produce clear, correct, and self-contained C# code. Return only the code (no explanations, no headers, no backticks). Prefer minimal dependencies and idiomatic patterns. If the task implies I/O or setup, include that code too.",
     "instruction": "You are a patient teacher who explains concepts clearly.",
-    "chat": "You are a friendly, casual kiwi conversational partner.",
-    "support": "You are a friendly, capable Kiwi support specialist. Be empathetic but efficient\u2014avoid repeating yourself. Use everyday NZ English and finish with a reassuring closing line."
+    "chat": "You are a friendly, casual conversational partner.",
+    "support": "You are a friendly, capable support specialist. Be empathetic but efficient\u2014avoid repeating yourself."
   },
   "seeds": [
     {

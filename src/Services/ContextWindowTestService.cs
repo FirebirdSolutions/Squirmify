@@ -66,6 +66,13 @@ public class ContextWindowSummary
     public double AvgCheckpointAccuracy { get; set; }
     public Dictionary<string, int> TestSpecificReliability { get; set; } = new();
     public string DegradationPattern { get; set; } = "";
+
+    // Checkpoint breakdown
+    public int TotalCheckpoints { get; set; }
+    public int CorrectCheckpoints { get; set; }
+    public int Hallucinated { get; set; }
+    public int Forgot { get; set; }
+    public int Confused { get; set; }
 }
 
 /// <summary>
@@ -81,6 +88,7 @@ public class ContextWindowTestService
     private string[] _proseSnippets = Array.Empty<string>();
     private string[] _technicalSnippets = Array.Empty<string>();
     private string[] _checkpointTemplates = Array.Empty<string>();
+    private double _tokenMultiplier = 1.0;
 
     public ContextWindowTestService(ModelService modelService)
     {
@@ -97,6 +105,7 @@ public class ContextWindowTestService
 
         _config = await ConfigLoader.LoadContextWindowTestsAsync();
         _systemPrompts = await ConfigLoader.LoadSystemPromptsAsync();
+        _tokenMultiplier = _config.GetTokenMultiplier();
 
         // Load filler content
         _codeSnippets = _config.FillerContent.Code.Count > 0
@@ -459,14 +468,26 @@ public class ContextWindowTestService
     /// <returns>Aggregated summaries per model</returns>
     public List<ContextWindowSummary> GenerateContextSummaries(List<ContextWindowTestResult> results)
     {
+        // Scale thresholds by the token multiplier so shallow tests can score across full range
+        var gracefulThreshold = Config.ContextWindowDegradationThreshold_Graceful * _tokenMultiplier;
+        var moderateThreshold = Config.ContextWindowDegradationThreshold_Moderate * _tokenMultiplier;
+        var suddenThreshold = Config.ContextWindowDegradationThreshold_Sudden * _tokenMultiplier;
+
         return results.GroupBy(r => r.ModelName).Select(g =>
         {
             var rel = g.ToDictionary(r => r.TestName, r => r.MaxReliableTokens);
             var avgRel = rel.Values.Average();
-            var pattern = avgRel > Config.ContextWindowDegradationThreshold_Graceful ? "graceful"
-                : avgRel > Config.ContextWindowDegradationThreshold_Moderate ? "moderate"
-                : avgRel > Config.ContextWindowDegradationThreshold_Sudden ? "sudden"
+            var pattern = avgRel > gracefulThreshold ? "graceful"
+                : avgRel > moderateThreshold ? "moderate"
+                : avgRel > suddenThreshold ? "sudden"
                 : "catastrophic";
+
+            // Aggregate all verdicts across all probes
+            var allVerdicts = g.SelectMany(r => r.Probes).SelectMany(p => p.Verdicts).ToList();
+            var correct = allVerdicts.Count(v => v.Correct);
+            var hallucinated = allVerdicts.Count(v => v.FailureType == "hallucinated");
+            var forgot = allVerdicts.Count(v => v.FailureType == "forgot");
+            var confused = allVerdicts.Count(v => v.FailureType == "confused");
 
             return new ContextWindowSummary
             {
@@ -475,7 +496,12 @@ public class ContextWindowTestService
                 AvgFirstHallucinationAt = (int)g.Average(r => r.FirstHallucinationAt > 0 ? r.FirstHallucinationAt : r.MaxReliableTokens),
                 AvgCheckpointAccuracy = g.Average(r => r.CheckpointAccuracy),
                 TestSpecificReliability = rel,
-                DegradationPattern = pattern
+                DegradationPattern = pattern,
+                TotalCheckpoints = allVerdicts.Count,
+                CorrectCheckpoints = correct,
+                Hallucinated = hallucinated,
+                Forgot = forgot,
+                Confused = confused
             };
         })
         .OrderByDescending(s => s.AvgMaxReliableTokens)
@@ -484,18 +510,40 @@ public class ContextWindowTestService
 
     public void DisplayContextWindowResults(List<ContextWindowSummary> summaries)
     {
+        // Show scaled thresholds for current level
+        var graceful = (int)(Config.ContextWindowDegradationThreshold_Graceful * _tokenMultiplier);
+        var moderate = (int)(Config.ContextWindowDegradationThreshold_Moderate * _tokenMultiplier);
+        var sudden = (int)(Config.ContextWindowDegradationThreshold_Sudden * _tokenMultiplier);
+
         AnsiConsole.MarkupLine("\n[bold cyan]═══ Context Window Summary ═══[/]\n");
+        AnsiConsole.MarkupLine($"[dim]Level: {Config.ContextWindowTestLevel} (multiplier: {_tokenMultiplier:F1}x)[/]");
+        AnsiConsole.MarkupLine($"[dim]Thresholds: graceful >{graceful:N0} | moderate >{moderate:N0} | sudden >{sudden:N0}[/]\n");
 
         var table = new Table().RoundedBorder()
             .AddColumn("Model")
             .AddColumn("Reliable", c => c.RightAligned())
             .AddColumn("Degradation")
-            .AddColumn("Accuracy", c => c.RightAligned());
+            .AddColumn("Checkpoints", c => c.RightAligned())
+            .AddColumn("Failures");
 
         foreach (var s in summaries)
         {
             var color = s.DegradationPattern == "graceful" ? "green" : s.DegradationPattern == "moderate" ? "yellow" : "red";
-            table.AddRow(s.ModelName, $"{s.AvgMaxReliableTokens:N0}", $"[{color}]{s.DegradationPattern}[/]", $"{s.AvgCheckpointAccuracy:P1}");
+            var checkpointInfo = $"{s.CorrectCheckpoints}/{s.TotalCheckpoints} ({s.AvgCheckpointAccuracy:P0})";
+
+            // Build failure breakdown
+            var failures = new List<string>();
+            if (s.Hallucinated > 0) failures.Add($"[red]{s.Hallucinated} hallucinated[/]");
+            if (s.Forgot > 0) failures.Add($"[yellow]{s.Forgot} forgot[/]");
+            if (s.Confused > 0) failures.Add($"[orange1]{s.Confused} confused[/]");
+            var failureStr = failures.Count > 0 ? string.Join(", ", failures) : "[green]none[/]";
+
+            table.AddRow(
+                s.ModelName,
+                $"{s.AvgMaxReliableTokens:N0}",
+                $"[{color}]{s.DegradationPattern}[/]",
+                checkpointInfo,
+                failureStr);
         }
         AnsiConsole.Write(table);
         AnsiConsole.WriteLine();

@@ -117,6 +117,8 @@ Most LLM benchmarks rely on self-reported metrics and marketing claims. Squirmif
    }
    ```
 
+   > **Security Note:** Never commit API keys to git. The `settings.json` file ships with safe defaults. For personal configuration with API keys, the output directory and local settings are gitignored.
+
 4. (Optional) Add base seed prompts to `src/base_seeds.jsonl`:
 
    ```jsonl
@@ -335,6 +337,8 @@ Example judge output:
 ## Configuration
 
 All configuration is externalized to JSON files in the `config/` directory.
+
+**For a complete reference of all settings, see [docs/SETTINGS.md](docs/SETTINGS.md).**
 
 ### Main Settings (`config/settings.json`)
 
@@ -584,6 +588,7 @@ var exclude = new[] { "qwen2.5-0.5b-instruct", "lfm2-1.2b", "zephyr-7b-beta" };
 
 ## Documentation
 
+- [Settings Reference](docs/SETTINGS.md) - Complete configuration reference with all options explained
 - [Context Window Test Explained](docs/CONTEXT_WINDOW_EXPLAINED.md) - Deep dive into context window stress testing
 - [Context Window Stress Test Summary](docs/context-window-stress-test-summary.md) - Summary and analysis
 - [V2 Evaluator Design](docs/v2%20Evaluator.md) - Design notes and implementation details

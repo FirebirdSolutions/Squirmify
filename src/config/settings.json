@@ -1,19 +1,16 @@
 {
   "server": {
-    "baseUrl": "http://aimate-02:1234/v1",
-    "authToken": "sk-aimate-T0byGrace!",
-    //"baseUrl": "https://api.inceptionlabs.ai/v1",
-    //"authToken": "sk_34ced97bb6ed0c267ee59637ac021f95",
-
+    "baseUrl": "http://localhost:1234/v1",  //LM Studio
+    "authToken": "",
     "useAuth": false,
     "requestTimeoutMinutes": 10
   },
 
   "testSuites": {
     "runPromptTests": true,
-    "runContextWindowTests": false, // Configure below in contextWindowTests
+    "runContextWindowTests": false,
     "runConversationTests": true,
-    "runQualificationTests": true // False=Skip instruction/reasoning tests for ContextWindow only
+    "runQualificationTests": true
   },
 
   "scoring": {
@@ -134,12 +131,12 @@
     "chat": {
       "temperature": 0.95,
       "maxTokens": 800,
-      "systemPrompt": "You are a friendly, casual kiwi conversational partner."
+      "systemPrompt": "You are a friendly, casual conversational partner."
     },
     "support": {
       "temperature": 0.95,
       "maxTokens": 1200,
-      "systemPrompt": "You are a friendly, capable Kiwi support specialist. Be empathetic but efficient—avoid repeating yourself. Use everyday NZ English and finish with a reassuring closing line."
+      "systemPrompt": "You are a friendly, capable support specialist. Be empathetic but efficient—avoid repeating yourself."
     }
   },
 
