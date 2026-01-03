@@ -1,8 +1,8 @@
 {
   "server": {
-    "baseUrl": "http://localhost:1234/v1",  //LM Studio
-    "authToken": "",
-    "useAuth": false,
+    "baseUrl": "http://10.0.0.30:4000",  //LM Studio
+    "authToken": "sk-aimate-litellm",
+    "useAuth": true,
     "requestTimeoutMinutes": 10
   },
 
@@ -141,7 +141,7 @@
   },
 
   "performance": {
-    "maxParallelRequests": 4
+    "maxParallelRequests": 1
   },
 
   "output": {

@@ -1,16 +1,43 @@
 [
   {
-    "ModelName": "qwen3-30b",
+    "ModelName": "qwen3-vl-30b",
     "TotalTests": 45,
-    "PassedTests": 43,
-    "LenientPasses": 1,
-    "PassRate": 0.9555555555555556,
-    "StrictPassRate": 0.9333333333333333,
-    "AvgTokensPerSec": 33.146360748519335,
-    "AvgLatencyMs": 176.9091466666667,
+    "PassedTests": 44,
+    "LenientPasses": 0,
+    "PassRate": 0.9777777777777777,
+    "StrictPassRate": 0.9777777777777777,
+    "AvgTokensPerSec": 51.700002608537865,
+    "AvgLatencyMs": 108.5956488888889,
     "FailureDetails": [
-      "Expected: , Got: The sun broke through the thick clouds, casting a golden glow over the dew-kissed meadow. - Unknown validation type",
-      "Expected: \u003Citem id=\u00221\u0022\u003ETest\u003C/item\u003E, Got: \u003Citem id=\u00271\u0027\u003ETest\u003C/item\u003E - content mismatch"
+      "Expected: , Got: The sky darkened as a sudden downpour soaked the parched earth. - Unknown validation type"
+    ]
+  },
+  {
+    "ModelName": "lfm2-8b",
+    "TotalTests": 45,
+    "PassedTests": 42,
+    "LenientPasses": 1,
+    "PassRate": 0.9333333333333333,
+    "StrictPassRate": 0.9111111111111111,
+    "AvgTokensPerSec": 61.48723818240737,
+    "AvgLatencyMs": 340.7009088888887,
+    "FailureDetails": [
+      "Expected: Banana\nOrange\nGrape, Got: banana  \nmango  \nkiwi - line mismatch: expected 3, got 3",
+      "Expected: , Got: The sky remains overcast with a steady breeze rolling in from the west. - Unknown validation type",
+      "Expected: 8, Got: 7 - expected 8, got 7"
+    ]
+  },
+  {
+    "ModelName": "qwen3-vl-30b-ai03",
+    "TotalTests": 45,
+    "PassedTests": 44,
+    "LenientPasses": 0,
+    "PassRate": 0.9777777777777777,
+    "StrictPassRate": 0.9777777777777777,
+    "AvgTokensPerSec": 42.39410481547147,
+    "AvgLatencyMs": 132.61624444444442,
+    "FailureDetails": [
+      "Expected: , Got: The sky darkened as a sudden downpour soaked the parched earth. - Unknown validation type"
     ]
   }
 ]

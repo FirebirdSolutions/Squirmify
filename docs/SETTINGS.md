@@ -13,7 +13,8 @@ Connection settings for your LLM API server.
   "baseUrl": "http://localhost:1234/v1",
   "authToken": "",
   "useAuth": false,
-  "requestTimeoutMinutes": 10
+  "requestTimeoutMinutes": 10,
+  "targetModels": []
 }
 ```
 
@@ -23,11 +24,13 @@ Connection settings for your LLM API server.
 | `authToken` | string | `""` | API key/token for authenticated endpoints. Leave empty for local servers. |
 | `useAuth` | bool | `false` | Enable bearer token authentication. Set `true` for remote APIs. |
 | `requestTimeoutMinutes` | int | `10` | Request timeout. Increase for slow models or large context tests. |
+| `targetModels` | array | `[]` | Specific models to test. Empty = test all from `/models` endpoint. |
 
 **Examples:**
 - LM Studio local: `"baseUrl": "http://localhost:1234/v1"`
 - Remote server: `"baseUrl": "http://your-server:8080/v1"` with `"useAuth": true`
 - OpenRouter: `"baseUrl": "https://openrouter.ai/api/v1"` with your API key
+- Test specific models only: `"targetModels": ["model-a", "model-b"]`
 
 ---
 
@@ -391,3 +394,19 @@ The local file only needs the settings you want to override:
   "maxParallelRequests": 8
 }
 ```
+
+### Test Specific Models Only
+```json
+"server": {
+  "baseUrl": "http://localhost:4000/v1",
+  "targetModels": [
+    "qwen/qwen-2.5-72b-instruct",
+    "deepseek/deepseek-chat"
+  ]
+}
+```
+
+When `targetModels` is specified, Squirmify skips the `/models` endpoint query and tests only the listed models. Useful for:
+- Testing a subset of available models
+- Comparing specific models head-to-head
+- Remote APIs where you know which models you want

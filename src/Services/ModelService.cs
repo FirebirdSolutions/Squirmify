@@ -22,12 +22,26 @@ public class ModelService
     }
 
     /// <summary>
-    /// Load all available models from LM Studio
+    /// Load models - either from targetModels config or from LM Studio /models endpoint
     /// </summary>
     public async Task<List<string>> LoadModelsAsync(IEnumerable<string>? exclude = null)
     {
         var exclusions = new HashSet<string>(exclude ?? Enumerable.Empty<string>(),
                                              StringComparer.OrdinalIgnoreCase);
+
+        // If targetModels is specified in config, use those instead of querying /models
+        if (Config.TargetModels.Any())
+        {
+            var filtered = Config.TargetModels.Where(m => !exclusions.Contains(m)).ToList();
+            AnsiConsole.MarkupLine($"[green]✓ Using {filtered.Count} target model(s) from config[/]");
+            if (filtered.Any())
+            {
+                var shortList = string.Join(", ", filtered.Take(5));
+                var more = filtered.Count > 5 ? " [dim]…[/]" : "";
+                AnsiConsole.MarkupLine($"[dim]{shortList}{more}[/]");
+            }
+            return filtered;
+        }
 
         return await AnsiConsole.Status()
             .StartAsync("[yellow]Querying LM Studio for loaded models…[/]", async ctx =>

@@ -60,6 +60,13 @@ public class ServerSettings
 
     [JsonPropertyName("requestTimeoutMinutes")]
     public int RequestTimeoutMinutes { get; set; } = 10;
+
+    /// <summary>
+    /// If specified, only test these models instead of all available.
+    /// Empty = test all from /models endpoint.
+    /// </summary>
+    [JsonPropertyName("targetModels")]
+    public List<string> TargetModels { get; set; } = new();
 }
 
 public class TestSuiteSettings
@@ -334,6 +341,7 @@ public static class Config
     public static string BaseAuthToken => Settings.Server.AuthToken;
     public static bool UseAuth => Settings.Server.UseAuth;
     public static TimeSpan RequestTimeout => TimeSpan.FromMinutes(Settings.Server.RequestTimeoutMinutes);
+    public static List<string> TargetModels => Settings.Server.TargetModels;
 
     // Test Suite Toggles
     public static bool RunPromptTests => Settings.TestSuites.RunPromptTests;
