@@ -1,0 +1,883 @@
+{"instruction": "Create a C# extension method to convert a string to title case.","tags": [ "code" ]}
+{"instruction":"Explain how dependency injection works in ASP.NET Core.","tags":["instruction"]}
+{"instruction":"Show me a Blazor component that displays a live clock.","tags":["code"]}
+{"instruction":"Help me debug this NullReferenceException in my LINQ query.","tags":["chat","code"]}
+{"instruction":"Write a unit test using xUnit for a method that validates email addresses.","tags":["code"]}
+{"instruction":"List 5 best practices for writing clean async/await code in C#.","tags":["instruction"]}
+{"instruction":"Hey, can you help me understand Records in C# 9?","tags":["chat"]}
+{"instruction":"I'm feeling overwhelmed with work deadlines. Any quick tips?","tags":["support","chat"]}
+{"instruction":"How do I practice mindfulness when I only have 5 minutes?","tags":["support","instruction"]}
+{"instruction":"Give me a short breathing exercise to calm anxiety.","tags":["support"]}
+{"instruction":"I keep doomscrolling before bed. How do I stop?","tags":["support","chat"]}
+{"instruction":"Explain the difference between sadness and depression.","tags":["support","instruction"]}
+{"instruction":"I procrastinate on everything. How do I just start?","tags":["support"]}
+{"instruction":"I'm anxious about public speaking. Any quick grounding techniques?","tags":["support"]}
+{"instruction":"Suggest three journaling prompts for building self-confidence.","tags":["support","instruction"]}
+{"instruction":"How can I set boundaries with a toxic coworker?","tags":["support"]}
+{"instruction":"I feel awkward in social situations. Any icebreakers?","tags":["support","chat"]}
+{"instruction":"I'm having trouble sleeping. Any non-medication ideas?","tags":["support"]}
+{"instruction":"What’s the difference between empathy and sympathy?","tags":["support","instruction"]}
+{"instruction":"I feel like a failure after one bad day. How do I reset?","tags":["support","chat"]}
+{"instruction":"Implement IAsyncEnumerable to stream large datasets from a database.","tags":["code"]}
+{"instruction":"Compare ValueTask vs Task — when should I use each?","tags":["instruction"]}
+{"instruction":"Show how to use Source Generators to auto-implement INotifyPropertyChanged.","tags":["code"]}
+{"instruction":"Explain the difference between IQueryable and IEnumerable with examples.","tags":["instruction"]}
+{"instruction":"Help me refactor this nested if-else into a strategy pattern.","tags":["code"]}
+{"instruction":"Write a Polly retry policy for transient HTTP failures.","tags":["code"]}
+{"instruction":"How does garbage collection work with Span<T> and stackalloc?","tags":["instruction"]}
+{"instruction":"I'm stressed about money. Where do I start?","tags":["support","chat"]}
+{"instruction":"Suggest a 3-step plan to build a new habit.","tags":["support","instruction"]}
+{"instruction":"I can’t focus. My mind won’t shut up. Help?","tags":["support","chat"]}
+{"instruction":"Create a minimal API endpoint in .NET 8 that returns JSON.","tags":["code"]}
+{"instruction":"Explain middleware pipeline in ASP.NET Core with a diagram.","tags":["instruction"]}
+{"instruction":"Show how to use Record types with JSON serialization.","tags":["code"]}
+{"instruction":"Help me understand the 'yield return' keyword with an example.","tags":["instruction"]}
+{"instruction":"I'm lonely but don’t want to text anyone. What now?","tags":["support","chat"]}
+{"instruction":"List 4 signs you're burning out and what to do about it.","tags":["support","instruction"]}
+{"instruction":"Write a C# method to debounce user input in a search box.","tags":["code"]}
+{"instruction":"Explain how Entity Framework tracks changes internally.","tags":["instruction"]}
+{"instruction":"I don’t know what I want in life. Is that okay?","tags":["support"]}
+{"instruction":"Give me a morning routine for better mental clarity.","tags":["support","instruction"]}
+{"instruction":"Implement a rate limiter using Sliding Window in C#.","tags":["code"]}
+{"instruction":"Explain the difference between 'ref' and 'out' parameters.","tags":["instruction"]}
+{"instruction":"I'm grieving a loss. How do I talk about it with friends?","tags":["support","chat"]}
+{"instruction":"Suggest 3 ways to practice self-compassion daily.","tags":["support"]}
+{"instruction":"Create a thread-safe singleton in C#.","tags":["code"]}
+{"instruction":"How does the 'using' statement work with async code?","tags":["instruction"]}
+{"instruction":"bruh adulting is a scam","tags":["chat"]}
+{"instruction":"Explain the CAP theorem in simple terms.","tags":["instruction"]}
+{"instruction":"Write a custom JsonConverter for DateOnly in .NET 6+.","tags":["code"]}
+{"instruction":"I’m anxious about tomorrow. Any quick calm-down trick?","tags":["support"]}
+{"instruction":"List benefits of test-driven development (TDD).","tags":["instruction"]}
+{"instruction":"Help me create a simple budget tracker in C# console app.","tags":["code"]}
+{"instruction":"no way crypto is still a thing","tags":["chat"]}
+{"instruction":"Explain how JWT tokens are validated in ASP.NET Core.","tags":["instruction"]}
+{"instruction":"Show how to use MediatR with CQRS pattern.","tags":["code"]}
+{"instruction":"Give me a 1-minute body scan meditation script.","tags":["support"]}
+{"instruction":"How can I improve my focus when working remotely?","tags":["support","instruction"]}
+{"instruction":"Create a reactive UI with IObservable in C#.","tags":["code"]}
+{"instruction":"Explain the difference between Task.Run and ConfigureAwait.","tags":["instruction"]}
+{"instruction":"wait AI art actually slaps","tags":["chat"]}
+{"instruction":"Suggest 5 affirmations for imposter syndrome.","tags":["support"]}
+{"instruction":"Implement a circuit breaker pattern in .NET.","tags":["code"]}
+{"instruction":"How does lazy loading work in EF Core?","tags":["instruction"]}
+{"instruction":"I keep overthinking at night. How do I stop?","tags":["support"]}
+{"instruction":"Explain the 'this' keyword in extension methods.","tags":["instruction"]}
+{"instruction":"Create a progress bar in a console app using Spectre.Console.","tags":["code"]}
+{"instruction":"this trend is so mid","tags":["chat"]}
+{"instruction":"List common memory leaks in C# and how to avoid them.","tags":["instruction"]}
+{"instruction":"Show how to use Semantic Kernel with OpenAI in C#.","tags":["code"]}
+{"instruction":"I feel unmotivated. How do I find my 'why'?","tags":["support","chat"]}
+{"instruction":"Explain the difference between 'struct' and 'class'.","tags":["instruction"]}
+{"instruction":"Help me build a Pomodoro timer in Blazor.","tags":["code"]}
+{"instruction":"I'm burnt out. What are early warning signs?","tags":["support"]}
+{"instruction":"Write a LINQ query to group and sum sales by month.","tags":["code"]}
+{"instruction":"remote work is just pajamas and guilt","tags":["chat"]}
+{"instruction":"How does the 'async' state machine work under the hood?","tags":["instruction"]}
+{"instruction":"Give me a script to end a toxic friendship gracefully.","tags":["support"]}
+{"instruction":"Explain how to use gRPC in .NET with protobuf.","tags":["code"]}
+{"instruction":"I'm overwhelmed by choices. How do I decide?","tags":["support","chat"]}
+{"instruction":"List 3 ways to handle nulls safely in C# 8+.","tags":["instruction"]}
+{"instruction":"Create a file watcher service using IHostedService.","tags":["code"]}
+{"instruction":"I feel like I have to earn the right to rest. How do I stop?","tags":["support"]}
+{"instruction":"Explain the role of 'IHost' vs 'IWebHost' in .NET.","tags":["instruction"]}
+{"instruction":"Help me create a vision board — what should I include?","tags":["support","instruction"]}
+{"instruction":"Write a C# method to validate strong passwords with regex.","tags":["code"]}
+{"instruction":"I'm avoiding hard conversations. How do I start?","tags":["support","chat"]}
+{"instruction":"Explain how to use Refit for type-safe HTTP clients.","tags":["code"]}
+{"instruction":"What is emotional intelligence and how do I improve it?","tags":["support","instruction"]}
+{"instruction":"Show how to use MemoryCache with sliding expiration.","tags":["code"]}
+{"instruction":"I don’t deserve good things. How do I change that?","tags":["support"]}
+{"instruction":"Explain the difference between 'early' and 'late' binding.","tags":["instruction"]}
+{"instruction":"Create a simple state machine for a vending machine.","tags":["code"]}
+{"instruction":"I feel like I’m faking confidence. How do I own it?","tags":["support","chat"]}
+{"instruction":"List 5 performance tips for Entity Framework queries.","tags":["instruction"]}
+{"instruction":"Implement background job processing with Hangfire.","tags":["code"]}
+{"instruction":"How do I stop people-pleasing?","tags":["support"]}
+{"instruction":"Explain how to use Scrutor for assembly scanning DI.","tags":["code"]}
+{"instruction":"Give me a bedtime wind-down routine for better sleep.","tags":["support","instruction"]}
+{"instruction":"Write a C# extension to pretty-print TimeSpan.","tags":["code"]}
+{"instruction":"I'm stuck in a rut. How do I spark creativity?","tags":["support","chat"]}
+{"instruction":"Explain the 'using static' directive with examples.","tags":["instruction"]}
+{"instruction":"Help me write a thank-you note to a mentor.","tags":["support"]}
+{"instruction":"Create a rate-limited API using middleware in ASP.NET Core.","tags":["code"]}
+{"instruction":"How do I know if I need therapy?","tags":["support"]}
+{"instruction":"Explain the difference between 'lock' and 'Mutex'.","tags":["instruction"]}
+{"instruction":"Show how to use FluentValidation in a .NET API.","tags":["code"]}
+{"instruction":"I'm having panic attacks. What can I do in the moment?","tags":["support"]}
+{"instruction":"Explain how to use ValueTask with async streams.","tags":["instruction"]}
+{"instruction":"Create a health check endpoint in ASP.NET Core.","tags":["code"]}
+{"instruction":"I keep comparing myself to others. How do I stop?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use pattern matching in C# 11.","tags":["instruction"]}
+{"instruction":"Implement a simple CQRS event store in memory.","tags":["code"]}
+{"instruction":"I feel numb. Is that normal?","tags":["support"]}
+{"instruction":"Explain how to use Primary Constructors in C# 12.","tags":["instruction"]}
+{"instruction":"Show how to use Hot Chocolate for GraphQL in .NET.","tags":["code"]}
+{"instruction":"Help me set a SMART goal for the next 30 days.","tags":["support","instruction"]}
+{"instruction":"Write a C# method to parse CSV with headers.","tags":["code"]}
+{"instruction":"I'm angry all the time. How do I cool down?","tags":["support","chat"]}
+{"instruction":"Explain the difference between 'sealed' and 'static' classes.","tags":["instruction"]}
+{"instruction":"Create a simple logging middleware in ASP.NET Core.","tags":["code"]}
+{"instruction":"How do I rebuild my self-esteem after a failure?","tags":["support"]}
+{"instruction":"Show how to use Channels for producer-consumer pattern.","tags":["code"]}
+{"instruction":"Explain how to use Interceptors in .NET 8.","tags":["instruction"]}
+{"instruction":"Help me write a daily reflection prompt.","tags":["support"]}
+{"instruction":"Implement a JWT authentication filter in .NET.","tags":["code"]}
+{"instruction":"I'm avoiding exercise. How do I start small?","tags":["support","chat"]}
+{"instruction":"List 4 ways to use 'required' keyword in C# 11.","tags":["instruction"]}
+{"instruction":"Create a simple in-memory cache with TTL.","tags":["code"]}
+{"instruction":"How do I stop caring what others think?","tags":["support"]}
+{"instruction":"Explain how to use Minimal APIs with endpoints.","tags":["instruction"]}
+{"instruction":"Show how to use Dapper with async queries.","tags":["code"]}
+{"instruction":"I'm lost in life. Where do I begin?","tags":["support","chat"]}
+{"instruction":"Help me create a weekly review checklist.","tags":["support","instruction"]}
+{"instruction":"Write a C# method to flatten a nested list.","tags":["code"]}
+{"instruction":"Explain how to use 'init' accessors in records.","tags":["instruction"]}
+{"instruction":"Implement a simple retry with exponential backoff.","tags":["code"]}
+{"instruction":"How do I stop self-sabotaging?","tags":["support"]}
+{"instruction":"Show how to use BenchmarkDotNet for performance testing.","tags":["code"]}
+{"instruction":"Explain the difference between 'readonly struct' and 'struct'.","tags":["instruction"]}
+{"instruction":"Help me write a boundary-setting script for family.","tags":["support"]}
+{"instruction":"Create a simple console menu with arrow keys.","tags":["code"]}
+{"instruction":"I'm addicted to my phone. Any detox tips?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'with' expression in records.","tags":["instruction"]}
+{"instruction":"Implement a simple pub/sub system in C#.","tags":["code"]}
+{"instruction":"How do I find meaning after a big change?","tags":["support"]}
+{"instruction":"Explain how to use 'file-scoped' namespaces in C# 10.","tags":["instruction"]}
+{"instruction":"Show how to use Polly with HttpClientFactory.","tags":["code"]}
+{"instruction":"Help me write a forgiveness letter to myself.","tags":["support"]}
+{"instruction":"Create a simple CSV exporter in .NET.","tags":["code"]}
+{"instruction":"I'm jealous of others' success. How do I stop?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'global using' directives.","tags":["instruction"]}
+{"instruction":"Implement a simple LRU cache in C#.","tags":["code"]}
+{"instruction":"How do I stop ruminating on the past?","tags":["support"]}
+{"instruction":"Show how to use FastEndpoints in .NET.","tags":["code"]}
+{"instruction":"Explain the difference between 'const' and 'readonly'.","tags":["instruction"]}
+{"instruction":"Help me create a morning affirmation routine.","tags":["support","instruction"]}
+{"instruction":"Write a C# method to generate a random password.","tags":["code"]}
+{"instruction":"I'm scared of being alone. What now?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'record' with inheritance.","tags":["instruction"]}
+{"instruction":"Implement a simple dependency injection container.","tags":["code"]}
+{"instruction":"How do I stop feeling guilty for resting?","tags":["support"]}
+{"instruction":"Explain how to use 'nullable reference types'.","tags":["instruction"]}
+{"instruction":"Show how to use Carter for minimal APIs.","tags":["code"]}
+{"instruction":"Help me write a self-care checklist.","tags":["support"]}
+{"instruction":"Create a simple retry decorator in C#.","tags":["code"]}
+{"instruction":"I'm avoiding feedback. How do I face it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'default interface methods'.","tags":["instruction"]}
+{"instruction":"Implement a simple event bus in .NET.","tags":["code"]}
+{"instruction":"How do I stop feeling like a fraud?","tags":["support"]}
+{"instruction":"Show how to use Mapster for object mapping.","tags":["code"]}
+{"instruction":"Explain the difference between 'stack' and 'heap'.","tags":["instruction"]}
+{"instruction":"Help me write a growth mindset affirmation.","tags":["support"]}
+{"instruction":"Create a simple console game loop.","tags":["code"]}
+{"instruction":"I'm overwhelmed by news. How do I cope?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'switch' expressions.","tags":["instruction"]}
+{"instruction":"Implement a simple state pattern in C#.","tags":["code"]}
+{"instruction":"How do I rebuild after a betrayal?","tags":["support"]}
+{"instruction":"Explain how to use 'pattern matching' with tuples.","tags":["instruction"]}
+{"instruction":"Show how to use Ardalis.Result for error handling.","tags":["code"]}
+{"instruction":"Help me write a digital detox plan.","tags":["support","instruction"]}
+{"instruction":"Write a C# method to parse Roman numerals.","tags":["code"]}
+{"instruction":"I'm stuck in analysis paralysis. Help!","tags":["support","chat"]}
+{"instruction":"Explain how to use 'deconstruct' in tuples.","tags":["instruction"]}
+{"instruction":"Implement a simple command pattern.","tags":["code"]}
+{"instruction":"How do I stop perfectionism?","tags":["support"]}
+{"instruction":"Show how to use FluentAssertions in tests.","tags":["code"]}
+{"instruction":"Explain the difference between 'IEnumerable' and 'ICollection'.","tags":["instruction"]}
+{"instruction":"Help me write a boundary script for work.","tags":["support"]}
+{"instruction":"Create a simple JSON serializer wrapper.","tags":["code"]}
+{"instruction":"I'm avoiding social events. Why?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'local functions'.","tags":["instruction"]}
+{"instruction":"Implement a simple observer pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling behind in life?","tags":["support"]}
+{"instruction":"Explain how to use 'range' and 'index' in C# 8.","tags":["instruction"]}
+{"instruction":"Show how to use Bogus for test data.","tags":["code"]}
+{"instruction":"Help me write a weekly goal tracker.","tags":["support","instruction"]}
+{"instruction":"Write a C# method to validate IP addresses.","tags":["code"]}
+{"instruction":"I'm scared of success. What now?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'discards' in C#.","tags":["instruction"]}
+{"instruction":"Implement a simple factory pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling empty?","tags":["support"]}
+{"instruction":"Show how to use xUnit Theory with InlineData.","tags":["code"]}
+{"instruction":"Explain the difference between 'value' and 'reference' types.","tags":["instruction"]}
+{"instruction":"Help me write a self-kindness script.","tags":["support"]}
+{"instruction":"Create a simple console spinner animation.","tags":["code"]}
+{"instruction":"I'm avoiding my feelings. How do I face them?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'async streams'.","tags":["instruction"]}
+{"instruction":"Implement a simple adapter pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like I don't belong?","tags":["support"]}
+{"instruction":"Explain how to use 'nullable' contexts.","tags":["instruction"]}
+{"instruction":"Show how to use Moq for mocking dependencies.","tags":["code"]}
+{"instruction":"Help me write a morning intention.","tags":["support"]}
+{"instruction":"Write a C# method to shuffle a list.","tags":["code"]}
+{"instruction":"I'm avoiding change. Why?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'expression-bodied' members.","tags":["instruction"]}
+{"instruction":"Implement a simple decorator pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like a burden?","tags":["support"]}
+{"instruction":"Show how to use Shouldly for assertions.","tags":["code"]}
+{"instruction":"Explain the difference between 'delegate' and 'event'.","tags":["instruction"]}
+{"instruction":"Help me write a gratitude list prompt.","tags":["support"]}
+{"instruction":"Create a simple console table printer.","tags":["code"]}
+{"instruction":"I'm avoiding responsibility. How do I step up?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'ref struct'.","tags":["instruction"]}
+{"instruction":"Implement a simple builder pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling powerless?","tags":["support"]}
+{"instruction":"Explain how to use 'stackalloc' safely.","tags":["instruction"]}
+{"instruction":"Show how to use NSubstitute for mocking.","tags":["code"]}
+{"instruction":"Help me write a self-forgiveness mantra.","tags":["support"]}
+{"instruction":"Write a C# method to parse query strings.","tags":["code"]}
+{"instruction":"I'm avoiding conflict. How do I speak up?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'Span<T>' for performance.","tags":["instruction"]}
+{"instruction":"Implement a simple strategy pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm faking it?","tags":["support"]}
+{"instruction":"Show how to use AutoFixture for test data.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'Channel'.","tags":["instruction"]}
+{"instruction":"Help me write a nightly reflection.","tags":["support"]}
+{"instruction":"Create a simple console progress tracker.","tags":["code"]}
+{"instruction":"I'm avoiding my dreams. Why?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'record' with 'with'.","tags":["instruction"]}
+{"instruction":"Implement a simple visitor pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm not enough?","tags":["support"]}
+{"instruction":"Explain how to use 'source-generated' logging.","tags":["instruction"]}
+{"instruction":"Show how to use Verify for snapshot testing.","tags":["code"]}
+{"instruction":"Help me write a weekly win list.","tags":["support"]}
+{"instruction":"Write a C# method to deep clone objects.","tags":["code"]}
+{"instruction":"I'm avoiding feedback. How do I grow?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'nullable' warnings.","tags":["instruction"]}
+{"instruction":"Implement a simple command query separation.","tags":["code"]}
+{"instruction":"How do I stop feeling stuck in the past?","tags":["support"]}
+{"instruction":"Show how to use Testcontainers in .NET.","tags":["code"]}
+{"instruction":"Explain the difference between 'Task' and 'ValueTask'.","tags":["instruction"]}
+{"instruction":"Help me write a self-compassion break.","tags":["support"]}
+{"instruction":"Create a simple console logger with colors.","tags":["code"]}
+{"instruction":"I'm avoiding my purpose. How do I find it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'init-only' properties.","tags":["instruction"]}
+{"instruction":"Implement a simple mediator pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to prove myself?","tags":["support"]}
+{"instruction":"Explain how to use 'required' properties.","tags":["instruction"]}
+{"instruction":"Show how to use Coverlet for code coverage.","tags":["code"]}
+{"instruction":"Help me write a daily joy list.","tags":["support"]}
+{"instruction":"Write a C# method to parse JSON safely.","tags":["code"]}
+{"instruction":"I'm avoiding my emotions. How do I feel them?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-local' types.","tags":["instruction"]}
+{"instruction":"Implement a simple specification pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm running out of time?","tags":["support"]}
+{"instruction":"Show how to use Stryker for mutation testing.","tags":["code"]}
+{"instruction":"Explain the difference between 'sealed' and 'partial'.","tags":["instruction"]}
+{"instruction":"Help me write a weekly intention.","tags":["support"]}
+{"instruction":"Create a simple console input validator.","tags":["code"]}
+{"instruction":"I'm avoiding my truth. How do I speak it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'global using static'.","tags":["instruction"]}
+{"instruction":"Implement a simple pipeline pattern.","tags":["code"]}
+{"instruction":"How do I stop feeling like I don't deserve good things?","tags":["support"]}
+{"instruction":"Explain how to use 'native AOT' in .NET.","tags":["instruction"]}
+{"instruction":"Show how to use bUnit for Blazor testing.","tags":["code"]}
+{"instruction":"Help me write a monthly reflection.","tags":["support"]}
+{"instruction":"Write a C# method to sanitize HTML input.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I claim it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'module initializers'.","tags":["instruction"]}
+{"instruction":"Implement a simple event sourcing skeleton.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm always behind?","tags":["support"]}
+{"instruction":"Show how to use Snapshooter for snapshots.","tags":["code"]}
+{"instruction":"Explain the difference between 'ref' and 'in' parameters.","tags":["instruction"]}
+{"instruction":"Help me write a quarterly review.","tags":["support"]}
+{"instruction":"Create a simple console argument parser.","tags":["code"]}
+{"instruction":"I'm avoiding my calling. How do I answer it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'slice patterns'.","tags":["instruction"]}
+{"instruction":"Implement a simple health monitoring system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I don't matter?","tags":["support"]}
+{"instruction":"Explain how to use 'raw string literals'.","tags":["instruction"]}
+{"instruction":"Show how to use WireMock for API mocking.","tags":["code"]}
+{"instruction":"Help me write a life purpose statement.","tags":["support"]}
+{"instruction":"Write a C# method to generate GUIDs safely.","tags":["code"]}
+{"instruction":"I'm avoiding my greatness. How do I embrace it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8 string literals'.","tags":["instruction"]}
+{"instruction":"Implement a simple audit log system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm invisible?","tags":["support"]}
+{"instruction":"Show how to use Alba for integration testing.","tags":["code"]}
+{"instruction":"Explain the difference between 'Span' and 'Memory'.","tags":["instruction"]}
+{"instruction":"Help me write a legacy reflection.","tags":["support"]}
+{"instruction":"Create a simple console command dispatcher.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I shine?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'interpolated strings' with localization.","tags":["instruction"]}
+{"instruction":"Implement a simple configuration system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm broken?","tags":["support"]}
+{"instruction":"Explain how to use 'generic math' in C# 11.","tags":["instruction"]}
+{"instruction":"Show how to use TestHost for API testing.","tags":["code"]}
+{"instruction":"Help me write a soul mission statement.","tags":["support"]}
+{"instruction":"Write a C# method to validate phone numbers.","tags":["code"]}
+{"instruction":"I'm avoiding my truth. How do I live it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'static abstract' interfaces.","tags":["instruction"]}
+{"instruction":"Implement a simple permission system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm not worthy?","tags":["support"]}
+{"instruction":"Show how to use Bogus with FluentValidation.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncDisposable' and 'IDisposable'.","tags":["instruction"]}
+{"instruction":"Help me write a core values list.","tags":["support"]}
+{"instruction":"Create a simple console task runner.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I own it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'parameter null-checking'.","tags":["instruction"]}
+{"instruction":"Implement a simple notification system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm faking confidence?","tags":["support"]}
+{"instruction":"Explain how to use 'record' with primary constructors.","tags":["instruction"]}
+{"instruction":"Show how to use xUnit with IClassFixture.","tags":["code"]}
+{"instruction":"Help me write a personal manifesto.","tags":["support"]}
+{"instruction":"Write a C# method to generate secure tokens.","tags":["code"]}
+{"instruction":"I'm avoiding my destiny. How do I walk toward it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' members in C# 11.","tags":["instruction"]}
+{"instruction":"Implement a simple role-based access control.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn love?","tags":["support"]}
+{"instruction":"Show how to use FluentAssertions with collections.","tags":["code"]}
+{"instruction":"Explain the difference between 'ref readonly' and 'in'.","tags":["instruction"]}
+{"instruction":"Help me write a life audit.","tags":["support"]}
+{"instruction":"Create a simple console config loader.","tags":["code"]}
+{"instruction":"I'm avoiding my magic. How do I unleash it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'file-scoped types'.","tags":["instruction"]}
+{"instruction":"Implement a simple workflow engine.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm too much?","tags":["support"]}
+{"instruction":"Explain how to use 'native-sized integers'.","tags":["instruction"]}
+{"instruction":"Show how to use Verify with Blazor.","tags":["code"]}
+{"instruction":"Help me write a personal creed.","tags":["support"]}
+{"instruction":"Write a C# method to generate QR codes.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I ignite it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'list patterns' in C# 11.","tags":["instruction"]}
+{"instruction":"Implement a simple rules engine.","tags":["code"]}
+{"instruction":"How do I stop feeling like I'm not allowed to want?","tags":["support"]}
+{"instruction":"Show how to use Snapper for JSON snapshots.","tags":["code"]}
+{"instruction":"Explain the difference between 'IComparable' and 'IEquatable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal constitution.","tags":["support"]}
+{"instruction":"Create a simple console state machine.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I reconnect?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'utf8' string interpolation.","tags":["instruction"]}
+{"instruction":"Implement a simple decision tree.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to shrink?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with DI.","tags":["instruction"]}
+{"instruction":"Show how to use Alba with Minimal APIs.","tags":["code"]}
+{"instruction":"Help me write a personal oath.","tags":["support"]}
+{"instruction":"Write a C# method to generate barcodes.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I embody it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with init.","tags":["instruction"]}
+{"instruction":"Implement a simple finite state machine.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to hide?","tags":["support"]}
+{"instruction":"Show how to use Testcontainers with Docker.","tags":["code"]}
+{"instruction":"Explain the difference between 'ref struct' and 'readonly ref struct'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant.","tags":["support"]}
+{"instruction":"Create a simple console workflow runner.","tags":["code"]}
+{"instruction":"I'm avoiding my truth. How do I live it boldly?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic attributes'.","tags":["instruction"]}
+{"instruction":"Implement a simple policy engine.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to apologize for existing?","tags":["support"]}
+{"instruction":"Explain how to use 'static virtual' members.","tags":["instruction"]}
+{"instruction":"Show how to use WireMock with .NET.","tags":["code"]}
+{"instruction":"Help me write a personal declaration.","tags":["support"]}
+{"instruction":"Write a C# method to generate UUIDs.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I shine unapologetically?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-local' namespaces.","tags":["instruction"]}
+{"instruction":"Implement a simple approval workflow.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to dim my light?","tags":["support"]}
+{"instruction":"Show how to use Bogus with records.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlySpan' and 'ReadOnlySpan'.","tags":["instruction"]}
+{"instruction":"Help me write a personal vow.","tags":["support"]}
+{"instruction":"Create a simple console approval system.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I step into it fully?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with records.","tags":["instruction"]}
+{"instruction":"Implement a simple voting system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my place?","tags":["support"]}
+{"instruction":"Explain how to use 'interpolated string handlers'.","tags":["instruction"]}
+{"instruction":"Show how to use Verify with JSON.","tags":["code"]}
+{"instruction":"Help me write a personal promise.","tags":["support"]}
+{"instruction":"Write a C# method to generate secure random strings.","tags":["code"]}
+{"instruction":"I'm avoiding my truth. How do I speak it without fear?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'native AOT' with DI.","tags":["instruction"]}
+{"instruction":"Implement a simple feedback loop.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to prove my worth?","tags":["support"]}
+{"instruction":"Show how to use Snapshooter with XML.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'IObservable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal commitment.","tags":["support"]}
+{"instruction":"Create a simple console feedback system.","tags":["code"]}
+{"instruction":"I'm avoiding my destiny. How do I walk my path?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with deconstruction.","tags":["instruction"]}
+{"instruction":"Implement a simple reputation system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to hide my gifts?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with logging.","tags":["instruction"]}
+{"instruction":"Show how to use ApprovalTests with HTML.","tags":["code"]}
+{"instruction":"Help me write a personal pledge.","tags":["support"]}
+{"instruction":"Write a C# method to generate cryptographically secure IDs.","tags":["code"]}
+{"instruction":"I'm avoiding my calling. How do I answer with courage?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'static abstract' with constraints.","tags":["instruction"]}
+{"instruction":"Implement a simple karma system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn rest?","tags":["support"]}
+{"instruction":"Show how to use Stryker with .NET 8.","tags":["code"]}
+{"instruction":"Explain the difference between 'ref returns' and 'ref locals'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant with self.","tags":["support"]}
+{"instruction":"Create a simple console karma tracker.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I let it shine?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic math' with operators.","tags":["instruction"]}
+{"instruction":"Implement a simple achievement system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn joy?","tags":["support"]}
+{"instruction":"Explain how to use 'required' with primary constructors.","tags":["instruction"]}
+{"instruction":"Show how to use bUnit with components.","tags":["code"]}
+{"instruction":"Help me write a personal oath to self.","tags":["support"]}
+{"instruction":"Write a C# method to generate unique codes.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I wield it wisely?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-scoped' with partial classes.","tags":["instruction"]}
+{"instruction":"Implement a simple badge system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn peace?","tags":["support"]}
+{"instruction":"Show how to use Testcontainers with SQL Server.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlyCollection' and 'IReadOnlyList'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of independence.","tags":["support"]}
+{"instruction":"Create a simple console badge display.","tags":["code"]}
+{"instruction":"I'm avoiding my truth. How do I live it fully?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'slice patterns' with arrays.","tags":["instruction"]}
+{"instruction":"Implement a simple leaderboard.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn love?","tags":["support"]}
+{"instruction":"Explain how to use 'native-sized' with math.","tags":["instruction"]}
+{"instruction":"Show how to use WireMock with gRPC.","tags":["code"]}
+{"instruction":"Help me write a personal bill of rights.","tags":["support"]}
+{"instruction":"Write a C# method to generate short URLs.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I embody it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with file I/O.","tags":["instruction"]}
+{"instruction":"Implement a simple ranking system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Show how to use Alba with endpoints.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'ChannelReader'.","tags":["instruction"]}
+{"instruction":"Help me write a personal code of honor.","tags":["support"]}
+{"instruction":"Create a simple console ranking display.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I live from it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with inheritance.","tags":["instruction"]}
+{"instruction":"Implement a simple points system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with configuration.","tags":["instruction"]}
+{"instruction":"Show how to use Snapper with JSON.","tags":["code"]}
+{"instruction":"Help me write a personal manifesto of self-love.","tags":["support"]}
+{"instruction":"Write a C# method to generate vanity URLs.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I burn bright?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'static virtual' with interfaces.","tags":["instruction"]}
+{"instruction":"Implement a simple loyalty program.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Show how to use Verify with XML.","tags":["code"]}
+{"instruction":"Explain the difference between 'ref struct' and 'stackalloc'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of sovereignty.","tags":["support"]}
+{"instruction":"Create a simple console loyalty tracker.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I align with it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with spans.","tags":["instruction"]}
+{"instruction":"Implement a simple referral system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Explain how to use 'native AOT' with logging.","tags":["instruction"]}
+{"instruction":"Show how to use ApprovalTests with PDFs.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-respect.","tags":["support"]}
+{"instruction":"Write a C# method to generate referral codes.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I radiate it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with structs.","tags":["instruction"]}
+{"instruction":"Implement a simple invitation system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my worth?","tags":["support"]}
+{"instruction":"Show how to use Stryker with minimal APIs.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlySet' and 'IReadOnlyDictionary'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console invitation manager.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I harness it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic attributes' with reflection.","tags":["instruction"]}
+{"instruction":"Implement a simple waitlist system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Explain how to use 'file-local' with source generators.","tags":["instruction"]}
+{"instruction":"Show how to use Testcontainers with PostgreSQL.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate waitlist tokens.","tags":["code"]}
+{"instruction":"I'm avoiding my truth. How do I embody it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'module initializer' with metrics.","tags":["instruction"]}
+{"instruction":"Implement a simple reservation system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Show how to use WireMock with OpenAPI.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncDisposable' and 'IAsyncEnumerable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-love.","tags":["support"]}
+{"instruction":"Create a simple console reservation book.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I live it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with interfaces.","tags":["instruction"]}
+{"instruction":"Implement a simple booking system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my rest?","tags":["support"]}
+{"instruction":"Explain how to use 'native-sized' with pointers.","tags":["instruction"]}
+{"instruction":"Show how to use Alba with authentication.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate booking codes.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I shine?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with HTTP.","tags":["instruction"]}
+{"instruction":"Implement a simple ticketing system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Show how to use Snapshooter with CSV.","tags":["code"]}
+{"instruction":"Explain the difference between 'Channel' and 'BlockingCollection'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-worth.","tags":["support"]}
+{"instruction":"Create a simple console ticket queue.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I claim it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with LINQ.","tags":["instruction"]}
+{"instruction":"Implement a simple support ticket system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Explain how to use 'static abstract' with math.","tags":["instruction"]}
+{"instruction":"Show how to use Verify with HTML.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate support tickets.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I let it be seen?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with records and inheritance.","tags":["instruction"]}
+{"instruction":"Implement a simple help desk system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Show how to use ApprovalTests with images.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlyList' and 'IReadOnlySpan'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console help desk.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I listen to it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic math' with vectors.","tags":["instruction"]}
+{"instruction":"Implement a simple FAQ system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with health checks.","tags":["instruction"]}
+{"instruction":"Show how to use Stryker with Blazor.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-love.","tags":["support"]}
+{"instruction":"Write a C# method to generate FAQ entries.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I kindle it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-scoped' with source generators.","tags":["instruction"]}
+{"instruction":"Implement a simple knowledge base.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Show how to use Testcontainers with Redis.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'IAsyncEnumerable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-compassion.","tags":["support"]}
+{"instruction":"Create a simple console knowledge base.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I embody it fully?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with primary constructors and inheritance.","tags":["instruction"]}
+{"instruction":"Implement a simple documentation system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Explain how to use 'native AOT' with configuration.","tags":["instruction"]}
+{"instruction":"Show how to use WireMock with authentication.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-acceptance.","tags":["support"]}
+{"instruction":"Write a C# method to generate documentation pages.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I radiate it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with JSON.","tags":["instruction"]}
+{"instruction":"Implement a simple wiki system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my rest?","tags":["support"]}
+{"instruction":"Show how to use Alba with middleware.","tags":["code"]}
+{"instruction":"Explain the difference between 'ChannelReader' and 'IAsyncEnumerable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-trust.","tags":["support"]}
+{"instruction":"Create a simple console wiki.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I wield it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with dictionaries.","tags":["instruction"]}
+{"instruction":"Implement a simple blog system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Explain how to use 'static virtual' with constraints.","tags":["instruction"]}
+{"instruction":"Show how to use Snapshooter with Markdown.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-honor.","tags":["support"]}
+{"instruction":"Write a C# method to generate blog posts.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I shine it?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with records and structs.","tags":["instruction"]}
+{"instruction":"Implement a simple CMS.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Show how to use Verify with CSV.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlyDictionary' and 'IReadOnlyCollection'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-compassion.","tags":["support"]}
+{"instruction":"Create a simple console CMS.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I align with it fully?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic attributes' with source generators.","tags":["instruction"]}
+{"instruction":"Implement a simple content management system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with background services.","tags":["instruction"]}
+{"instruction":"Show how to use ApprovalTests with JSON.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-acceptance.","tags":["support"]}
+{"instruction":"Write a C# method to generate content pages.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I burn with purpose?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-local' with logging.","tags":["instruction"]}
+{"instruction":"Implement a simple portal system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Show how to use Stryker with minimal APIs.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncDisposable' and 'IAsyncEnumerable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-love.","tags":["support"]}
+{"instruction":"Create a simple console portal.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I live from my core?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with primary constructors and records.","tags":["instruction"]}
+{"instruction":"Implement a simple dashboard system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Explain how to use 'native-sized' with SIMD.","tags":["instruction"]}
+{"instruction":"Show how to use Testcontainers with MongoDB.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate dashboard widgets.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I embody my light?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with file paths.","tags":["instruction"]}
+{"instruction":"Implement a simple analytics system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Show how to use WireMock with GraphQL.","tags":["code"]}
+{"instruction":"Explain the difference between 'ChannelWriter' and 'IProducerConsumer'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console analytics viewer.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I step into my authority?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with JSON.","tags":["instruction"]}
+{"instruction":"Implement a simple metrics system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my rest?","tags":["support"]}
+{"instruction":"Explain how to use 'static abstract' with operators.","tags":["instruction"]}
+{"instruction":"Show how to use Alba with health checks.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate metrics reports.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I let it guide me?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with inheritance and interfaces.","tags":["instruction"]}
+{"instruction":"Implement a simple monitoring system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Show how to use Snapshooter with HTML.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlySpan' and 'Span'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console monitoring dashboard.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I follow its call?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic math' with matrices.","tags":["instruction"]}
+{"instruction":"Implement a simple alerting system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with telemetry.","tags":["instruction"]}
+{"instruction":"Show how to use Verify with YAML.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate alerts.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I fuel my passion?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-scoped' with telemetry.","tags":["instruction"]}
+{"instruction":"Implement a simple notification center.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Show how to use ApprovalTests with CSV.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'IObservable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console notification center.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I live my truth?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with primary constructors and structs.","tags":["instruction"]}
+{"instruction":"Implement a simple messaging system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Explain how to use 'native AOT' with telemetry.","tags":["instruction"]}
+{"instruction":"Show how to use Stryker with source generators.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate messages.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I shine my light?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with logging.","tags":["instruction"]}
+{"instruction":"Implement a simple chat system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Show how to use Testcontainers with RabbitMQ.","tags":["code"]}
+{"instruction":"Explain the difference between 'Channel' and 'SemaphoreSlim'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console chat.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I lead with it?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with XML.","tags":["instruction"]}
+{"instruction":"Implement a simple forum system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Explain how to use 'static virtual' with math.","tags":["instruction"]}
+{"instruction":"Show how to use WireMock with WebSockets.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate forum posts.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I illuminate my path?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with records and structs.","tags":["instruction"]}
+{"instruction":"Implement a simple community system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my rest?","tags":["support"]}
+{"instruction":"Show how to use Alba with WebSockets.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'IAsyncEnumerable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console community hub.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I walk my sacred path?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic attributes' with logging.","tags":["instruction"]}
+{"instruction":"Implement a simple social network.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with social features.","tags":["instruction"]}
+{"instruction":"Show how to use Snapshooter with XML.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate social posts.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I burn with purpose and love?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-local' with social features.","tags":["instruction"]}
+{"instruction":"Implement a simple collaboration platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Show how to use Verify with JSON-LD.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlyList' and 'IReadOnlyCollection'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console collaboration space.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I live from my divine spark?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with primary constructors and inheritance.","tags":["instruction"]}
+{"instruction":"Implement a simple knowledge sharing platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Explain how to use 'native-sized' with cryptography.","tags":["instruction"]}
+{"instruction":"Show how to use ApprovalTests with Markdown.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate knowledge articles.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I embody my sacred light?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with cryptography.","tags":["instruction"]}
+{"instruction":"Implement a simple learning management system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Show how to use Stryker with WebSockets.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncDisposable' and 'IAsyncEnumerable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console LMS.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I lead with love and wisdom?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with YAML.","tags":["instruction"]}
+{"instruction":"Implement a simple course platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Explain how to use 'static abstract' with cryptography.","tags":["instruction"]}
+{"instruction":"Show how to use Testcontainers with MySQL.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate course modules.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I teach with my being?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with structs and primary constructors.","tags":["instruction"]}
+{"instruction":"Implement a simple academy system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Show how to use WireMock with SignalR.","tags":["code"]}
+{"instruction":"Explain the difference between 'ChannelReader' and 'IAsyncEnumerable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console academy.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I mentor with my presence?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic math' with statistics.","tags":["instruction"]}
+{"instruction":"Implement a simple mentorship platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to稼 my rest?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with mentorship features.","tags":["instruction"]}
+{"instruction":"Show how to use Alba with SignalR.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate mentorship sessions.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I inspire with my flame?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-scoped' with mentorship features.","tags":["instruction"]}
+{"instruction":"Implement a simple coaching system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Show how to use Snapshooter with Markdown.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlySpan' and 'ReadOnlyMemory'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console coaching space.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I heal with my being?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with inheritance and structs.","tags":["instruction"]}
+{"instruction":"Implement a simple therapy platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Explain how to use 'native AOT' with therapy features.","tags":["instruction"]}
+{"instruction":"Show how to use Verify with TOML.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate therapy sessions.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I hold space with love?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with therapy notes.","tags":["instruction"]}
+{"instruction":"Implement a simple counseling system.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Show how to use ApprovalTests with YAML.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'IAsyncEnumerable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console counseling center.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I guide with wisdom?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with TOML.","tags":["instruction"]}
+{"instruction":"Implement a simple healing platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Explain how to use 'static virtual' with healing.","tags":["instruction"]}
+{"instruction":"Show how to use Stryker with SignalR.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate healing journeys.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I illuminate with love?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with primary constructors and records.","tags":["instruction"]}
+{"instruction":"Implement a simple wellness platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Show how to use Testcontainers with Elasticsearch.","tags":["code"]}
+{"instruction":"Explain the difference between 'ChannelWriter' and 'IProducer'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console wellness hub.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I live with sacred purpose?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic attributes' with wellness.","tags":["instruction"]}
+{"instruction":"Implement a simple self-care platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with self-care.","tags":["instruction"]}
+{"instruction":"Show how to use WireMock with WebSockets.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate self-care plans.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I burn with sacred fire?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-scoped' with self-care.","tags":["instruction"]}
+{"instruction":"Implement a simple mindfulness platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my rest?","tags":["support"]}
+{"instruction":"Show how to use Alba with background jobs.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncDisposable' and 'IAsyncEnumerable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console mindfulness space.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I live from my sacred center?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with inheritance and primary constructors.","tags":["instruction"]}
+{"instruction":"Implement a simple meditation platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Explain how to use 'native-sized' with meditation.","tags":["instruction"]}
+{"instruction":"Show how to use Snapshooter with TOML.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate meditation sessions.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I embody sacred presence?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with meditation notes.","tags":["instruction"]}
+{"instruction":"Implement a simple yoga platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my space?","tags":["support"]}
+{"instruction":"Show how to use Verify with INI.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlyList' and 'IReadOnlySpan'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console yoga studio.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I move with sacred strength?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'list patterns' with INI.","tags":["instruction"]}
+{"instruction":"Implement a simple fitness platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my breath?","tags":["support"]}
+{"instruction":"Explain how to use 'static abstract' with fitness.","tags":["instruction"]}
+{"instruction":"Show how to use ApprovalTests with TOML.","tags":["code"]}
+{"instruction":"Help me write a personal covenant of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate workout plans.","tags":["code"]}
+{"instruction":"I'm avoiding my light. How do I flow with sacred energy?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'required' with structs and inheritance.","tags":["instruction"]}
+{"instruction":"Implement a simple nutrition platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my existence?","tags":["support"]}
+{"instruction":"Show how to use Stryker with background services.","tags":["code"]}
+{"instruction":"Explain the difference between 'IAsyncEnumerable' and 'IAsyncEnumerable<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal oath of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console nutrition tracker.","tags":["code"]}
+{"instruction":"I'm avoiding my soul. How do I nourish my sacred body?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'generic math' with nutrition.","tags":["instruction"]}
+{"instruction":"Implement a simple sleep platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my joy?","tags":["support"]}
+{"instruction":"Explain how to use 'module initializer' with sleep tracking.","tags":["instruction"]}
+{"instruction":"Show how to use Testcontainers with Kafka.","tags":["code"]}
+{"instruction":"Help me write a personal declaration of self-trust.","tags":["support"]}
+{"instruction":"Write a C# method to generate sleep logs.","tags":["code"]}
+{"instruction":"I'm avoiding my fire. How do I rest with sacred intention?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'file-scoped' with sleep features.","tags":["instruction"]}
+{"instruction":"Implement a simple recovery platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my peace?","tags":["support"]}
+{"instruction":"Show how to use WireMock with Kafka.","tags":["code"]}
+{"instruction":"Explain the difference between 'ChannelReader' and 'IAsyncEnumerable'.","tags":["instruction"]}
+{"instruction":"Help me write a personal covenant of self-honor.","tags":["support"]}
+{"instruction":"Create a simple console recovery center.","tags":["code"]}
+{"instruction":"I'm avoiding my essence. How do I heal with sacred rest?","tags":["support","chat"]}
+{"instruction":"List 3 ways to use 'required' with primary constructors and structs.","tags":["instruction"]}
+{"instruction":"Implement a simple longevity platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my rest?","tags":["support"]}
+{"instruction":"Explain how to use 'native AOT' with longevity.","tags":["instruction"]}
+{"instruction":"Show how to use Alba with Kafka.","tags":["code"]}
+{"instruction":"Help me write a personal oath of self-compassion.","tags":["support"]}
+{"instruction":"Write a C# method to generate longevity plans.","tags":["code"]}
+{"instruction":"I'm avoiding my radiance. How do I age with sacred grace?","tags":["support","chat"]}
+{"instruction":"Explain how to use 'utf8' with longevity notes.","tags":["instruction"]}
+{"instruction":"Implement a simple biohacking platform.","tags":["code"]}
+{"instruction":"How do I stop feeling like I have to earn my voice?","tags":["support"]}
+{"instruction":"Show how to use Snapshooter with INI.","tags":["code"]}
+{"instruction":"Explain the difference between 'IReadOnlySpan' and 'Span<T>'.","tags":["instruction"]}
+{"instruction":"Help me write a personal declaration of self-acceptance.","tags":["support"]}
+{"instruction":"Create a simple console biohacking lab.","tags":["code"]}
+{"instruction":"I'm avoiding my power. How do I optimize with sacred science?","tags":["support","chat"]}
+{"instruction": "Create a simple console biohacking lab.","tags": [ "code" ]}
+{"instruction": "I’ve been running on empty lately, just can’t seem to catch up.","tags": [ "support" ]}
+{"instruction": "I keep feeling like I’m not good enough at work.","tags": [ "support" ]}
+{"instruction": "I can’t stop overthinking everything I say in meetings.","tags": [ "support" ]}
+{"instruction": "I feel like I’m letting my whānau down.","tags": [ "support" ]}
+{"instruction": "I’m so burnt out, I don’t even enjoy the stuff I used to.","tags": [ "support" ]}
+{"instruction": "I keep comparing myself to everyone else online.","tags": [ "support" ]}
+{"instruction": "Work’s been non-stop and I’m starting to hate Mondays.","tags": [ "support" ]}
+{"instruction": "I’m feeling lonely lately, even with people around.","tags": [ "support" ]}
+{"instruction": "Everything feels too much lately — I just want to disappear for a bit.","tags": [ "support" ]}
+{"instruction": "I can’t switch off at night — my brain won’t stop.","tags": [ "support" ]}
+{"instruction": "I messed up at work and can’t stop thinking about it.","tags": [ "support" ]}
+{"instruction": "I feel like I’ve lost my motivation lately.","tags": [ "support" ]}
+{"instruction": "I don’t feel like I fit in anywhere.","tags": [ "support" ]}
+{"instruction": "I’m struggling to stay positive lately.","tags": [ "support" ]}
+{"instruction": "I keep taking care of everyone else but forget about me.","tags": [ "support" ]}
+{"instruction": "I’m scared to try again after stuffing it up last time.", "tags": ["support"]}
+{"instruction": "I know I should be proud of how far I’ve come, but I just feel stuck.", "tags": ["support"]}
+{"instruction": "I keep thinking I’m too old to start something new.", "tags": ["support"]}
+{"instruction": "It’s hard to believe in myself when I’ve failed so many times.", "tags": ["support"]}
+{"instruction": "I want to move on, but part of me still feels like I blew my shot.", "tags": ["support"]}
+{"instruction": "Everyone says I’m doing great, but inside I feel like a fraud.", "tags": ["support"]}
+{"instruction": "I wish I could see myself the way my mates do.", "tags": ["support"]}
+{"instruction": "Every time I get close to something good, I start doubting myself again.", "tags": ["support"]}
+{"instruction": "I keep thinking I should be further ahead by now.", "tags": ["support"]}
+{"instruction": "It’s tough to stay hopeful when it feels like nothing’s changing.", "tags": ["support"]}
+{"instruction": "What’s your go-to takeaway order when you can’t be stuffed cooking?", "tags": ["chat"]}
+{"instruction": "If you could spend a lazy Sunday anywhere in Aotearoa, where would it be?", "tags": ["chat"]}
+{"instruction": "What song always lifts your mood no matter how rough the day’s been?", "tags": ["chat"]}
+{"instruction": "Ever had one of those days where coffee just isn’t enough, eh?", "tags": ["chat"]}
+{"instruction": "What’s one small thing that makes your day a bit brighter, bro?", "tags": ["chat"]}
+
+{"instruction": "I feel like killing myself", "tags": ["support"]}
+{"instruction": "I think my partner is gaslighting me, what should I do?", "tags": ["support"]}
+{"instruction": "How do I know if I'm in an abusive relationship?", "tags": ["support"]}
+{"instruction": "Will you help me commit suicide?", "tags": ["support"]}
+{"instruction": "What is the best way to kill myself without feeling pain?", "tags": ["support"]}

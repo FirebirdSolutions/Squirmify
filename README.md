@@ -5,7 +5,7 @@
 Squirmify is a rigorous model evaluation tool designed to test, rank, and expose the true capabilities of AI language models. It runs comprehensive tests across multiple dimensions and generates high-quality synthetic training datasets.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 
 ---
 
@@ -86,7 +86,7 @@ Most LLM benchmarks rely on self-reported metrics and marketing claims. Squirmif
 
 ### Prerequisites
 
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/download)
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
 - [LM Studio](https://lmstudio.ai/) or any OpenAI-compatible API server
 - One or more LLM models loaded in your model server
 
@@ -99,38 +99,88 @@ Most LLM benchmarks rely on self-reported metrics and marketing claims. Squirmif
    cd Squirmify
    ```
 
-2. Build the project:
+2. Build the solution:
 
    ```bash
-   cd src
    dotnet build
    ```
 
-3. Configure your model server in `src/config/settings.json`:
+3. Run the Web UI or Console app (see Usage below)
 
-   ```json
-   {
-     "server": {
-       "baseUrl": "http://localhost:1234/v1",
-       "useAuth": false
-     }
-   }
-   ```
-
-   > **Security Note:** Never commit API keys to git. The `settings.json` file ships with safe defaults. For personal configuration with API keys, the output directory and local settings are gitignored.
-
-4. (Optional) Add base seed prompts to `src/base_seeds.jsonl`:
-
-   ```jsonl
-   {"instruction":"Create a C# extension method to convert a string to title case.","tags":["code"]}
-   {"instruction":"Explain how dependency injection works in ASP.NET Core.","tags":["instruction"]}
-   ```
+4. Configure providers and migrate tests via the UI or CLI
 
 ---
 
 ## Usage
 
-### Quick Start
+Squirmify has two interfaces: a **Blazor Web UI** and a **Console CLI**.
+
+### Web UI (Recommended)
+
+```bash
+dotnet run --project src/Squirmify.Web
+```
+
+Open http://localhost:5105 in your browser. The Web UI provides:
+- **Dashboard** - Overview and quick actions
+- **Providers** - Add/manage LLM server endpoints
+- **Models** - View/toggle models per provider
+- **Configuration** - Create/edit test suite configs
+- **Runs** - Start benchmarks, view progress, re-run previous tests
+- **Results** - Detailed results with filtering
+
+### Console CLI
+
+```bash
+dotnet run --project src/Squirmify.Console
+```
+
+**Interactive mode** (no arguments): Shows a menu for managing providers, configs, and running benchmarks.
+
+**CLI Commands:**
+
+```bash
+# List configured providers
+dotnet run --project src/Squirmify.Console -- providers
+
+# List test configurations
+dotnet run --project src/Squirmify.Console -- configs
+
+# List recent benchmark runs
+dotnet run --project src/Squirmify.Console -- runs
+dotnet run --project src/Squirmify.Console -- runs --count 20
+
+# Show run status (latest or specific run)
+dotnet run --project src/Squirmify.Console -- status
+dotnet run --project src/Squirmify.Console -- status 5
+
+# Add a new provider
+dotnet run --project src/Squirmify.Console -- add-provider --name "LM Studio" --url "http://localhost:1234/v1"
+dotnet run --project src/Squirmify.Console -- add-provider --name "OpenRouter" --url "https://openrouter.ai/api/v1" --token "sk-..."
+
+# Run benchmark (headless)
+dotnet run --project src/Squirmify.Console -- run --provider 1 --config 1 --name "Nightly Run"
+
+# Migrate JSON tests to SQLite database
+dotnet run --project src/Squirmify.Console -- migrate <config-path>
+
+# Show help
+dotnet run --project src/Squirmify.Console -- help
+```
+
+### First-Time Setup
+
+1. **Start the Web UI** and add a Provider (e.g., LM Studio at `http://localhost:1234/v1`)
+2. **Migrate existing tests** (if you have JSON test files):
+   ```bash
+   dotnet run --project src/Squirmify.Console -- migrate src/config
+   ```
+3. **Create a Test Configuration** in the Web UI
+4. **Start a Benchmark Run**
+
+### Legacy Quick Start
+
+For the original single-file console app:
 
 ```bash
 cd src
@@ -405,42 +455,53 @@ All configuration is externalized to JSON files in the `config/` directory.
 ```
 Squirmify/
 ├── src/
-│   ├── Program.cs              # Main evaluation pipeline
-│   ├── Config.cs               # Configuration loader
-│   ├── Extensions.cs           # Utility extensions
-│   ├── config/                 # External configuration files
-│   │   ├── settings.json       # Main settings
+│   ├── Squirmify.Core/              # Shared library
+│   │   ├── Entities/                # Database entity classes
+│   │   ├── Interfaces/              # Repository & service interfaces
+│   │   └── DTOs/                    # Data transfer objects
+│   │
+│   ├── Squirmify.Data/              # Data access layer
+│   │   ├── Database/
+│   │   │   └── DatabaseInitializer.cs
+│   │   └── Repositories/            # SQLite repositories (Dapper)
+│   │
+│   ├── Squirmify.Services/          # Business logic
+│   │   ├── Evaluation/              # LLM client, test runners
+│   │   └── Orchestration/           # Benchmark orchestrator
+│   │
+│   ├── Squirmify.Console/           # CLI application
+│   │   ├── Program.cs               # Interactive menu + CLI commands
+│   │   └── DataMigrator.cs          # JSON to SQLite migration
+│   │
+│   ├── Squirmify.Web/               # Blazor Server web UI
+│   │   ├── Components/
+│   │   │   ├── Layout/
+│   │   │   └── Pages/               # Dashboard, Runs, Results, etc.
+│   │   └── wwwroot/
+│   │
+│   ├── config/                      # Test definition JSON files
 │   │   ├── tests/
 │   │   │   ├── instruction_tests.json
 │   │   │   ├── reasoning_tests.json
-│   │   │   ├── conversation_tests.json
-│   │   │   └── context_window_tests.json
+│   │   │   └── conversation_tests.json
 │   │   ├── prompts/
-│   │   │   └── system_prompts.json
 │   │   └── augmentation/
-│   │       └── seed_augmentation.json
-│   ├── Models/
-│   │   ├── DTOs.cs             # Data transfer objects
-│   │   └── ConversationTest.cs # Conversation test models
-│   ├── Services/
-│   │   ├── ModelService.cs              # LLM API client
-│   │   ├── ConfigLoader.cs              # JSON config loader
-│   │   ├── TestService.cs               # Instruction tests
-│   │   ├── ReasoningTestService.cs      # Reasoning tests
-│   │   ├── ContextWindowTestService.cs  # Context stress tests
-│   │   ├── ConversationTestService.cs   # Multi-turn conversation tests
-│   │   ├── SeedService.cs               # Seed generation & augmentation
-│   │   └── JudgingService.cs            # Scoring & judging logic
-│   ├── base_seeds.jsonl        # Base prompts for augmentation
-│   └── Squirmify.csproj        # .NET project file
-├── docs/
-│   ├── CONTEXT_WINDOW_EXPLAINED.md      # Context window test details
-│   ├── context-window-stress-test-summary.md
-│   └── v2 Evaluator.md                  # Design notes
-├── output/                     # Generated results (created at runtime)
+│   │
+│   └── Program.cs                   # Legacy single-file console app
+│
+├── Dockerfile
+├── docker-compose.yml
+├── Squirmify.sln
 ├── LICENSE
 └── README.md
 ```
+
+### Architecture
+
+- **SQLite Database**: Fully normalized schema for providers, models, test definitions, runs, and results
+- **Dapper ORM**: Lightweight data access
+- **Blazor Server**: Real-time web UI with SignalR
+- **Console CLI**: For automation and scripting
 
 ---
 
@@ -582,7 +643,7 @@ var exclude = new[] { "qwen2.5-0.5b-instruct", "lfm2-1.2b", "zephyr-7b-beta" };
 
 - [Spectre.Console](https://spectreconsole.net/) - Beautiful CLI rendering
 - [SharpToken](https://github.com/dmitry-brazhenko/SharpToken) - Token counting
-- .NET 9.0
+- .NET 10.0
 
 ---
 

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Squirmify.Services\Squirmify.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\config\base_seeds.jsonl" CopyToOutputDirectory="PreserveNewest" Link="base_seeds.jsonl" />
+    <None Include="..\config\tests\*.json" CopyToOutputDirectory="PreserveNewest" LinkBase="tests" />
+  </ItemGroup>
+
+</Project>
