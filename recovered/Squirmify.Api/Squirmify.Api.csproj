@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <AssemblyName>Squirmify.Api</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Squirmify.Core">
+      <HintPath>src/Squirmify.Api/bin/Debug/net10.0/Squirmify.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Squirmify.Services">
+      <HintPath>src/Squirmify.Api/bin/Debug/net10.0/Squirmify.Services.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

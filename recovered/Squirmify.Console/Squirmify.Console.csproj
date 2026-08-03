@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Squirmify.Console</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Squirmify.Core">
+      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Squirmify.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Spectre.Console">
+      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Spectre.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting">
+      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Extensions.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Squirmify.Services">
+      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Squirmify.Services.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
