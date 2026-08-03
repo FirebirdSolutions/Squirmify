@@ -7,6 +7,8 @@ import path from 'node:path';
 // Derived from the surviving source, not guessed:
 //   - `@/` alias      : 81 imports across src/ use it
 //   - port 5173       : the recovered API pins DevCors to localhost:5173/5174
+//   - API port 5105   : the surviving March Dockerfile sets
+//                       ASPNETCORE_URLS=http://+:5105 and EXPOSEs it
 //   - /api proxy      : src/api/client.ts hardcodes `const API_BASE = '/api'`
 //   - /hubs proxy     : useBenchmarkHub.ts calls .withUrl('/hubs/benchmark'),
 //                       and SignalR needs ws: true to negotiate a socket
@@ -23,11 +25,11 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:5230',
+        target: 'http://localhost:5105',
         changeOrigin: true,
       },
       '/hubs': {
-        target: 'http://localhost:5230',
+        target: 'http://localhost:5105',
         changeOrigin: true,
         ws: true,
       },
