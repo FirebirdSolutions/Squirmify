@@ -1,35 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Squirmify.Console</AssemblyName>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <LangVersion>15.0</LangVersion>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Squirmify.Console</AssemblyName>
+    <RootNamespace>Squirmify.Console</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup />
-  <ItemGroup />
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Squirmify.Core">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Squirmify.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Spectre.Console">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Spectre.Console.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Hosting">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Extensions.Hosting.dll</HintPath>
-    </Reference>
-    <Reference Include="Squirmify.Services">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Squirmify.Services.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Squirmify.Core/Squirmify.Core.csproj" />
+    <ProjectReference Include="../Squirmify.Data/Squirmify.Data.csproj" />
+    <ProjectReference Include="../Squirmify.Services/Squirmify.Services.csproj" />
   </ItemGroup>
 </Project>

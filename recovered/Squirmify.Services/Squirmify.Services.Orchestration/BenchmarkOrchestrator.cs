@@ -20,6 +20,17 @@ namespace Squirmify.Services.Orchestration;
 
 public class BenchmarkOrchestrator : IBenchmarkOrchestrator
 {
+	// RECOVERY NOTE (2026-08-04): in the original assembly this array was a
+	// compiler-cached literal on <PrivateImplementationDetails>, which the
+	// decompiler could not express as valid C#. The values are verbatim from
+	// the IL; only the storage location is reconstructed. It filters generic
+	// instruction-phrasing words out before keyword-matching a response.
+	private static readonly string[] InstructionStopWords =
+	{
+		"from", "this", "point", "forward", "always", "respond", "must", "your", "that", "with",
+		"only", "never"
+	};
+
 	private record ValidationResult(bool StrictPass, bool LenientPass, string? Reason = null);
 
 	private record ContextWindowTestResultBundle(ContextWindowTestResult Result, List<ContextWindowProbe> Probes);
@@ -1672,20 +1683,7 @@ public class BenchmarkOrchestrator : IBenchmarkOrchestrator
 		}
 		List<string> list = (from w in instruction.Split(' ', StringSplitOptions.RemoveEmptyEntries)
 			where w.Length > 4
-			select w.ToLower().Trim(new char[5] { '.', ',', '!', '"', '\'' })).Where(delegate(string w)
-		{
-			object obj = global::_003CPrivateImplementationDetails_003E.B3E528A98F9A3D35B670F6797D07FFA7177E82337BE1F4609A01122FD09C55FB_B11;
-			if (obj == null)
-			{
-				obj = new string[12]
-				{
-					"from", "this", "point", "forward", "always", "respond", "must", "your", "that", "with",
-					"only", "never"
-				};
-				global::_003CPrivateImplementationDetails_003E.B3E528A98F9A3D35B670F6797D07FFA7177E82337BE1F4609A01122FD09C55FB_B11 = (string[])obj;
-			}
-			return !new ReadOnlySpan<string>((string[]?)obj).Contains(w);
-		}).Take(5).ToList();
+			select w.ToLower().Trim(new char[5] { '.', ',', '!', '"', '\'' })).Where((string w) => !InstructionStopWords.Contains(w)).Take(5).ToList();
 		if (list.Count > 0)
 		{
 			int num4 = list.Count((string w) => responseLower.Contains(w));

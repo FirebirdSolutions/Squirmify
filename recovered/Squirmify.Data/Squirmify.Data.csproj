@@ -1,25 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>Squirmify.Data</AssemblyName>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup>
-    <LangVersion>15.0</LangVersion>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup />
-  <ItemGroup />
   <ItemGroup>
-    <Reference Include="Squirmify.Core">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Squirmify.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Sqlite">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Microsoft.Data.Sqlite.dll</HintPath>
-    </Reference>
-    <Reference Include="Dapper">
-      <HintPath>src/Squirmify.Console/bin/Debug/net10.0/Dapper.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Squirmify.Core/Squirmify.Core.csproj" />
   </ItemGroup>
 </Project>

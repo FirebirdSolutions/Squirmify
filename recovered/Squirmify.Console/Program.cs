@@ -15,9 +15,14 @@ using Squirmify.Core.Interfaces;
 using Squirmify.Services;
 
 [CompilerGenerated]
+// RECOVERY NOTE (2026-08-04): reconstructed from Squirmify.Console.dll after
+// the WantToCry data loss. The original used top-level statements, which the
+// compiler lowers to a synthetic Program.<Main>$ method; ilspycmd emitted that
+// as the invalid identifier _003CMain_003E_0024. Renamed to a conventional
+// Main and given an explicit entry point. Body is verbatim from the IL.
 internal class Program
 {
-	private static async Task _003CMain_003E_0024(string[] args)
+	public static async Task Main(string[] args)
 	{
 		string dataDir = SquirmifyPaths.ResolveDataDirectory(args);
 		string connectionString = SquirmifyPaths.GetConnectionString(dataDir);
