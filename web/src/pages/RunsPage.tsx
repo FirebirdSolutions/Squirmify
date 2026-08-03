@@ -55,8 +55,12 @@ export function RunsPage() {
     }, { onSuccess: () => setOpen(false) });
   };
 
-  // Find the currently running run to watch
-  const activeRun = runs?.find((r) => r.status === 'running');
+  // RECOVERY NOTE (2026-08-04): this was live in the surviving source but
+  // unused, and noUnusedLocals rejects it. The hub is already driven by
+  // `watchingRunId` above, so this looks like a superseded auto-watch
+  // approach. Commented rather than deleted — it may have been mid-change
+  // when the files were lost, and the original intent cannot be recovered.
+  // const activeRun = runs?.find((r) => r.status === 'running');
 
   return (
     <div className="space-y-6">
