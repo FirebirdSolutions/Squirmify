@@ -1,0 +1,113 @@
+{
+  "tests": [
+    {
+      "category": "discovery",
+      "description": "Find tools that can search or discover other tools",
+      "toolName": "discovery",
+      "command": "find_tool",
+      "scenarioPrompt": "You need to find tools that can help you search for or discover other tools. What tool call would you make?",
+      "expectedParams": {
+        "query": "string"
+      },
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "discovery",
+      "description": "List all available tools",
+      "toolName": "discovery",
+      "command": "list_tools",
+      "scenarioPrompt": "You want to see all the tools available in the system. What tool call would you make?",
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "memory",
+      "description": "Store a memory about user preferences",
+      "toolName": "memory",
+      "command": "add",
+      "scenarioPrompt": "Store a memory that the user prefers dark mode interfaces.",
+      "expectedParams": {
+        "content": "string"
+      },
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "memory",
+      "description": "Search for memories about a topic",
+      "toolName": "memory",
+      "command": "search",
+      "scenarioPrompt": "Search for any memories related to user preferences.",
+      "expectedParams": {
+        "query": "string"
+      },
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "memory",
+      "description": "List recent memories",
+      "toolName": "memory",
+      "command": "list",
+      "scenarioPrompt": "Retrieve the most recent memories from the system.",
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "help",
+      "description": "Get help on available domains",
+      "toolName": "help",
+      "command": "",
+      "scenarioPrompt": "You want to see an overview of all available tool domains and what commands they offer. What tool call would you make?",
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "help",
+      "description": "Get detailed help on a specific tool",
+      "toolName": "help",
+      "command": "describe_tool",
+      "scenarioPrompt": "You want detailed documentation about the memory tool domain. What tool call would you make?",
+      "expectedParams": {
+        "tool": "string"
+      },
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "tasks",
+      "description": "Create a new task",
+      "toolName": "tasks",
+      "command": "upsert",
+      "scenarioPrompt": "Create a task to 'Review the PR for authentication changes' with high priority.",
+      "expectedParams": {
+        "title": "string"
+      },
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "tasks",
+      "description": "List all tasks",
+      "toolName": "tasks",
+      "command": "list",
+      "scenarioPrompt": "Retrieve all tasks from the system.",
+      "responseValidationType": "success",
+      "executeTool": true
+    },
+    {
+      "category": "docs",
+      "description": "Search documentation",
+      "toolName": "docs",
+      "command": "search",
+      "scenarioPrompt": "Search for documentation about API endpoints.",
+      "expectedParams": {
+        "query": "string"
+      },
+      "responseValidationType": "success",
+      "executeTool": true
+    }
+  ],
+  "systemPrompt": "You are an AI assistant with access to MCP tools. When asked to perform a task, respond with ONLY the JSON tool call in the format: {\"cmd\": \"command\", \"params\": {...}}"
+}
